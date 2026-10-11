@@ -13,13 +13,13 @@
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="manifest" href="manifest.json">
 <style>
-@font-face{font-family:"Barlow Condensed";font-weight:500;src:url(fonts/barlow-condensed-latin-500-normal.woff2) format("woff2")}
-@font-face{font-family:"Barlow Condensed";font-weight:600;src:url(fonts/barlow-condensed-latin-600-normal.woff2) format("woff2")}
-@font-face{font-family:"Barlow Condensed";font-weight:700;src:url(fonts/barlow-condensed-latin-700-normal.woff2) format("woff2")}
-@font-face{font-family:"Figtree";font-weight:400;src:url(fonts/figtree-latin-400-normal.woff2) format("woff2")}
-@font-face{font-family:"Figtree";font-weight:500;src:url(fonts/figtree-latin-500-normal.woff2) format("woff2")}
-@font-face{font-family:"Figtree";font-weight:600;src:url(fonts/figtree-latin-600-normal.woff2) format("woff2")}
-@font-face{font-family:"Figtree";font-weight:700;src:url(fonts/figtree-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-weight:500;src:url(barlow-condensed-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-weight:600;src:url(barlow-condensed-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Barlow Condensed";font-weight:700;src:url(barlow-condensed-latin-700-normal.woff2) format("woff2")}
+@font-face{font-family:"Figtree";font-weight:400;src:url(figtree-latin-400-normal.woff2) format("woff2")}
+@font-face{font-family:"Figtree";font-weight:500;src:url(figtree-latin-500-normal.woff2) format("woff2")}
+@font-face{font-family:"Figtree";font-weight:600;src:url(figtree-latin-600-normal.woff2) format("woff2")}
+@font-face{font-family:"Figtree";font-weight:700;src:url(figtree-latin-700-normal.woff2) format("woff2")}
 html{color-scheme:light}
 body{margin:0}
 [hidden]{display:none!important}
@@ -255,11 +255,11 @@ td.rk{min-width:0}
 </nav>
 <div class="toast" id="toast" hidden></div>
 <div class="pdfbar" id="pdfbar" hidden><span>Your PDF is ready</span><button class="btn primary" id="pdfgo">Share PDF</button><button class="btn" id="pdfx" aria-label="Close">✕</button></div>
-<script src="lib/firebase-app-compat.js"></script>
-<script src="lib/firebase-auth-compat.js"></script>
-<script src="lib/firebase-firestore-compat.js"></script>
-<script src="lib/jspdf.umd.min.js"></script>
-<script src="lib/jspdf.plugin.autotable.min.js"></script>
+<script src="firebase-app-compat.js"></script>
+<script src="firebase-auth-compat.js"></script>
+<script src="firebase-firestore-compat.js"></script>
+<script src="jspdf.umd.min.js"></script>
+<script src="jspdf.plugin.autotable.min.js"></script>
 <script src="firebase-config.js"></script>
 <script id="engine">
 /* Scoring engine: every match is a list of events per innings; all figures are derived by replaying them. */
