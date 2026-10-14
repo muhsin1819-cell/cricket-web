@@ -243,6 +243,16 @@ td.rk{min-width:0}
 .pdfbar{position:fixed;left:16px;right:16px;bottom:calc(84px + env(safe-area-inset-bottom, 0px));max-width:488px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 12px;display:flex;gap:8px;align-items:center;box-shadow:0 6px 24px rgba(0,0,0,.18);z-index:5}
 .pdfbar span{flex:1;font-weight:600}
 .tabs{padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+.ppb{margin-top:8px;font:600 14px var(--f-body);color:var(--board-dim)}
+.ppb.on{color:var(--gold-ink);background:var(--gold);border-radius:8px;padding:5px 9px;align-self:flex-start;position:relative;z-index:1}
+.modal{position:fixed;inset:0;background:rgba(5,14,10,.55);display:grid;place-items:center;padding:24px 16px;z-index:20}
+.mbox{background:var(--surface);color:var(--ink);border-radius:18px;padding:20px;max-width:380px;width:100%;display:flex;flex-direction:column;gap:10px;border-top:6px solid var(--gold)}
+.mbox h2{font:700 28px/1.1 var(--f-score)}
+.mbox p{margin:0;color:var(--muted)}
+.csum table td:first-child{min-width:0;color:var(--muted)}
+.csum th:first-child{width:40%}
+.rtab td:first-child{white-space:normal;min-width:0}
+.rtab td{vertical-align:top}
 .result small{display:block;font:500 15px var(--f-body);color:var(--board-dim);margin-top:6px}
 </style>
 </head>
@@ -251,9 +261,11 @@ td.rk{min-width:0}
 <nav class="tabs" id="tabs" hidden>
   <button data-act="nav" data-v="home" id="t-home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>Matches</button>
   <button data-act="nav" data-v="members" id="t-members"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c.6-3.6 3.3-5.5 6.5-5.5s5.9 1.9 6.5 5.5"/><circle cx="17" cy="9" r="2.5"/><path d="M17.5 14.5c2.3.3 3.7 1.9 4 4.5"/></svg>Members</button>
+  <button data-act="nav" data-v="rules" id="t-rules"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l3 3v15H6z"/><path d="M9 10h6M9 14h6M9 18h4"/></svg>Rules</button>
   <button data-act="nav" data-v="stats" id="t-stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 20V11M12 20V4M19 20v-7"/></svg>Stats</button>
 </nav>
 <div class="toast" id="toast" hidden></div>
+<div class="modal" id="ppmodal" hidden role="dialog" aria-modal="true" aria-labelledby="pptitle"><div class="mbox"><div class="lbl">⚡ Powerplay</div><h2 id="pptitle">Powerplay completed</h2><p id="pptext"></p><button class="btn primary block" id="ppok">OK</button></div></div>
 <div class="pdfbar" id="pdfbar" hidden><span>Your PDF is ready</span><button class="btn primary" id="pdfgo">Share PDF</button><button class="btn" id="pdfx" aria-label="Close">✕</button></div>
 <script src="firebase-app-compat.js"></script>
 <script src="firebase-auth-compat.js"></script>
@@ -364,9 +376,22 @@ var CE = (function(){
      Batting:  1 per run, +2 per four, +4 per six, -1 for a duck; +15 for 50 runs, or +40 for 100 runs (instead of the 50 bonus)
      Bowling:  10 per wicket, +5 per maiden; +10 for 3 wickets, or +15 for 5 wickets (instead of the 3-wicket bonus)
      Fielding: 8 per catch, 6 per stumping, 12 per direct-hit run out */
-  var PTS = {run:1, four:2, six:4, duck:-1, fifty:15, hundred:40, wkt:10, maiden:5, w3:10, w5:15, catch:8, stump:6, direct:12};
+  var PTS = {run:1, four:2, six:4, duck:-1, fifty:15, hundred:40, wkt:10, maiden:5, w3:10, w5:15, catch:8, stump:6, direct:12,
+             eco4:4, eco6:2, eco10:-4, eco20:-10, ecoMinBalls:6};
+  /* Club match rules. Powerplay and bowler limit scale with match length: 25 overs -> 8-over powerplay, 5 overs per bowler */
+  var RULES = {ppOut:3, out:5};
+  function rules(m){
+    var ov = m.overs || 25;
+    return {pp: m.pp != null ? m.pp : Math.round(ov * 8 / 25), maxBowl: m.maxBowl || Math.ceil(ov / 5), ppOut:RULES.ppOut, out:RULES.out};
+  }
+  /* Economy bonus (only once a bowler has bowled at least 1 over): <=4 +4, over 4 up to 6 +2, over 10 -4, over 20 -10 */
+  function econPoints(b){
+    if (b.balls < PTS.ecoMinBalls) return 0;
+    var e = b.r / (b.balls / 6);
+    return e > 20 ? PTS.eco20 : e > 10 ? PTS.eco10 : e <= 4 ? PTS.eco4 : e <= 6 ? PTS.eco6 : 0;
+  }
   function batPoints(b){ return b.r * PTS.run + b.f * PTS.four + b.s * PTS.six + (b.out && b.r === 0 ? PTS.duck : 0) + (b.r >= 100 ? PTS.hundred : b.r >= 50 ? PTS.fifty : 0); }
-  function bowlPoints(b){ return b.w * PTS.wkt + b.m * PTS.maiden + (b.w >= 5 ? PTS.w5 : b.w >= 3 ? PTS.w3 : 0); }
+  function bowlPoints(b){ return b.w * PTS.wkt + b.m * PTS.maiden + (b.w >= 5 ? PTS.w5 : b.w >= 3 ? PTS.w3 : 0) + econPoints(b); }
   function fieldPoints(f){ return f.c * PTS.catch + f.st * PTS.stump + (f.dh || 0) * PTS.direct; }
   function matchPoints(m){
     var key = function(n){ return (m.pids && m.pids[n]) || ('n:' + n); };
@@ -397,10 +422,10 @@ var CE = (function(){
   }
   function stats(list){
     var P = {};
-    function G(k, n){ return P[k] || (P[k] = {key:k, name:n, m:0, inn:0, r:0, b:0, f:0, s:0, no:0, hs:-1, hsNo:false, fifty:0,
-      binn:0, balls:0, rc:0, w:0, md:0, bw:-1, br:0, c:0, st:0, ro:0, dh:0, pts:0, pom:0}); }
+    function G(k, n){ return P[k] || (P[k] = {key:k, name:n, m:0, inn:0, r:0, b:0, f:0, s:0, no:0, hs:-1, hsNo:false, fifty:0, hund:0, ducks:0,
+      bm:0, binn:0, balls:0, rc:0, w:0, md:0, bw:-1, br:0, mw:-1, mr:0, w4:0, w5:0, c:0, st:0, ro:0, dh:0, pts:0, pom:0}); }
     list.forEach(function(m){
-      var mp = matchPoints(m), key = mp.key, seen = {};
+      var mp = matchPoints(m), key = mp.key, seen = {}, bm = {};
       m.teams.forEach(function(t){ t.players.forEach(function(n){ var k = key(n); if (!seen[k]) { seen[k] = 1; G(k, n).m++; } }); });
       for (var i = 0; i < m.innings.length; i++) {
         var st = replay(m, i);
@@ -408,7 +433,8 @@ var CE = (function(){
           var b = st.bat[n], a = G(key(n), n);
           a.inn++; a.r += b.r; a.b += b.b; a.f += b.f; a.s += b.s;
           if (!b.out) a.no++;
-          if (b.r >= 50) a.fifty++;
+          if (b.r >= 100) a.hund++; else if (b.r >= 50) a.fifty++;
+          if (b.out && b.r === 0) a.ducks++;
           if (b.r > a.hs || (b.r === a.hs && !b.out)) { a.hs = b.r; a.hsNo = !b.out; }
         });
         st.bowlOrder.forEach(function(n){
@@ -416,15 +442,18 @@ var CE = (function(){
           if (!b.balls && !b.r) return;
           a.binn++; a.balls += b.balls; a.rc += b.r; a.w += b.w; a.md += b.m;
           if (b.w > a.bw || (b.w === a.bw && b.r < a.br)) { a.bw = b.w; a.br = b.r; }
+          if (b.w >= 5) a.w5++; else if (b.w === 4) a.w4++;
+          var k2 = key(n), t = bm[k2] || (bm[k2] = {w:0, r:0, a:a}); t.w += b.w; t.r += b.r;
         });
         Object.keys(st.field).forEach(function(n){ var f = st.field[n], a = G(key(n), n); a.c += f.c; a.st += f.st; a.ro += f.ro; a.dh += (f.dh || 0); });
       }
+      Object.keys(bm).forEach(function(k){ var t = bm[k], a = t.a; a.bm++; if (t.w > a.mw || (t.w === a.mw && t.r < a.mr)) { a.mw = t.w; a.mr = t.r; } });
       Object.keys(mp.pts).forEach(function(k){ G(k, mp.names[k]).pts += mp.pts[k]; });
       var pom = playerOfMatch(m); if (pom) G(pom.key, pom.name).pom++;
     });
     return Object.keys(P).map(function(k){ return P[k]; });
   }
-  return {ov:ov, replay:replay, result:result, stats:stats, label:label, matchPoints:matchPoints, playerOfMatch:playerOfMatch, PTS:PTS};
+  return {ov:ov, replay:replay, result:result, stats:stats, label:label, matchPoints:matchPoints, playerOfMatch:playerOfMatch, PTS:PTS, rules:rules};
 })();
 </script>
 <script>
@@ -692,7 +721,7 @@ function home(){
 /* ---------- new match: pick players and teams ---------- */
 function newDraft(){
   var last = listMatches().sort(function(a, b){ return (b.date || 0) - (a.date || 0); })[0];
-  return {names:['Team A', 'Team B'], overs:25, venue: last ? (last.venue || '') : '', toss:0, chose:'bat', team:{}, cap:{}};
+  return {names:['Team A', 'Team B'], overs:25, pp:8, maxBowl:5, venue: last ? (last.venue || '') : '', toss:0, chose:'bat', team:{}, cap:{}};
 }
 function capLabel(t){ var id = draft.cap[t]; return id && players[id] ? ' · captain ' + esc(players[id].name) : ' · <i>no captain yet</i>'; }
 function fixCaps(){ ['A', 'B'].forEach(function(t){ var id = draft.cap[t]; if (id && draft.team[id] !== t) delete draft.cap[t]; }); }
@@ -707,6 +736,9 @@ function newForm(){
     '<div class="field"><label for="dn1">Team 2 name</label><input id="dn1" maxlength="30" value="' + esc(d.names[1]) + '"></div></div>' +
     '<div class="field"><label for="dov">Overs per side</label><div class="ovrow"><input id="dov" type="number" inputmode="numeric" min="1" max="50" value="' + d.overs + '">' +
     [10, 15, 20, 25, 30].map(function(o){ return '<button type="button" class="ch num' + (+d.overs === o ? ' on' : '') + '" data-act="setov" data-v="' + o + '">' + o + '</button>'; }).join('') + '</div></div>' +
+    '<div class="row2b"><div class="field"><label for="dpp">Powerplay overs</label><input id="dpp" type="number" inputmode="numeric" min="0" max="50" value="' + d.pp + '"></div>' +
+    '<div class="field"><label for="dmb">Max overs per bowler</label><input id="dmb" type="number" inputmode="numeric" min="1" max="50" value="' + d.maxBowl + '"></div></div>' +
+    '<p class="hint">Club rule for 25 overs: 8-over powerplay, 5 overs per bowler. These adjust when you change the overs.</p>' +
     '<div class="field"><label for="dvn">Ground</label><input id="dvn" maxlength="60" value="' + esc(d.venue) + '"></div></fieldset>';
   h += '<fieldset class="card"><legend>Who’s playing today?</legend>';
   if (!ps.length) h += '<p class="small">No members yet. Add names here, or fill in the Members tab first.</p>';
@@ -749,6 +781,10 @@ function scoreboard(m, idx, st){
   var h = '<section class="board" aria-label="Scoreboard"><div class="bteam"><span>' + esc(bt.name) + '</span><small>' + (idx === 0 ? '1st' : '2nd') + ' innings</small></div>' +
     '<div class="bscore">' + st.total + '<span>/' + st.wkts + '</span></div>' +
     '<div class="bline"><span>Overs <b>' + CE.ov(st.legal) + '</b> / ' + m.overs + '</span><span>Run rate <b>' + rate(st.total, st.legal) + '</b></span><span>Extras <b>' + st.extTotal + '</b></span></div>';
+  var R = CE.rules(m);
+  if (!st.done && R.pp > 0) h += st.legal < R.pp * 6
+    ? '<div class="ppb on">⚡ Powerplay · overs 1–' + R.pp + ' · max ' + R.ppOut + ' fielders outside the circle</div>'
+    : '<div class="ppb">Powerplay over · max ' + R.out + ' fielders outside the circle</div>';
   if (st.target != null) {
     var need = Math.max(0, st.target - st.total), bl = st.maxBalls - st.legal;
     h += '<div class="target">Target ' + st.target + ' · ' + (need > 0 ? 'Need ' + need + ' from ' + plural(bl, 'ball') + (bl > 0 ? ' · Req. ' + rate(need, bl) : '') : 'Target reached') + '</div>';
@@ -830,9 +866,12 @@ function controls(m, idx, st){
       addPlayerRow(inn.bat, 'bat') + '<div class="actions">' + undo + '<button class="btn" data-act="endinn">End innings</button></div></div>';
   }
   if (st.needBowler) {
-    var list = bowlT.players.filter(function(p){ return p !== st.prevBowler; });
-    return '<div class="panel"><h2>Over ' + (Math.floor(st.legal / 6) + 1) + ': who bowls?</h2><div class="chips">' +
-      list.map(function(p){ var w = st.bowl[p]; return '<button class="ch" data-act="bowl" data-v="' + esc(p) + '">' + esc(p) + (w ? ' <small>' + CE.ov(w.balls) + '-' + w.m + '-' + w.r + '-' + w.w + '</small>' : '') + '</button>'; }).join('') + '</div>' +
+    var R = CE.rules(m), list = bowlT.players.filter(function(p){ return p !== st.prevBowler; });
+    var full = function(p){ var w = st.bowl[p]; return w && Math.floor(w.balls / 6) >= R.maxBowl; };
+    var avail = list.filter(function(p){ return !full(p); }), done = list.filter(full);
+    return '<div class="panel"><h2>Over ' + (Math.floor(st.legal / 6) + 1) + ': who bowls?</h2><p>Max ' + R.maxBowl + ' overs per bowler.</p><div class="chips">' +
+      avail.map(function(p){ var w = st.bowl[p]; return '<button class="ch" data-act="bowl" data-v="' + esc(p) + '">' + esc(p) + (w ? ' <small>' + CE.ov(w.balls) + '-' + w.m + '-' + w.r + '-' + w.w + '</small>' : '') + '</button>'; }).join('') + '</div>' +
+      (done.length ? '<p class="small">Bowled all ' + R.maxBowl + ' overs: ' + done.map(esc).join(', ') + '</p>' : '') +
       addPlayerRow(1 - inn.bat, 'bowl') + '<div class="actions">' + undo + '</div></div>';
   }
   if (ui.retire) {
@@ -968,16 +1007,32 @@ function profileView(){
   var tile = function(v, l){ return '<div class="tile"><b>' + v + '</b><span>' + l + '</span></div>'; };
   var h = backBar(p.name, 'members');
   h += '<section class="card"><div class="prof">' + avatar(p.id, p.name, 'huge') + '<span class="tag">' + esc(p.role || 'Player') + '</span>' + (p.phone ? '<span class="phone">' + esc(p.phone) + '</span><button class="link inline" data-act="copyphone">Copy</button>' : '') + '</div></section>';
-  [['This season (' + yr + ')', ss], ['All time', all]].forEach(function(pair){
-    var r = pair[1];
-    h += '<h2 class="sec">' + pair[0] + '</h2>';
-    if (!r) { h += '<p class="small">No matches yet.</p>'; return; }
-    var outs = r.inn - r.no;
-    h += '<div class="tiles">' + tile(r.m, 'Matches') + tile(r.r, 'Runs') + tile(r.w, 'Wickets') + tile(r.pts, 'MVP pts') + '</div>' +
-      '<section class="card"><p class="small">Batting: ' + r.inn + ' inns, HS ' + (r.hs < 0 ? '–' : r.hs + (r.hsNo ? '*' : '')) + ', avg ' + (outs ? (r.r / outs).toFixed(1) : '–') + ', SR ' + sr(r.r, r.b) + ', 4s ' + r.f + ', 6s ' + r.s + (r.fifty ? ', 50s ' + r.fifty : '') + '</p>' +
-      '<p class="small">Bowling: ' + CE.ov(r.balls) + ' ov, ' + r.rc + ' runs, ' + r.w + ' wkts, best ' + (r.bw < 0 ? '–' : r.bw + '/' + r.br) + ', econ ' + rate(r.rc, r.balls) + '</p>' +
-      '<p class="small">Fielding: ' + r.c + ' catches, ' + r.st + ' stumpings, ' + r.ro + ' run outs (' + r.dh + ' direct hits) · Man of the Match ' + r.pom + '×</p></section>';
-  });
+  if (!all) h += '<p class="small">No matches yet.</p>';
+  else {
+    h += '<div class="tiles">' + tile(all.m, 'Matches') + tile(all.r, 'Runs') + tile(all.w, 'Wickets') + tile(all.pom, 'MoM') + '</div>';
+    var cols = [['Season ' + yr, ss], ['Career', all]];
+    var avg = function(r, d){ return d ? (r / d).toFixed(2) : '–'; };
+    var table = function(title, rows){
+      return '<section class="card csum"><h2 class="cmh">' + title + '</h2><div class="tw"><table><thead><tr><th></th>' + cols.map(function(c){ return '<th>' + c[0] + '</th>'; }).join('') + '</tr></thead><tbody>' +
+        rows.map(function(rw){ return '<tr><td>' + rw[0] + '</td>' + cols.map(function(c){ return '<td>' + (c[1] ? rw[1](c[1]) : '–') + '</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div></section>';
+    };
+    h += table('Batting career summary', [
+      ['Matches', function(r){ return r.m; }], ['Innings', function(r){ return r.inn; }], ['Runs', function(r){ return '<b>' + r.r + '</b>'; }],
+      ['Balls', function(r){ return r.b; }], ['Highest', function(r){ return r.hs < 0 ? '–' : r.hs + (r.hsNo ? '*' : ''); }],
+      ['Average', function(r){ return avg(r.r, r.inn - r.no); }], ['SR', function(r){ return r.b ? (r.r * 100 / r.b).toFixed(2) : '–'; }],
+      ['Not out', function(r){ return r.no; }], ['Fours', function(r){ return r.f; }], ['Sixes', function(r){ return r.s; }],
+      ['Ducks', function(r){ return r.ducks; }], ['50s', function(r){ return '<b>' + r.fifty + '</b>'; }], ['100s', function(r){ return '<b>' + r.hund + '</b>'; }]]);
+    h += table('Bowling career summary', [
+      ['Matches', function(r){ return r.bm; }], ['Innings', function(r){ return r.binn; }], ['Balls', function(r){ return r.balls; }],
+      ['Runs', function(r){ return r.rc; }], ['Maidens', function(r){ return r.md; }], ['Wickets', function(r){ return '<b>' + r.w + '</b>'; }],
+      ['Avg', function(r){ return avg(r.rc, r.w); }], ['Eco', function(r){ return r.balls ? (r.rc / (r.balls / 6)).toFixed(2) : '–'; }],
+      ['SR', function(r){ return r.w ? (r.balls / r.w).toFixed(1) : '–'; }],
+      ['BBI', function(r){ return r.bw < 0 ? '–' : r.bw + '/' + r.br; }], ['BBM', function(r){ return r.mw < 0 ? '–' : r.mw + '/' + r.mr; }],
+      ['4w', function(r){ return r.w4; }], ['5w', function(r){ return r.w5; }]]);
+    h += table('Fielding & awards', [
+      ['Catches', function(r){ return r.c; }], ['Stumpings', function(r){ return r.st; }], ['Run outs', function(r){ return r.ro; }],
+      ['Direct hits', function(r){ return r.dh; }], ['MVP points', function(r){ return '<b>' + r.pts + '</b>'; }], ['Man of the Match', function(r){ return r.pom; }]]);
+  }
   var recent = listMatches().filter(function(m){ return m.pids && Object.keys(m.pids).some(function(n){ return m.pids[n] === p.id; }); }).sort(function(a, b){ return b.date - a.date; }).slice(0, 8);
   if (recent.length) {
     h += '<h2 class="sec">Recent matches</h2><section class="card list">' + recent.map(function(m){
@@ -995,6 +1050,29 @@ function profileView(){
 }
 
 /* ---------- season stats ---------- */
+function rulesView(){
+  var P = CE.PTS, R = CE.rules({overs:25}), sg = function(n){ return (n > 0 ? '+' : n < 0 ? '−' : '') + Math.abs(n); };
+  var row = function(a, b){ return '<tr><td>' + a + '</td><td><b>' + b + '</b></td></tr>'; };
+  var tbl = function(rows){ return '<div class="tw"><table class="rtab"><tbody>' + rows.join('') + '</tbody></table></div>'; };
+  return header('Club rules') +
+    '<section class="card"><h2 class="cmh">Match format</h2>' + tbl([
+      row('Overs per side', '25'),
+      row('Powerplay', 'Overs 1–' + R.pp),
+      row('Fielders outside the 30-yard circle in the powerplay', 'Max ' + R.ppOut),
+      row('Fielders outside the circle after the powerplay', 'Max ' + R.out),
+      row('Overs per bowler', 'Max ' + R.maxBowl)]) +
+    '<p class="small">For a shorter or longer match the app scales these: powerplay about a third of the overs, and each bowler at most a fifth of the overs (for example 20 overs: 6-over powerplay, 4 overs per bowler). The scorer can change them when starting a match.</p></section>' +
+    '<section class="card"><h2 class="cmh">MVP points: batting</h2>' + tbl([
+      row('Each run', sg(P.run)), row('Each four (bonus)', sg(P.four)), row('Each six (bonus)', sg(P.six)),
+      row('Out for 0 (duck)', sg(P.duck)), row('50 runs', sg(P.fifty)), row('100 runs (instead of the 50 bonus)', sg(P.hundred))]) + '</section>' +
+    '<section class="card"><h2 class="cmh">MVP points: bowling</h2>' + tbl([
+      row('Each wicket', sg(P.wkt)), row('Each maiden over', sg(P.maiden)), row('3 wickets in a match', sg(P.w3)), row('5 wickets (instead of the 3-wicket bonus)', sg(P.w5)),
+      row('Economy 4 or less', sg(P.eco4)), row('Economy over 4, up to 6', sg(P.eco6)), row('Economy over 10', sg(P.eco10)), row('Economy over 20', sg(P.eco20))]) +
+    '<p class="small">Economy points count once a bowler has bowled at least 1 full over. Run outs do not count as the bowler’s wicket.</p></section>' +
+    '<section class="card"><h2 class="cmh">MVP points: fielding</h2>' + tbl([
+      row('Each catch', sg(P.catch)), row('Each stumping', sg(P.stump)), row('Each direct-hit run out', sg(P.direct))]) + '</section>' +
+    '<section class="card"><h2 class="cmh">Man of the Match</h2><p class="small">The player with the most MVP points in the match. If two players are level, the one from the winning team gets it.</p></section>';
+}
 function statsView(){
   var seasons = seasonList(), s = statsFor(ui.season), rows = s.rows;
   var h = header('Season stats');
@@ -1023,7 +1101,7 @@ function statsView(){
   if (!rows.length) t += '<tr><td colspan="9" class="small">Nothing recorded yet.</td></tr>';
   t += '</tbody></table></div></section>';
   h += t + '<p class="small">From ' + plural(s.count, 'match') + (ui.season === 'all' ? '' : ' in ' + ui.season) + '. ' +
-    (ui.statsMode === 'mvp' ? 'MVP points: batting 1 per run, +2 per four, +4 per six, −1 for a duck, +15 for a fifty or +40 for a hundred. Bowling 10 per wicket, +5 per maiden, +10 for 3 wickets or +15 for 5. Fielding 8 per catch, 6 per stumping, 12 per direct-hit run out. Most points in a match = Man of the Match.' : '* = not out.') + '</p>';
+    (ui.statsMode === 'mvp' ? 'See the Rules tab for how MVP points are worked out. Most points in a match = Man of the Match.' : '* = not out.') + '</p>';
   if (s.count) h += '<button class="btn block" data-act="shareseason">Share leaderboard</button>';
   return h;
 }
@@ -1198,17 +1276,33 @@ function render(){
     case 'editMember': html = editMemberView(); break;
     case 'profile': html = profileView(); break;
     case 'stats': html = statsView(); break;
+    case 'rules': html = rulesView(); break;
     default: view = 'home'; html = home();
   }
   app.innerHTML = html;
   if (keepFocus) { var ta = $('#cmt'); if (ta) { ta.focus(); var L = ta.value.length; try { ta.setSelectionRange(L, L); } catch(e){} } }
   app.className = view === 'match' ? 'inmatch' : '';
-  var tabs = $('#tabs'), tabbed = ['home', 'members', 'stats', 'profile'].indexOf(view) >= 0;
+  var tabs = $('#tabs'), tabbed = ['home', 'members', 'stats', 'rules', 'profile'].indexOf(view) >= 0;
   tabs.hidden = !tabbed;
-  ['home', 'members', 'stats'].forEach(function(v){ $('#t-' + v).className = (view === v || (v === 'members' && view === 'profile')) ? 'on' : ''; });
+  ['home', 'members', 'stats', 'rules'].forEach(function(v){ $('#t-' + v).className = (view === v || (v === 'members' && view === 'profile')) ? 'on' : ''; });
   var m = matches[curId];
   keepAwake(view === 'match' && m && m.status !== 'done' && m.scorer && m.scorer.uid === me.uid);
   watchComments();
+  checkPowerplay();
+}
+var lastLegal = {};
+function checkPowerplay(){
+  var m = view === 'match' ? matches[curId] : null;
+  if (!m || m.status === 'done') return;
+  var idx = m.innings.length - 1, st = CE.replay(m, idx), R = CE.rules(m), key = m.id + ':' + idx, prev = lastLegal[key];
+  lastLegal[key] = st.legal;
+  if (prev == null || R.pp <= 0 || R.pp >= m.overs || st.done) return;
+  if (prev < R.pp * 6 && st.legal >= R.pp * 6) {
+    $('#pptext').textContent = R.pp + ' overs done (' + m.teams[m.innings[idx].bat].name + ' ' + st.total + '/' + st.wkts + '). From now on up to ' + R.out + ' fielders can field outside the 30-yard circle.';
+    $('#ppmodal').hidden = false;
+    try { if (navigator.vibrate) navigator.vibrate(300); } catch(e){}
+    var ok = $('#ppok'); if (ok) ok.focus();
+  }
 }
 function go(v){ view = v; ui = {statsMode:ui.statsMode, season:ui.season}; render(); window.scrollTo(0, 0); }
 
@@ -1231,7 +1325,9 @@ app.addEventListener('input', function(e){
   var id = e.target.id, v = e.target.value;
   if (view === 'new' && draft) {
     if (id === 'dn0' || id === 'dn1') { draft.names[+id.slice(2)] = v; var o = $('#dtw'); if (o) o.options[+id.slice(2)].textContent = v || ('Team ' + (+id.slice(2) + 1)); }
-    else if (id === 'dov') draft.overs = v;
+    else if (id === 'dov') { draft.overs = v; var ovn = parseInt(v, 10); if (ovn > 0) { draft.pp = Math.round(ovn * 8 / 25); draft.maxBowl = Math.ceil(ovn / 5); var e1 = $('#dpp'), e2 = $('#dmb'); if (e1) e1.value = draft.pp; if (e2) e2.value = draft.maxBowl; } }
+    else if (id === 'dpp') draft.pp = v;
+    else if (id === 'dmb') draft.maxBowl = v;
     else if (id === 'dvn') draft.venue = v;
     else if (id === 'dq') { var q = v.trim().toLowerCase(); document.querySelectorAll('#pickchips .ch').forEach(function(c){ c.hidden = q && c.dataset.name.indexOf(q) < 0; }); }
   }
@@ -1288,7 +1384,10 @@ app.addEventListener('submit', function(e){
     if (teams[0].length < 2 || teams[1].length < 2) { toast('Each team needs at least 2 players'); return; }
     var overs = Math.min(50, Math.max(1, parseInt(d.overs, 10) || 10));
     var batFirst = d.chose === 'bat' ? d.toss : 1 - d.toss;
-    var m = {id:uid('m'), date:Date.now(), venue:(d.venue || '').trim(), overs:overs,
+    var ppv = parseInt(d.pp, 10), mbv = parseInt(d.maxBowl, 10);
+    ppv = isNaN(ppv) ? Math.round(overs * 8 / 25) : Math.max(0, Math.min(overs, ppv));
+    mbv = isNaN(mbv) || mbv < 1 ? Math.ceil(overs / 5) : Math.min(overs, mbv);
+    var m = {id:uid('m'), date:Date.now(), venue:(d.venue || '').trim(), overs:overs, pp:ppv, maxBowl:mbv,
       teams:[{name:names[0], players:teams[0], captain:caps[0]}, {name:names[1], players:teams[1], captain:caps[1]}], pids:pids,
       toss:{won:d.toss, chose:d.chose}, innings:[{bat:batFirst, events:[]}], status:'live', result:null, rev:0,
       scorer:{uid:me.uid, name:me.name || 'A member', at:Date.now()}, createdBy:me.name || ''};
@@ -1322,7 +1421,7 @@ function act(a, d){
     case 'pick': if (draft.team[d.id]) { delete draft.team[d.id]; fixCaps(); } else draft.team[d.id] = teamCount('A') <= teamCount('B') ? 'A' : 'B'; render(); return;
     case 'assign': draft.team[d.id] = d.v; fixCaps(); render(); return;
     case 'cap': var ct = draft.team[d.id]; if (ct) { draft.cap[ct] = draft.cap[ct] === d.id ? '' : d.id; } render(); return;
-    case 'setov': draft.overs = +d.v; render(); return;
+    case 'setov': draft.overs = +d.v; draft.pp = Math.round(draft.overs * 8 / 25); draft.maxBowl = Math.ceil(draft.overs / 5); render(); return;
     case 'retire': ui.retire = {who:st.striker}; render(); return;
     case 'retwho': ui.retire.who = d.v; render(); return;
     case 'retok': var rwho = ui.retire.who; ui.retire = null; addEvent({t:'retire', who:rwho}); toast(rwho + ' retired not out'); return;
@@ -1331,7 +1430,8 @@ function act(a, d){
     case 'chovok':
       var nov = parseInt($('#chov').value, 10);
       if (!nov || nov < +d.min || nov > 50) { toast('Enter overs between ' + d.min + ' and 50'); return; }
-      m.overs = nov; ui.chov = false; afterChange(m); toast('Match is now ' + nov + ' overs per side'); return;
+      var oldR = CE.rules(m); m.overs = nov; m.maxBowl = Math.ceil(nov / 5); m.pp = Math.min(oldR.pp, nov);
+      ui.chov = false; afterChange(m); toast('Now ' + nov + ' overs per side · max ' + m.maxBowl + ' overs per bowler'); return;
     case 'autosplit': autoSplit(); fixCaps(); render(); toast('Teams split. Adjust with A / B if needed.'); return;
     case 'addnew':
       var inp = $('#dnew'), nn = inp ? inp.value.trim().replace(/\s+/g, ' ') : '';
@@ -1400,6 +1500,7 @@ function act(a, d){
       var known = playerByName(name); if (known) name = known.name;
       if (d.role === 'bat' && st.bat[name]) { toast(name + ' has already batted'); return; }
       if (d.role === 'bowl' && name === st.prevBowler) { toast(name + ' bowled the last over'); return; }
+      if (d.role === 'bowl' && st.bowl[name] && Math.floor(st.bowl[name].balls / 6) >= CE.rules(m).maxBowl) { toast(name + ' has bowled the maximum overs'); return; }
       if (team.players.indexOf(name) < 0) team.players.push(name);
       linkPlayer(m, name);
       addEvent(d.role === 'bat' ? {t:'in', name:name} : {t:'bowl', name:name}); return;
@@ -1410,14 +1511,16 @@ function act(a, d){
 
 /* phone back button (Android) */
 window.handleBack = function(){
+  if (!$('#ppmodal').hidden) { $('#ppmodal').hidden = true; return true; }
   if (ui.wk || ui.mode || ui.confirmEnd || ui.confirmDel || ui.renaming || ui.retire || ui.chov) { act('cancel', {}); return true; }
   if (view === 'match' && tab === 'card') { tab = 'score'; render(); return true; }
   if (view === 'editMember') { go(editId ? 'profile' : 'members'); return true; }
   if (view === 'profile') { go('members'); return true; }
-  if (view === 'new' || view === 'match' || view === 'members' || view === 'stats') { go('home'); return true; }
+  if (view === 'new' || view === 'match' || view === 'members' || view === 'stats' || view === 'rules') { go('home'); return true; }
   return false;
 };
 
+$('#ppok').addEventListener('click', function(){ $('#ppmodal').hidden = true; });
 var pg = $('#pdfgo'); if (pg) pg.addEventListener('click', function(){ if (pendingPdf) sharePdfFile(pendingPdf); });
 var px = $('#pdfx'); if (px) px.addEventListener('click', hidePdfBar);
 boot();
