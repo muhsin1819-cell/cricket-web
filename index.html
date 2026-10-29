@@ -233,6 +233,18 @@ td.rk{min-width:0}
 .momtx{display:flex;flex-direction:column;gap:2px;min-width:0}
 .momtx b{font:700 24px/1.1 var(--f-score)}
 .cmh{font:700 22px var(--f-score)}
+.report .rlead{margin:6px 0 8px;line-height:1.5;font-weight:600}
+.report .rsec{margin:14px 0 4px;font:700 17px var(--f-score);color:var(--pitch);letter-spacing:.2px}
+.report .rlist{margin:0;padding-left:18px;line-height:1.5}
+.report .rlist li{margin:3px 0}
+.report .rlist li::marker{color:var(--gold)}
+.report .rtab{margin-top:12px}
+.mvpt td,.mvpt th{text-align:center;padding-left:4px;padding-right:4px}
+.mvpt td:first-child{min-width:0;width:20px;color:var(--muted)}
+.mvpt td:nth-child(2),.mvpt th:nth-child(2){text-align:left;white-space:normal;width:100%}
+.mvpt .dot{display:inline-block;width:8px;height:8px;border-radius:50%;vertical-align:middle}
+.report .rtab td,.report .rtab th{text-align:center}
+.report .rtab td:first-child,.report .rtab th:first-child{text-align:left}
 .cmt{display:flex;gap:10px;padding:10px 0;border-top:1px solid var(--line)}
 .cbody{min-width:0;flex:1}
 .cmeta{font-size:13px;color:var(--muted)}
@@ -572,7 +584,7 @@ var CE = (function(){
 (function(){
 'use strict';
 var app = document.getElementById('app');
-var APP_BUILD = 6; /* raise by 1 for every new release */
+var APP_BUILD = 7; /* raise by 1 for every new release */
 var cfg = {minVersion:0};
 var adminPending = null, profileFrom = null;
 var LOGO = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAABgFBMVEXdqynjro/anGrYZlLw4t7frzFDXYK6xNJgZliulELmyqi2kST/zy4nKh9OMyt/fwB+kayKODC1P0SgnZGercIA/wANKVIAAAAUOGzrty8YQXvy2aTXQzoUMVnTqDP9/P36wi8YRIJSVkltaEYmOU42RE0aKiO2lTcFLGWNez3/qlX//wDImFOmizr4uzrotS/WOC+ZgzxDTEkqRm8AHFT946d6cUXotS/otS/CnTbpti/otS/ptS+DdUIaKBz/fwCYhkbjQzYMPIE6U2/y6eqqtse/vz9PaIjoZl3nyI9gXkX/AADTqGfbtXfWSUJ1iabbWE7w05z319X//1XlaWGtqJXDy9fleHHlrSxSRG0yVIJcc5TVw53qmJNoeo+HmLCtQ0mjjUOqqgDU2uN4g42Yp7uqqlXHuZeSlpLsqKTaqy7lW1LnioTvtbL//39DWnbc4ej0yMVrRGOJiYkiPmVWZ3jYx6DK0tzlh3MXMDwiSYN6Q11kbGGMQ1a1OjC8spgVgpnMAAAAgHRSTlMX/////////////wcH//8C//////8B/wD//v////////7///////////8DAf//CDD/////////zUn/rmyQ//8C////////BP////8B/////////wP/////Fv///////////wP///8D////Ef///wL//////////////////////zD4IB0AAB6uSURBVHja1Z0HY9vG2YDhkdW9PpCgjCOIYRCkQQkkRYqSWFrDliM1XnFc23Esb7tOEyd1RtO0yV/vTeAAHIA7kkrzXYYkznvw7rvDnVY7ydbtdnq93uxI8NQMPtHpdk/067UT+tyjWafXif/qveqtwrYBG/rZ692Jn4IvE8L/XOG6zxlXb3Vja3tzczw2Mm083tzc3tpY7THC593/B3BH3cvPsdZBrE3EZFmWIWzkifEmRJyhdzy/3D36OcN1O5eJvDBXEVWWERMSGX7Y6f484bqdDpbY1qYsV5oQAs6WzLcsuO6HSGQb22MBGAC+H0ZBMHJQG02DKPQBEACOtzeQAD/s/pzgupePGFmayg8cu++auqCZbt92Aj/NyPiOLnd/JnBdpI6r20aKDISO7QmpMoye7YQgw7eKHGj3ZwCHOtHbSskMRI6n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';
@@ -600,7 +612,7 @@ function fmtDate(t, wd){ try { return new Date(t).toLocaleDateString(undefined, 
 function dayKey(t){ var d = new Date(t); return d.getFullYear() + '-' + (d.getMonth() + 1) + '-' + d.getDate(); }
 function rate(r, balls){ return balls ? (r / (balls / 6)).toFixed(2) : '0.00'; }
 function sr(r, b){ return b ? (r * 100 / b).toFixed(1) : '–'; }
-function plural(n, w){ return n + ' ' + w + (n === 1 ? '' : 's'); }
+function plural(n, w){ return n + ' ' + (n === 1 || /s$/.test(w) ? w : /(ch|x)$/.test(w) ? w + 'es' : w + 's'); }
 function toast(msg){ var t = $('#toast'); t.textContent = msg; t.hidden = false; clearTimeout(toast.h); toast.h = setTimeout(function(){ t.hidden = true; }, 2800); }
 function listMatches(){ return Object.keys(matches).map(function(k){ return matches[k]; }).filter(function(m){ return !m.deleted; }); }
 function listPlayers(){ return Object.keys(players).map(function(k){ return players[k]; }).sort(function(a, b){ return a.name.localeCompare(b.name); }); }
@@ -1093,6 +1105,19 @@ function wicketPanel(st, bowlT){
   h += '<div class="actions"><button class="btn danger" data-act="wkok">Out: ' + esc(w.how === 'Run out' ? w.out : st.striker) + '</button><button class="btn" data-act="cancel">Cancel</button></div></div>';
   return h;
 }
+function mvpRows(m){
+  var mp = CE.matchPoints(m), pom = CE.playerOfMatch(m), rows = [], seen = {};
+  m.teams.forEach(function(t, ti){ t.players.forEach(function(n){ var k = mp.key(n); if (seen[k]) return; seen[k] = 1;
+    var q = mp.parts[k] || {bat:0, bowl:0, field:0}; rows.push({key:k, name:n, team:ti, pts:mp.pts[k] || 0, bat:q.bat, bowl:q.bowl, field:q.field, pom:!!(pom && pom.key === k)}); }); });
+  return rows.sort(function(a, b){ return b.pts - a.pts || a.name.localeCompare(b.name); });
+}
+function mvpCard(m){
+  var rows = mvpRows(m);
+  if (!rows.length || !m.innings.some(function(_, i){ return CE.replay(m, i).opened; })) return '';
+  return '<section class="card"><h2 class="cmh">MVP points' + (m.status === 'done' ? '' : ' so far') + '</h2><div class="tw"><table class="mvpt"><thead><tr><th>#</th><th>Player</th><th>Bat</th><th>Bowl</th><th>Field</th><th>Total</th></tr></thead><tbody>' +
+    rows.map(function(r, i){ return '<tr><td>' + (i + 1) + '</td><td><b>' + plink(mkey(m, r.name), r.name) + '</b>' + (r.pom ? ' 🏆' : '') + '<span class="dis"><i class="dot ' + teamCls(r.team) + '"></i> ' + esc(m.teams[r.team].name) + '</span></td><td>' + r.bat + '</td><td>' + r.bowl + '</td><td>' + r.field + '</td><td><b>' + r.pts + '</b></td></tr>'; }).join('') +
+    '</tbody></table></div><p class="small">Points follow the club MVP rules (see Rules tab).</p></section>';
+}
 function scorecard(m){
   var h = momCard(m);
   m.innings.forEach(function(inn, i){
@@ -1121,6 +1146,7 @@ function scorecard(m){
     if (RR.pp > 0 && st.ppRuns != null) h += '<div class="tw"><table class="fow"><thead><tr><th>Powerplay</th><th>Overs</th><th>Runs</th></tr></thead><tbody><tr><td>Mandatory</td><td>0.1 - ' + RR.pp + '</td><td><b>' + st.ppRuns + '</b></td></tr></tbody></table></div>';
     h += '</section>';
   });
+  h += mvpCard(m);
   h += '<p class="small">' + esc(m.teams[m.toss.won].name) + ' won the toss and chose to ' + esc(m.toss.chose) + '. ' + fmtDate(m.date, true) + (m.venue ? ', ' + esc(m.venue) : '') + '.' + (m.result ? ' ' + esc(m.result) + '.' : '') + '</p>';
   h += '<div class="actions"><button class="btn primary" data-act="sharepdf">Share scorecard PDF</button><button class="btn" data-act="share">Share as text</button></div>';
   h += ui.confirmDel
@@ -1197,12 +1223,227 @@ function overSummary(st){
       '<div class="balls">' + o.balls.map(function(b){ return '<span class="bc sm ' + b.c + '">' + esc(b.t) + '</span>'; }).join('') + '</div></div><div class="ovr">' + o.runs + '</div></div>';
   }).join('');
 }
+/* ---------- automatic reports (written from the scorecard, no internet service needed) ---------- */
+function oneDp(v){ return (Math.round(v * 10) / 10).toFixed(1); }
+function pct(a, b){ return b ? Math.round(a * 100 / b) : 0; }
+function legalIn(st, i){ return Math.max(0, Math.min(6, st.legal - i * 6)); }
+function phase(st, from, to){
+  var r = 0, w = 0, b = 0;
+  for (var i = from; i < to; i++) { var o = st.ol[i]; if (!o) continue; r += o.runs; w += o.wkts; b += legalIn(st, i); }
+  return {r:r, w:w, b:b, rr:b ? r / (b / 6) : 0};
+}
+function dotsOf(st){ var d = 0; st.ol.forEach(function(o){ if (o) o.balls.forEach(function(x){ if (x.t === '•') d++; }); }); return d; }
+function boundaries(st){ var f = 0, s = 0; st.batOrder.forEach(function(n){ f += st.bat[n].f; s += st.bat[n].s; }); return {f:f, s:s, runs:f * 4 + s * 6}; }
+function collapse(st){
+  var best = null, f = st.fow;
+  for (var i = 0; i < f.length; i++) for (var j = i + 2; j < f.length; j++) {
+    var before = i ? f[i - 1].score : 0, runs = f[j].score - before, n = j - i + 1;
+    if (runs <= 6 * n && (!best || n > best.n || (n === best.n && runs < best.runs))) best = {n:n, runs:runs, from:before + '/' + (i ? f[i - 1].n : 0), to:f[j].score + '/' + f[j].n};
+  }
+  return best;
+}
+function bigOver(st){ var b = null; st.ol.forEach(function(o){ if (o && (!b || o.runs > b.runs)) b = o; }); return b; }
+function scoreAt(st, ov){ var o = st.ol[ov - 1]; return o && st.legal >= ov * 6 ? o.total + '/' + o.wk : null; }
+function figs(b){ return b.w + '/' + b.r + ' (' + CE.ov(b.balls) + ' ov)'; }
+function bat1(b){ return b.r + (b.out ? '' : '*') + ' off ' + b.b; }
+function innTeam(m, i){ return m.teams[m.innings[i].bat].name; }
+function fieldTeam(m, i){ return m.teams[1 - m.innings[i].bat].name; }
+
+function matchReport(m){
+  var R = CE.rules(m), sts = m.innings.map(function(_, i){ return CE.replay(m, i); }).filter(function(s){ return s.opened; });
+  if (!sts.length) return null;
+  var done = m.status === 'done', rep = {title: done ? 'Match report' : 'Report so far', lead:[], sections:[], table:null};
+  var win = done ? CE.winner(m) : null;
+  /* headline */
+  if (done && sts.length === 2) {
+    var a = sts[0], b = sts[1], t1 = innTeam(m, 0), t2 = innTeam(m, 1);
+    if (win === -1) rep.lead.push('A thriller with nothing between the sides: both teams finished on ' + a.total + ' and the match was tied.');
+    else if (b.total >= b.target) {
+      var wl = b.maxW - b.wkts, bl = b.maxBalls - b.legal;
+      var tone = bl <= 6 || wl <= 2 ? 'held their nerve in a tight finish' : wl >= 7 && bl >= 30 ? 'cruised home' : 'chased it down';
+      rep.lead.push(t2 + ' ' + tone + ', reaching the target of ' + b.target + ' with ' + plural(wl, 'wicket') + ' in hand' + (bl > 0 ? ' and ' + plural(bl, 'ball') + ' to spare.' : ' off the very last ball.'));
+    } else {
+      var d = a.total - b.total, tone2 = d <= 10 ? 'held on in a close finish' : d >= 50 ? 'dominated' : 'defended their total well';
+      rep.lead.push(t1 + ' ' + tone2 + ', setting ' + a.total + '/' + a.wkts + ' and bowling ' + t2 + ' out for ' + b.total + (b.wkts < b.maxW ? '/' + b.wkts : '') + ' to win by ' + plural(d, 'run') + '.');
+    }
+    var pom = CE.playerOfMatch(m);
+    if (pom) {
+      var parts = [], pn = pom.name;
+      sts.forEach(function(s){ if (s.bat[pn] && s.bat[pn].b) parts.push(bat1(s.bat[pn])); if (s.bowl[pn] && s.bowl[pn].balls) parts.push(figs(s.bowl[pn])); });
+      var f = 0, fs = []; sts.forEach(function(s){ var x = s.field[pn]; if (x) { if (x.c) fs.push(plural(x.c, 'catch').replace('catchs', 'catches')); if (x.st) fs.push(plural(x.st, 'stumping')); if (x.ro) fs.push(plural(x.ro, 'run out')); } });
+      rep.lead.push(displayName(pom.key, pn) + ' was Man of the Match with ' + pom.pts + ' MVP points' + (parts.length || fs.length ? ' (' + parts.concat(fs).join(', ') + ')' : '') + '.');
+    }
+  } else if (!done) {
+    var cs = sts[sts.length - 1];
+    rep.lead.push(innTeam(m, sts.length - 1) + ' are ' + cs.total + '/' + cs.wkts + ' after ' + CE.ov(cs.legal) + ' overs (run rate ' + rate(cs.total, cs.legal) + ').' +
+      (cs.target != null ? ' They need ' + plural(Math.max(0, cs.target - cs.total), 'run') + ' from ' + plural(Math.max(0, cs.maxBalls - cs.legal), 'ball') + (cs.maxBalls > cs.legal ? ' (required rate ' + rate(Math.max(0, cs.target - cs.total), cs.maxBalls - cs.legal) + ').' : '.') : ''));
+  }
+  /* each innings */
+  var deathN = Math.max(1, Math.round(m.overs / 5));
+  sts.forEach(function(st, i){
+    var team = innTeam(m, i), opp = fieldTeam(m, i), pts = [];
+    var bats = topBatters(st, 3), top = bats[0];
+    pts.push(team + ' ' + (i ? 'made ' : 'posted ') + st.total + '/' + st.wkts + ' in ' + CE.ov(st.legal) + ' overs, a run rate of ' + rate(st.total, st.legal) + '.');
+    if (top && top.r > 0) {
+      var t = top.name + ' led the way with ' + bat1(top) + (top.f || top.s ? ' (' + [top.f ? plural(top.f, 'four') : '', top.s ? plural(top.s, 'six').replace('sixs', 'sixes') : ''].filter(Boolean).join(', ') + ')' : '') + (top.b >= 5 ? ', strike rate ' + sr(top.r, top.b) : '') + '.';
+      if (top.r >= 100) t = top.name + ' starred with a superb hundred, ' + bat1(top) + '.'; else if (top.r >= 50) t = top.name + (top.b && top.r * 100 / top.b >= 150 ? ' lit up the innings with a rapid fifty, ' : ' anchored the innings with a fine fifty, ') + bat1(top) + ' (strike rate ' + sr(top.r, top.b) + ').';
+      var sup = bats.slice(1).filter(function(b){ return b.r >= 15; });
+      if (sup.length) t += ' Support came from ' + sup.map(function(b){ return b.name + ' (' + b.r + (b.out ? '' : '*') + ')'; }).join(' and ') + '.';
+      pts.push(t);
+    }
+    var bp = null; st.parts.forEach(function(p){ if (!bp || p.r > bp.r) bp = p; });
+    if (bp && bp.r >= 25) pts.push('The best stand was ' + bp.r + ' off ' + bp.balls + ' balls between ' + bp.a + ' and ' + bp.b + '.');
+    if (R.pp > 0 && st.legal > 0) {
+      var pp = phase(st, 0, Math.min(R.pp, st.ol.length));
+      pts.push('Powerplay (overs 1-' + R.pp + '): ' + pp.r + '/' + pp.w + ' at ' + oneDp(pp.rr) + ' an over' + (pp.rr >= 9 ? ', a flying start.' : pp.rr < 5 ? ', a slow start.' : '.'));
+      if (st.ol.length > R.pp) {
+        var midEnd = Math.max(R.pp, m.overs - deathN), mid = phase(st, R.pp, Math.min(midEnd, st.ol.length));
+        if (mid.b) pts.push('Middle overs (' + (R.pp + 1) + '-' + midEnd + '): ' + mid.r + '/' + mid.w + ' at ' + oneDp(mid.rr) + ' an over.');
+        if (st.ol.length > midEnd) { var de = phase(st, midEnd, st.ol.length); if (de.b) pts.push('Last overs (' + (midEnd + 1) + '-' + st.ol.length + '): ' + de.r + '/' + de.w + ' at ' + oneDp(de.rr) + ' an over' + (de.rr >= 10 ? ', a strong finish.' : '.')); }
+      }
+    }
+    var cl = collapse(st);
+    if (cl) pts.push('Key moment: ' + team + ' lost ' + cl.n + ' wickets for ' + plural(cl.runs, 'run') + ', going from ' + cl.from + ' to ' + cl.to + '.');
+    var bo = bigOver(st);
+    if (bo && bo.runs >= 14) pts.push('Biggest over: ' + bo.runs + ' runs in over ' + bo.n + ', bowled by ' + bo.bowler + '.');
+    rep.sections.push({title: team + ' batting' + (sts.length > 1 ? (i ? ' (2nd innings)' : ' (1st innings)') : ''), items:pts});
+    /* bowling of the other side */
+    var bw = [], bows = topBowlers(st, 8), best = bows[0];
+    if (best && best.w > 0) bw.push(best.name + ' was the pick of the ' + opp + ' bowlers with ' + figs(best) + (best.w >= 5 ? ', a five-wicket haul.' : best.w >= 3 ? ', a three-wicket haul.' : '.'));
+    var eco = st.bowlOrder.map(function(n){ return st.bowl[n]; }).filter(function(b){ return b.balls >= 12; }).sort(function(a, b){ return a.r / a.balls - b.r / b.balls; });
+    if (eco[0] && (!best || eco[0].name !== best.name) && eco[0].r / (eco[0].balls / 6) <= 6) bw.push(eco[0].name + ' was the most economical, ' + rate(eco[0].r, eco[0].balls) + ' an over (' + figs(eco[0]) + ').');
+    var mds = st.bowlOrder.filter(function(n){ return st.bowl[n].m; });
+    if (mds.length) bw.push('Maidens: ' + mds.map(function(n){ return n + ' (' + st.bowl[n].m + ')'; }).join(', ') + '.');
+    var exp = eco.length ? eco[eco.length - 1] : null;
+    if (exp && exp.r / (exp.balls / 6) >= 10 && exp !== eco[0]) bw.push(exp.name + ' found it tough, going for ' + rate(exp.r, exp.balls) + ' an over.');
+    var xs = st.ext.wd + st.ext.nb;
+    if (st.extTotal >= 15 || (st.total && st.extTotal >= 6 && st.extTotal / st.total >= 0.1)) bw.push(opp + ' gave away ' + plural(st.extTotal, 'extra') + ' (' + st.ext.wd + ' wd, ' + st.ext.nb + ' nb, ' + (st.ext.b + st.ext.lb) + ' byes), ' + pct(st.extTotal, st.total) + '% of the total. Tighter lines will help.');
+    else if (st.legal >= 30 && st.extTotal <= 3) bw.push('A disciplined effort: only ' + plural(st.extTotal, 'extra') + ' conceded.');
+    var fl = Object.keys(st.field).map(function(n){ var x = st.field[n]; return {n:n, t:x.c + x.st + x.ro, x:x}; }).filter(function(x){ return x.t >= 2; }).sort(function(a, b){ return b.t - a.t; });
+    if (fl[0]) bw.push('In the field, ' + fl[0].n + ' was involved in ' + fl[0].t + ' dismissals.');
+    if (bw.length) rep.sections.push({title: opp + ' bowling', items:bw});
+  });
+  /* comparison */
+  if (sts.length === 2) {
+    var a2 = sts[0], b2 = sts[1], half = Math.floor(m.overs / 2), ba = boundaries(a2), bb = boundaries(b2);
+    var ca = [], ha = scoreAt(a2, half), hb = scoreAt(b2, half);
+    if (ha && hb) ca.push('At the halfway mark (' + half + ' overs) ' + innTeam(m, 0) + ' were ' + ha + ' and ' + innTeam(m, 1) + ' were ' + hb + '.');
+    var bd = (ba.f + ba.s) - (bb.f + bb.s);
+    if (Math.abs(bd) >= 3) ca.push((bd > 0 ? innTeam(m, 0) : innTeam(m, 1)) + ' hit ' + Math.abs(bd) + ' more boundaries, which made a big difference.');
+    var da = pct(dotsOf(a2), a2.legal), db = pct(dotsOf(b2), b2.legal);
+    if (Math.abs(da - db) >= 8) ca.push((da > db ? innTeam(m, 0) : innTeam(m, 1)) + ' played out more dot balls (' + Math.max(da, db) + '% against ' + Math.min(da, db) + '%). Rotating the strike is an area to work on.');
+    if (ca.length) rep.sections.push({title:'How the match was decided', items:ca});
+  }
+  /* numbers */
+  var rows = [['Runs', function(s){ return s.total + '/' + s.wkts; }], ['Overs', function(s){ return CE.ov(s.legal); }], ['Run rate', function(s){ return rate(s.total, s.legal); }],
+    ['Fours / sixes', function(s){ var x = boundaries(s); return x.f + ' / ' + x.s; }], ['Runs in boundaries', function(s){ return pct(boundaries(s).runs, s.total) + '%'; }],
+    ['Dot balls', function(s){ return dotsOf(s) + ' (' + pct(dotsOf(s), s.legal) + '%)'; }], ['Extras received', function(s){ return s.extTotal; }]];
+  if (R.pp > 0) rows.push(['Powerplay', function(s){ var p = phase(s, 0, Math.min(R.pp, s.ol.length)); return p.r + '/' + p.w; }]);
+  rows.push(['Best partnership', function(s){ var b = 0; s.parts.forEach(function(p){ b = Math.max(b, p.r); }); return b; }]);
+  rep.table = {head:[''].concat(sts.map(function(_, i){ return innTeam(m, i); })), rows:rows.map(function(r){ return [r[0]].concat(sts.map(r[1])); })};
+  return rep;
+}
+
+/* per-player report from every match they played */
+function playerHistory(pid){
+  var out = [];
+  listMatches().filter(function(m){ return m.pids && Object.keys(m.pids).some(function(n){ return m.pids[n] === pid; }); }).sort(function(a, b){ return a.date - b.date; }).forEach(function(m){
+    var name = Object.keys(m.pids).filter(function(n){ return m.pids[n] === pid; })[0], rec = {m:m, bat:null, bowl:null, f:{c:0, st:0, ro:0}, pts:0, won:null};
+    m.innings.forEach(function(_, i){
+      var st = CE.replay(m, i);
+      if (st.bat[name]) rec.bat = st.bat[name];
+      if (st.bowl[name] && st.bowl[name].balls) rec.bowl = st.bowl[name];
+      var x = st.field[name]; if (x) { rec.f.c += x.c; rec.f.st += x.st; rec.f.ro += x.ro; }
+    });
+    var mp = CE.matchPoints(m); rec.pts = mp.pts[pid] || 0;
+    var w = CE.winner(m); if (w !== null && w !== -1) rec.won = m.teams[w].players.indexOf(name) >= 0;
+    out.push(rec);
+  });
+  return out;
+}
+function howOut(s){ s = s || ''; return /^run out/.test(s) ? 'run out' : /^lbw/.test(s) ? 'lbw' : /^st /.test(s) ? 'stumped' : /^hit wicket/.test(s) ? 'hit wicket' : /^b /.test(s) ? 'bowled' : /^c|^caught/.test(s) ? 'caught' : 'out'; }
+function playerReport(pid){
+  var p = players[pid], H = playerHistory(pid);
+  if (!p || !H.length) return null;
+  var first = (p.name || '').split(' ')[0], rep = {title:'Performance analysis', lead:[], sections:[]};
+  var inns = H.filter(function(h){ return h.bat && (h.bat.b || h.bat.out); }), bowls = H.filter(function(h){ return h.bowl; });
+  var done = H.filter(function(h){ return h.won !== null; }), won = done.filter(function(h){ return h.won; }).length;
+  rep.lead.push(first + ' has played ' + plural(H.length, 'match') + (done.length ? ' and been on the winning side in ' + won + ' of ' + done.length + ' (' + pct(won, done.length) + '%)' : '') + ', averaging ' + oneDp(H.reduce(function(s, h){ return s + h.pts; }, 0) / H.length) + ' MVP points a match.');
+  var bestM = H.slice().sort(function(a, b){ return b.pts - a.pts; })[0];
+  if (bestM && bestM.pts > 0) rep.lead.push('Best match: ' + bestM.pts + ' points against ' + bestM.m.teams.map(function(t){ return t.name; }).join(' / ') + ' on ' + fmtDate(bestM.m.date) + '.');
+  /* batting */
+  if (inns.length) {
+    var R = 0, B = 0, O = 0, F = 0, S = 0, outs = {}, twenty = 0;
+    inns.forEach(function(h){ var b = h.bat; R += b.r; B += b.b; F += b.f; S += b.s; if (b.out) { O++; var k = howOut(b.out); outs[k] = (outs[k] || 0) + 1; } if (b.r >= 20) twenty++; });
+    var avg = O ? R / O : R, srr = B ? R * 100 / B : 0, bt = [];
+    var style = srr >= 150 ? 'an attacking batter who scores quickly' : srr >= 115 ? 'a positive batter who keeps the score moving' : srr >= 90 ? 'a steady batter who builds an innings' : 'a careful batter who looks to bat time';
+    bt.push(first + ' is ' + style + ': ' + R + ' runs in ' + plural(inns.length, 'innings') + (O >= 2 ? ' at an average of ' + oneDp(avg) + ' and' : O === 1 ? ', out only once, with' : ' without being dismissed, with') + ' a strike rate of ' + oneDp(srr) + '.');
+    if (R) bt.push(pct(F * 4 + S * 6, R) + '% of runs come in boundaries (' + plural(F, 'four') + ', ' + plural(S, 'six').replace('sixs', 'sixes') + ').');
+    var last = inns.slice(-5), lr = last.reduce(function(s, h){ return s + h.bat.r; }, 0), lo = last.filter(function(h){ return h.bat.out; }).length, lavg = lo ? lr / lo : lr;
+    if (inns.length >= 4 && O >= 2) {
+      var form = lavg >= avg * 1.25 ? 'in good form, scoring above the usual average' : lavg <= avg * 0.7 ? 'going through a quieter spell than usual' : 'scoring at about the usual level';
+      bt.push('Recent form (last ' + last.length + ' innings: ' + last.map(function(h){ return h.bat.r + (h.bat.out ? '' : '*'); }).join(', ') + '): ' + form + '.');
+    } else bt.push('Recent scores: ' + last.map(function(h){ return h.bat.r + (h.bat.out ? '' : '*'); }).join(', ') + '.');
+    bt.push('Scores 20 or more in ' + pct(twenty, inns.length) + '% of innings.');
+    var ok = Object.keys(outs).sort(function(a, b){ return outs[b] - outs[a]; });
+    if (O >= 3 && ok[0]) bt.push('Most often out ' + ok[0] + ' (' + outs[ok[0]] + ' of ' + O + ' dismissals)' + (ok[0] === 'caught' && outs[ok[0]] / O >= 0.6 ? '; keeping the ball on the ground early on could help.' : ok[0] === 'bowled' || ok[0] === 'lbw' ? '; tightening the defence to straight balls could help.' : ok[0] === 'run out' ? '; clearer calling between the wickets could help.' : '.'));
+    rep.sections.push({title:'Batting', items:bt});
+  }
+  /* bowling */
+  if (bowls.length) {
+    var bb = 0, br = 0, bw = 0, xw = 0, md = 0, bo = [];
+    bowls.forEach(function(h){ var b = h.bowl; bb += b.balls; br += b.r; bw += b.w; xw += b.wd + b.nb; md += b.m; });
+    var ec = bb ? br / (bb / 6) : 0;
+    var role = ec <= 5 ? 'a tight, economical bowler' : bw / bowls.length >= 1.5 ? 'a wicket-taker' : ec <= 7 ? 'a reliable bowler' : 'a bowler who can be expensive at times';
+    bo.push(first + ' is ' + role + ': ' + plural(bw, 'wicket') + ' in ' + plural(bowls.length, 'match') + ' at an economy of ' + oneDp(ec) + (bw ? ', taking a wicket every ' + oneDp(bb / bw) + ' balls.' : '.'));
+    var lb = bowls.slice(-5);
+    if (bowls.length >= 3) bo.push('Last ' + lb.length + ' spells: ' + lb.map(function(h){ return h.bowl.w + '/' + h.bowl.r; }).join(', ') + '.');
+    var xpo = bb ? xw / (bb / 6) : 0;
+    if (xpo >= 1) bo.push('Gives away ' + oneDp(xpo) + ' wides or no balls per over. Working on line and front foot will save runs.');
+    else if (bb >= 30 && xpo <= 0.3) bo.push('Very disciplined: hardly any wides or no balls.');
+    if (md) bo.push(plural(md, 'maiden') + ' bowled.');
+    rep.sections.push({title:'Bowling', items:bo});
+  }
+  /* fielding */
+  var c = 0, s2 = 0, ro = 0; H.forEach(function(h){ c += h.f.c; s2 += h.f.st; ro += h.f.ro; });
+  if (c + s2 + ro) rep.sections.push({title:'Fielding', items:[first + ' has taken ' + [c ? plural(c, 'catch').replace('catchs', 'catches') : '', s2 ? plural(s2, 'stumping') : '', ro ? plural(ro, 'run out') : ''].filter(Boolean).join(', ') + ' (' + oneDp((c + s2 + ro) / H.length) + ' a match).']});
+  return rep;
+}
+function reportHtml(rep, shareAct){
+  if (!rep) return '';
+  var h = '<section class="card report"><h2 class="cmh">' + esc(rep.title) + '</h2>' + rep.lead.map(function(t){ return '<p class="rlead">' + esc(t) + '</p>'; }).join('');
+  rep.sections.forEach(function(s){ h += '<h3 class="rsec">' + esc(s.title) + '</h3><ul class="rlist">' + s.items.map(function(t){ return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>'; });
+  if (rep.table) h += '<div class="tw"><table class="rtab"><thead><tr>' + rep.table.head.map(function(x){ return '<th>' + esc(x) + '</th>'; }).join('') + '</tr></thead><tbody>' + rep.table.rows.map(function(r){ return '<tr>' + r.map(function(x, i){ return i ? '<td>' + esc(x) + '</td>' : '<td><b>' + esc(x) + '</b></td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+  if (shareAct) h += '<div class="actions"><button class="btn" data-act="' + shareAct + '">Share report as text</button></div>';
+  return h + '</section>';
+}
+function reportText(rep, title){
+  var t = '🏏 ' + title + '\n' + rep.title.toUpperCase() + '\n\n' + rep.lead.join('\n') + '\n';
+  rep.sections.forEach(function(s){ t += '\n*' + s.title + '*\n' + s.items.map(function(x){ return '• ' + x; }).join('\n') + '\n'; });
+  return t;
+}
+function pdfReport(doc, y, rep){
+  if (!rep) return y;
+  var W = doc.internal.pageSize.getWidth(), M = 14;
+  y = secTitle(doc, needSpace(doc, y, 30), rep.title);
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10); ink(doc, PC.ink);
+  rep.lead.forEach(function(t){ var l = doc.splitTextToSize(pdfSafe(t), W - 2 * M); y = needSpace(doc, y, l.length * 4.6); doc.text(l, M, y); y += l.length * 4.6 + 1.5; });
+  rep.sections.forEach(function(s){
+    y = needSpace(doc, y + 2, 14);
+    ink(doc, PC.navy); doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.text(pdfSafe(s.title), M, y); y += 5;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(9); ink(doc, PC.ink);
+    s.items.forEach(function(t){ var l = doc.splitTextToSize(pdfSafe(t), W - 2 * M - 5); y = needSpace(doc, y, l.length * 4.2); fill(doc, PC.gold); doc.circle(M + 1.2, y - 1.1, 0.8, 'F'); doc.text(l, M + 4, y); y += l.length * 4.2 + 1; });
+  });
+  if (rep.table) y = tbl(doc, needSpace(doc, y + 2, 40), rep.table.head.map(pdfSafe), rep.table.rows.map(function(r){ return r.map(function(x){ return pdfSafe(x); }); }),
+    {columnStyles:{0:{fontStyle:'bold', cellWidth:56}}, didParseCell:function(c){ if (c.column.index >= 1) c.cell.styles.halign = 'center'; }}) + 4;
+  return y + 2;
+}
 function analysisView(m){
   var sts = m.innings.map(function(_, i){ return CE.replay(m, i); }).filter(function(s){ return s.opened; });
-  if (!sts.length) return '<div class="empty"><b>No balls bowled yet</b>Charts appear once scoring starts.</div>';
+  if (!sts.length) return '<div class="empty"><b>No balls bowled yet</b>The match report and charts appear once scoring starts.</div>';
   var k = ui.anInn != null && ui.anInn < sts.length ? ui.anInn : sts.length - 1, st = sts[k];
   var sel = '<div class="seg2 small">' + sts.map(function(_, i){ return '<button class="' + (i === k ? 'on' : '') + '" data-act="aninn" data-v="' + i + '">' + esc(m.teams[m.innings[i].bat].name) + ' (' + (i ? '2nd' : '1st') + ' inn)</button>'; }).join('') + '</div>';
-  return '<section class="card"><h2 class="cmh">Runs per over</h2>' + oversChart(m, sts) + '</section>' +
+  return reportHtml(matchReport(m), 'sharereport') + '<section class="card"><h2 class="cmh">Runs per over</h2>' + oversChart(m, sts) + '</section>' +
     '<section class="card"><h2 class="cmh">Run rate</h2>' + rrChart(m, sts) + '</section>' +
     sel +
     '<section class="card"><h2 class="cmh">Partnerships</h2>' + partnershipsView(st, m) + '</section>' +
@@ -1212,7 +1453,7 @@ function matchView(){
   var m = matches[curId];
   if (!m || m.deleted) { view = 'home'; return home(); }
   var h = '<div class="mtop"><button class="iconbtn" data-act="home" aria-label="Back to matches">‹</button><h1>' + esc(m.teams[0].name) + ' vs ' + esc(m.teams[1].name) + '</h1></div>' +
-    '<div class="seg2" role="tablist"><button role="tab" class="' + (tab === 'score' ? 'on' : '') + '" data-act="tab" data-v="score">Live</button><button role="tab" class="' + (tab === 'card' ? 'on' : '') + '" data-act="tab" data-v="card">Scorecard</button><button role="tab" class="' + (tab === 'an' ? 'on' : '') + '" data-act="tab" data-v="an">Charts</button><button role="tab" class="' + (tab === 'chat' ? 'on' : '') + '" data-act="tab" data-v="chat">Comments' + (commentsFor === curId && comments.length ? ' (' + comments.length + ')' : '') + '</button></div>';
+    '<div class="seg2" role="tablist"><button role="tab" class="' + (tab === 'score' ? 'on' : '') + '" data-act="tab" data-v="score">Live</button><button role="tab" class="' + (tab === 'card' ? 'on' : '') + '" data-act="tab" data-v="card">Scorecard</button><button role="tab" class="' + (tab === 'an' ? 'on' : '') + '" data-act="tab" data-v="an">Analysis</button><button role="tab" class="' + (tab === 'chat' ? 'on' : '') + '" data-act="tab" data-v="chat">Comments' + (commentsFor === curId && comments.length ? ' (' + comments.length + ')' : '') + '</button></div>';
   if (tab === 'card') return h + scorecard(m);
   if (tab === 'chat') return h + commentsView();
   if (tab === 'an') return h + analysisView(m);
@@ -1275,7 +1516,7 @@ function profileView(){
     (p.phone ? '<span class="phone">' + esc(p.phone) + ' <button class="link inline" data-act="copyphone">Copy</button></span>' : '') + '</div></div></section>';
   if (!all) h += '<p class="small">No matches yet.</p>';
   else {
-    h += '<div class="tiles">' + tile(all.m, 'Matches') + tile(all.wonM, 'Won') + tile(all.r, 'Runs') + tile(all.w, 'Wickets') + '</div>';
+    h += '<div class="tiles">' + tile(all.m, 'Matches') + tile(all.wonM, 'Won') + tile(all.r, 'Runs') + tile(all.w, 'Wickets') + '</div>' + reportHtml(playerReport(p.id), 'sharepreport');
     var cols = [['Season ' + yr, ss], ['Career', all]];
     var avg = function(r, d){ return d ? (r / d).toFixed(2) : '–'; };
     var table = function(title, rows){
@@ -1624,6 +1865,7 @@ function pdfMatch(doc, m, first){
   /* match summary */
   y = secTitle(doc, y + 2, 'Match summary');
   m.innings.forEach(function(_, i){ if (CE.replay(m, i).opened) y = summaryBox(doc, y, m, i); });
+  y = pdfReport(doc, y + 2, matchReport(m));
   /* full scorecards */
   m.innings.forEach(function(inn, i){
     var st = CE.replay(m, i), t = m.teams[inn.bat];
@@ -1649,6 +1891,13 @@ function pdfMatch(doc, m, first){
     if (R.pp > 0 && st.ppRuns != null) y = tbl(doc, y + 1, ['Powerplay', 'Overs', 'Runs'], [['Mandatory', '0.1 - ' + R.pp, st.ppRuns]],
       {columnStyles:{0:{cellWidth:56}, 1:{halign:'center'}, 2:{halign:'center', fontStyle:'bold'}}, didParseCell:function(c){ if (c.section === 'head' && c.column.index >= 1) c.cell.styles.halign = 'center'; }}) + 4;
   });
+  /* MVP points */
+  var mr = mvpRows(m);
+  if (mr.length && m.innings.some(function(_, i){ return CE.replay(m, i).opened; })) {
+    y = secTitle(doc, needSpace(doc, y + 2, 40), 'MVP points in this match');
+    y = tbl(doc, y, ['#', 'Player', 'Team', 'Bat', 'Bowl', 'Field', 'Total'], mr.map(function(r, i){ return [i + 1, pdfSafe(r.name + (r.pom ? '  (Man of the Match)' : '')), pdfSafe(m.teams[r.team].name), r.bat, r.bowl, r.field, r.pts]; }),
+      {columnStyles:{0:{cellWidth:9}, 1:{fontStyle:'bold', cellWidth:62}, 6:{fontStyle:'bold'}}, didParseCell:function(c){ if (c.column.index >= 3) c.cell.styles.halign = 'center'; if (c.section === 'body' && mr[c.row.index] && mr[c.row.index].pom) c.cell.styles.fillColor = [252, 243, 214]; }}) + 4;
+  }
   /* charts */
   var sts = m.innings.map(function(_, i){ return CE.replay(m, i); }).filter(function(s){ return s.opened && s.ol.length; });
   if (sts.length) {
@@ -1783,6 +2032,7 @@ function memberPdf(id){
       ['Runs / wickets as captain', function(r){ return r.capR + ' / ' + r.capWk; }],
       ['Catches', function(r){ return r.c; }], ['Stumpings', function(r){ return r.st; }], ['Run outs (direct hits)', function(r){ return r.ro + ' (' + r.dh + ')'; }],
       ['MVP points', function(r){ return r.pts; }], ['Man of the Match', function(r){ return r.pom; }]]), opts);
+    y = pdfReport(doc, y, playerReport(id));
     pdfFooters(doc);
     deliverPdf(doc, fileSafe(p.name) + '-stats.pdf');
   } catch(e){ toast('Could not make the PDF.'); }
@@ -2010,6 +2260,8 @@ function act(a, d){
     case 'shareday': shareText('Cricket results', dayText(d.v)); return;
     case 'daypdf': dayPdf(d.v); return;
     case 'sharepdf': matchPdf(m); return;
+    case 'sharereport': var mr = matchReport(m); if (mr) shareText(m.teams[0].name + ' vs ' + m.teams[1].name, reportText(mr, m.teams[0].name + ' vs ' + m.teams[1].name + ' (' + fmtDate(m.date) + ')' + (m.result ? '\n' + m.result : ''))); return;
+    case 'sharepreport': var pr2 = playerReport(profileId); if (pr2) shareText(players[profileId].name, reportText(pr2, players[profileId].name)); return;
     case 'shareseason': shareText('Cricket leaderboard', seasonText()); return;
     case 'share': shareText(m.teams[0].name + ' vs ' + m.teams[1].name, scorecardText(m)); return;
     /* new match */
