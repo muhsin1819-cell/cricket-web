@@ -328,6 +328,31 @@ table.fow td:first-child{min-width:120px}
 .hero img{width:150px;height:150px}
 .hero h1{font:700 30px/1.05 var(--f-score);color:var(--ink)}
 .tag.lock{background:var(--board);color:var(--board-ink)}
+.msbox{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 24px));z-index:30;display:flex;align-items:center;gap:12px;background:linear-gradient(135deg,#0e2a52,#1d4a8c);color:#fff;border-radius:16px;padding:12px 14px;box-shadow:0 12px 34px rgba(0,0,0,.35);border:2px solid var(--gold);animation:msin .35s ease-out}
+.msbox.bowl{background:linear-gradient(135deg,#5a1410,#b42318)}.msbox.team{background:linear-gradient(135deg,#0b4d44,#0f9d8a)}
+.msbox .msbig{font-size:34px;line-height:1}.msbox b{display:block;font:700 22px/1.1 var(--f-score);letter-spacing:.2px}.msbox span#mssub{font-size:13px;opacity:.9}
+.msbox div{flex:1;min-width:0}.msbox button{background:rgba(255,255,255,.15);border:0;color:#fff;border-radius:99px;width:30px;height:30px;font-size:14px}
+@keyframes msin{from{opacity:0;transform:translate(-50%,-14px)}to{opacity:1;transform:translate(-50%,0)}}
+.itimer{margin-top:8px;font-size:13px;padding:6px 10px;border-radius:10px;background:rgba(255,255,255,.1);position:relative;z-index:1}
+.itimer.warn{background:rgba(224,172,34,.28)}.itimer.late{background:rgba(216,67,58,.4)}
+.card .itimer{background:var(--chip);color:var(--ink)}.card .itimer.late{background:var(--ball-soft);color:var(--ball)}
+.tieban{background:var(--gold);color:var(--gold-ink);border-radius:14px;padding:10px 14px;font-weight:700;font-size:14px}
+.comm .cmhd{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:10px 0 4px}
+.comm .cm{display:flex;gap:8px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--line);font-size:14px;line-height:1.4}
+.comm .cmn{font:600 15px var(--f-score);color:var(--muted);min-width:34px;padding-top:2px}
+.comm .cm .bc{flex:none}.comm .cmt{flex:1}
+.comm .cmo{background:var(--chip);border-radius:10px;padding:8px 10px;margin:8px 0;font-size:14px}.comm .cmo small{display:block;color:var(--muted);font-size:12.5px;margin-top:2px}
+.comm .cmm{background:var(--gold);color:var(--gold-ink);border-radius:10px;padding:8px 10px;margin:6px 0;font-weight:700;font-size:14px}
+.comm .cmi{color:var(--muted);font-size:13px;padding:6px 0;border-bottom:1px solid var(--line);font-style:italic}
+.recbtn{display:flex;align-items:center;gap:12px;width:100%;text-align:left;border:0;border-radius:16px;padding:14px 16px;background:linear-gradient(135deg,#0e2a52,#1d4a8c);color:#fff;margin-bottom:4px}
+.recbtn span{font-size:28px}.recbtn div{flex:1}.recbtn b{display:block;font:700 20px var(--f-score)}.recbtn small{opacity:.85;font-size:12.5px}.recbtn i{font-style:normal;font-size:26px;opacity:.7}
+.awards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}
+.award{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 10px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;color:var(--ink)}
+.award .aw-ic{position:absolute;top:8px;right:10px;font-size:20px}.award .aw-t{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--pitch)}
+.award b{font:700 18px/1.1 var(--f-score)}.award small{font-size:12px;color:var(--muted)}
+.recrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.recrow:last-child{border-bottom:0}
+.recrow .rk{width:20px;color:var(--muted);font-weight:700}.recrow .rn{flex:1;min-width:0}.recrow .rn small{display:block;color:var(--muted);font-size:12px}
+.recrow>b{font:700 20px var(--f-score);white-space:nowrap}.recrow>b small{font-size:13px;color:var(--muted)}
 .lockbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--chip);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px}
 .lockbar span{flex:1;min-width:200px}
 .lockask{border-color:var(--pitch)}
@@ -360,8 +385,9 @@ td.sorted,th.sorted{background:color-mix(in srgb, var(--pitch) 9%, transparent)}
 <div class="field"><label for="admUser">Username</label><input id="admUser" autocapitalize="off" autocorrect="off" spellcheck="false"></div>
 <div class="field"><label for="admPass">Password</label><input id="admPass" type="password" inputmode="numeric" autocomplete="off"></div>
 <p class="err" id="admErr" hidden></p><div class="actions"><button class="btn primary" type="submit" id="admGo">Continue</button><button class="btn" type="button" id="admX">Cancel</button></div></form></div>
+<div class="msbox" id="msbox" hidden role="status" aria-live="polite"><span class="msbig" id="msbig"></span><div><b id="mstitle"></b><span id="mssub"></span></div><button id="msok" aria-label="Close">✕</button></div>
 <div class="modal" id="ppmodal" hidden role="dialog" aria-modal="true" aria-labelledby="pptitle"><div class="mbox"><div class="lbl">⚡ Powerplay</div><h2 id="pptitle">Powerplay completed</h2><p id="pptext"></p><button class="btn primary block" id="ppok">OK</button></div></div>
-<div class="pdfbar" id="pdfbar" hidden><span>Your PDF is ready</span><button class="btn primary" id="pdfgo">Share PDF</button><button class="btn" id="pdfx" aria-label="Close">✕</button></div>
+<div class="pdfbar" id="pdfbar" hidden><span id="pdfbartx">Your PDF is ready</span><button class="btn primary" id="pdfgo">Share</button><button class="btn" id="pdfx" aria-label="Close">✕</button></div>
 <script src="firebase-app-compat.js"></script>
 <script src="firebase-auth-compat.js"></script>
 <script src="firebase-firestore-compat.js"></script>
@@ -399,13 +425,18 @@ var CE = (function(){
     var squad = m.teams[inn.bat].players;
     var st = {striker:null, non:null, bowler:null, prevBowler:null, legal:0, total:0, wkts:0,
       ext:{wd:0, nb:0, b:0, lb:0}, bat:{}, bowl:{}, field:{}, batOrder:[], bowlOrder:[], fow:[], over:[], overs:[],
-      needBowler:true, overRuns:0, part:{r:0, b:0}, closed:false, opened:false, ol:[], parts:[], ppRuns:null};
+      needBowler:true, overRuns:0, part:{r:0, b:0}, closed:false, opened:false, ol:[], parts:[], ppRuns:null, log:[], t0:null, tLast:null};
+    var log = st.log, tname = (m.teams[inn.bat] || {}).name || '';
     var curP = null, ppBalls = rules(m).pp * 6;
     function startP(){ curP = (st.striker != null && st.non != null) ? {a:st.striker, b:st.non, ar:0, ab:0, br:0, bb:0, r:0, balls:0, open:true} : null; if (curP) st.parts.push(curP); }
     function B(n){ if (!st.bat[n]) { st.bat[n] = {name:n, r:0, b:0, f:0, s:0, out:null}; st.batOrder.push(n); } return st.bat[n]; }
     function W(n){ if (!st.bowl[n]) { st.bowl[n] = {name:n, balls:0, r:0, w:0, m:0, wd:0, nb:0}; st.bowlOrder.push(n); } return st.bowl[n]; }
     function swap(){ var t = st.striker; st.striker = st.non; st.non = t; }
-    inn.events.forEach(function(e){
+    inn.events.forEach(function(e, ei){
+      if (e.at) { if (e.t === 'ball' && !st.t0) st.t0 = e.at; st.tLast = e.at; }
+      if (e.t === 'in') log.push({k:'in', who:e.name, ei:ei});
+      else if (e.t === 'retire') log.push({k:'ret', who:e.who, ei:ei});
+      else if (e.t === 'end') log.push({k:'end', ei:ei});
       if (e.t === 'open') { st.opened = true; st.striker = e.s; st.non = e.n; B(e.s); B(e.n); st.bowler = e.bowl; W(e.bowl); st.needBowler = false; st.overRuns = 0; startP(); }
       else if (e.t === 'bowl') { st.bowler = e.name; W(e.name); st.needBowler = false; st.overRuns = 0; }
       else if (e.t === 'in') { if (st.striker == null) st.striker = e.name; else st.non = e.name; B(e.name).retired = false; st.part = {r:0, b:0}; startP(); }
@@ -413,7 +444,7 @@ var CE = (function(){
       else if (e.t === 'swap') { swap(); }
       else if (e.t === 'end') { st.closed = true; }
       else if (e.t === 'ball') {
-        var bw = W(st.bowler), bt = B(st.striker), faced = st.striker, legalBefore = st.legal;
+        var bw = W(st.bowler), bt = B(st.striker), faced = st.striker, legalBefore = st.legal, tot0 = st.total, br0 = bt.r, bw0 = bw.w, bwName = st.bowler;
         var oi = Math.floor(legalBefore / 6), oo = st.ol[oi] || (st.ol[oi] = {n:oi + 1, bowler:st.bowler, bats:[], balls:[], runs:0, wkts:0, total:0, wk:0});
         if (oo.bats.indexOf(faced) < 0) oo.bats.push(faced);
         var x = e.x || '', r = e.r || 0, xr = e.xr || 0, runs = 0, run = 0;
@@ -445,9 +476,17 @@ var CE = (function(){
         }
         st.over.push(label(e));
         oo.balls.push(label(e)); oo.total = st.total; oo.wk = st.wkts;
+        var lb = {k:'ball', n:Math.floor(legalBefore / 6) + '.' + (legalBefore % 6 + 1), bw:bwName, bt:faced, r:r, x:x, xr:xr, runs:runs, tot:st.total, wk:st.wkts, ei:ei, at:e.at || null, lab:label(e)};
+        if (e.w) { var ow = st.bat[e.w.out || faced]; lb.w = {how:e.w.how, out:e.w.out || faced, f:e.w.f || '', desc:ow ? ow.out : '', r:ow ? ow.r : 0, b:ow ? ow.b : 0}; }
+        log.push(lb);
+        for (var tv = Math.floor(tot0 / 50) + 1; tv * 50 <= st.total; tv++) log.push({k:'ms', kind:'team', v:tv * 50, who:tname, n:lb.n, balls:st.legal, ei:ei});
+        [50, 100, 150].forEach(function(v){ if (br0 < v && bt.r >= v) log.push({k:'ms', kind:'bat', v:v, who:faced, r:bt.r, b:bt.b, f:bt.f, s:bt.s, n:lb.n, ei:ei}); });
+        [3, 5].forEach(function(v){ if (bw0 < v && bw.w >= v) log.push({k:'ms', kind:'bowl', v:v, who:bwName, w:bw.w, r:bw.r, balls:bw.balls, n:lb.n, ei:ei}); });
         if (legalBefore < ppBalls) st.ppRuns = st.total;
         if (legal && st.legal % 6 === 0) {
           if (st.overRuns === 0) bw.m++;
+          log.push({k:'over', n:st.legal / 6, runs:oo.runs, tot:st.total, wk:st.wkts, bowler:{name:bwName, balls:bw.balls, m:bw.m, r:bw.r, w:bw.w},
+            bats:[st.striker, st.non].filter(function(x){ return x != null; }).map(function(x){ var q = st.bat[x]; return {name:x, r:q.r, b:q.b}; }), ei:ei});
           swap();
           st.overs.push(st.over); st.over = [];
           st.prevBowler = st.bowler; st.bowler = null; st.needBowler = true; st.overRuns = 0;
@@ -455,7 +494,7 @@ var CE = (function(){
       }
     });
     st.target = idx === 1 ? replay(m, 0).total + 1 : null;
-    st.maxW = Math.max(1, squad.length - 1);
+    st.maxW = m.so ? Math.min(2, Math.max(1, squad.length - 1)) : Math.max(1, squad.length - 1);
     st.maxBalls = m.overs * 6;
     st.done = st.closed || st.wkts >= st.maxW || st.legal >= st.maxBalls || (st.target != null && st.total >= st.target);
     st.vacant = st.opened ? (st.striker == null ? 's' : (st.non == null ? 'n' : null)) : null;
@@ -471,7 +510,10 @@ var CE = (function(){
       var wl = b.maxW - b.wkts, bl = b.maxBalls - b.legal;
       return tb + ' won by ' + wl + ' wicket' + (wl === 1 ? '' : 's') + (bl > 0 ? ' (' + bl + ' ball' + (bl === 1 ? '' : 's') + ' left)' : '');
     }
-    if (b.total === a.total) return 'Match tied';
+    if (b.total === a.total) {
+      var sw = soWinner(m);
+      return sw == null ? 'Match tied' : sw === -1 ? 'Match tied (super over tied too)' : 'Match tied · ' + m.teams[sw].name + ' won the super over';
+    }
     var d = a.total - b.total;
     return ta + ' won by ' + d + ' run' + (d === 1 ? '' : 's');
   }
@@ -518,11 +560,8 @@ var CE = (function(){
   /* Man of the Match: most points; ties go to the winning side, then more runs + wickets */
   function playerOfMatch(m){
     if (m.status !== 'done') return null;
-    var mp = matchPoints(m), best = null, win = null;
-    if (m.innings.length === 2) {
-      var a = replay(m, 0), b = replay(m, 1);
-      if (b.total >= b.target) win = m.teams[m.innings[1].bat]; else if (a.total > b.total) win = m.teams[m.innings[0].bat];
-    }
+    var mp = matchPoints(m), best = null, win = null, wi = winner(m);
+    if (wi != null && wi >= 0) win = m.teams[wi];
     var onWin = function(k){ return win ? win.players.some(function(n){ return mp.key(n) === k; }) : false; };
     Object.keys(mp.pts).forEach(function(k){
       var c = {key:k, name:mp.names[k], pts:mp.pts[k], parts:mp.parts[k], win:onWin(k)};
@@ -530,11 +569,24 @@ var CE = (function(){
     });
     return best;
   }
+  function soOf(m){
+    if (!m || !m.so) return null;
+    return {id:m.id, so:true, overs:1, pp:0, maxBowl:1, teams:m.teams, pids:m.pids, innings:m.so.innings, status:m.status, result:m.result, locked:m.locked, lockedBy:m.lockedBy, scorer:m.scorer, date:m.date, toss:m.toss, __real:m};
+  }
+  /* super over result: team index, -1 if tied again, null if not played / not finished */
+  function soWinner(m){
+    var s = soOf(m); if (!s || s.innings.length < 2) return null;
+    var a = replay(s, 0), b = replay(s, 1);
+    if (!b.done) return null;
+    if (b.total >= b.target) return s.innings[1].bat;
+    if (b.total === a.total) return -1;
+    return s.innings[0].bat;
+  }
   function winner(m){
     if (m.status !== 'done' || m.innings.length < 2) return null;
     var a = replay(m, 0), b = replay(m, 1);
     if (b.total >= b.target) return m.innings[1].bat;
-    if (b.total === a.total) return -1;
+    if (b.total === a.total) { var sw = soWinner(m); return sw == null ? -1 : sw; }
     return m.innings[0].bat;
   }
   function stats(list){
@@ -551,7 +603,8 @@ var CE = (function(){
           var b = st.bat[n], a = G(key(n), n);
           a.inn++; a.r += b.r; a.b += b.b; a.f += b.f; a.s += b.s; MT(key(n)).r += b.r; MT(key(n)).b += b.b;
           if (!b.out) a.no++;
-          if (b.r >= 100) a.hund++; else if (b.r >= 50) a.fifty++; else if (b.r >= 30) a.thirty++;
+          if (b.r >= 100) a.hund++; else if (b.r >= 50) a.fifty++;
+          if (b.r >= 30) a.thirty++; /* every 30+ score counts as a 30, including 50s and 100s */
           if (b.out && b.r === 0) a.ducks++;
           if (b.r > a.hs || (b.r === a.hs && !b.out)) { a.hs = b.r; a.hsNo = !b.out; }
         });
@@ -577,14 +630,14 @@ var CE = (function(){
     });
     return Object.keys(P).map(function(k){ return P[k]; });
   }
-  return {ov:ov, replay:replay, result:result, stats:stats, label:label, matchPoints:matchPoints, playerOfMatch:playerOfMatch, PTS:PTS, rules:rules, winner:winner};
+  return {soOf:soOf, soWinner:soWinner, ov:ov, replay:replay, result:result, stats:stats, label:label, matchPoints:matchPoints, playerOfMatch:playerOfMatch, PTS:PTS, rules:rules, winner:winner};
 })();
 </script>
 <script>
 (function(){
 'use strict';
 var app = document.getElementById('app');
-var APP_BUILD = 7; /* raise by 1 for every new release */
+var APP_BUILD = 8; /* raise by 1 for every new release */
 var cfg = {minVersion:0};
 var adminPending = null, profileFrom = null;
 var LOGO = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAABgFBMVEXdqynjro/anGrYZlLw4t7frzFDXYK6xNJgZliulELmyqi2kST/zy4nKh9OMyt/fwB+kayKODC1P0SgnZGercIA/wANKVIAAAAUOGzrty8YQXvy2aTXQzoUMVnTqDP9/P36wi8YRIJSVkltaEYmOU42RE0aKiO2lTcFLGWNez3/qlX//wDImFOmizr4uzrotS/WOC+ZgzxDTEkqRm8AHFT946d6cUXotS/otS/CnTbpti/otS/ptS+DdUIaKBz/fwCYhkbjQzYMPIE6U2/y6eqqtse/vz9PaIjoZl3nyI9gXkX/AADTqGfbtXfWSUJ1iabbWE7w05z319X//1XlaWGtqJXDy9fleHHlrSxSRG0yVIJcc5TVw53qmJNoeo+HmLCtQ0mjjUOqqgDU2uN4g42Yp7uqqlXHuZeSlpLsqKTaqy7lW1LnioTvtbL//39DWnbc4ej0yMVrRGOJiYkiPmVWZ3jYx6DK0tzlh3MXMDwiSYN6Q11kbGGMQ1a1OjC8spgVgpnMAAAAgHRSTlMX/////////////wcH//8C//////8B/wD//v////////7///////////8DAf//CDD/////////zUn/rmyQ//8C////////BP////8B/////////wP/////Fv///////////wP///8D////Ef///wL//////////////////////zD4IB0AAB6uSURBVHja1Z0HY9vG2YDhkdW9PpCgjCOIYRCkQQkkRYqSWFrDliM1XnFc23Esb7tOEyd1RtO0yV/vTeAAHIA7kkrzXYYkznvw7rvDnVY7ydbtdnq93uxI8NQMPtHpdk/067UT+tyjWafXif/qveqtwrYBG/rZ692Jn4IvE8L/XOG6zxlXb3Vja3tzczw2Mm083tzc3tpY7THC593/B3BH3cvPsdZBrE3EZFmWIWzkifEmRJyhdzy/3D36OcN1O5eJvDBXEVWWERMSGX7Y6f484bqdDpbY1qYsV5oQAs6WzLcsuO6HSGQb22MBGAC+H0ZBMHJQG02DKPQBEACOtzeQAD/s/pzgupePGFmayg8cu++auqCZbt92Aj/NyPiOLnd/JnBdpI6r20aKDISO7QmpMoye7YQgw7eKHGj3ZwCHOtHbSskMRI6n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';
@@ -741,6 +794,7 @@ function dbError(e){
 }
 function refresh(){ if (view === 'new' || view === 'editMember' || view === 'join' || view === 'setup') return; render(); }
 function saveMatch(m){
+  m = realOf(m);
   m.rev = (m.rev || 0) + 1; m.updated = Date.now(); m.appv = APP_BUILD; matches[m.id] = m;
   db.collection('matches').doc(m.id).set(clone(m)).catch(function(e){
     if (e && e.code === 'permission-denied') {
@@ -833,6 +887,8 @@ function inningsLine(m, i){
   return '<div class="iline"><span>' + esc(t.name) + '</span><b>' + st.total + '/' + st.wkts + '</b><small>(' + CE.ov(st.legal) + ')</small></div>';
 }
 function liveStatus(m){
+  if (m.so && m.status !== 'done') { var so = CE.soOf(m), si = so.innings.length - 1, sst = CE.replay(so, si), stt = m.teams[so.innings[si].bat].name;
+    return 'Super over · ' + stt + ' ' + sst.total + '/' + sst.wkts + (si === 1 ? ' (need ' + Math.max(0, sst.target - sst.total) + ')' : ''); }
   var idx = m.innings.length - 1, st = CE.replay(m, idx), t = m.teams[m.innings[idx].bat].name;
   if (idx === 1 && st.opened) { var need = st.target - st.total, bl = st.maxBalls - st.legal; return t + ' need ' + need + ' from ' + plural(bl, 'ball'); }
   if (idx === 0 && st.done) return 'Innings break';
@@ -849,6 +905,7 @@ function card(m){
     (m.status !== 'done' && m.scorer ? ' · scoring: ' + esc(m.scorer.name) : '') + '</div>' +
     (m.teams[0].captain || m.teams[1].captain ? '<div class="mmeta">Captains: ' + m.teams.map(function(t){ return esc(t.captain || '–'); }).join(' & ') + '</div>' : '') +
     m.innings.map(function(_, i){ return inningsLine(m, i); }).join('') +
+    (m.so ? '<div class="mmeta">Super over: ' + m.so.innings.map(function(inn, i){ var s2 = CE.replay(CE.soOf(m), i); return esc(m.teams[inn.bat].name) + ' ' + s2.total + '/' + s2.wkts; }).join(' · ') + '</div>' : '') +
     '<div class="mstatus">' + esc(status) + '</div>' +
     (pom ? '<div class="mmeta">Man of the Match: <b>' + esc(displayName(pom.key, pom.name)) + '</b> (' + pom.pts + ' pts)</div>' : '') + '</button>';
 }
@@ -930,11 +987,12 @@ function newForm(){
   h += '<div class="addrow"><input id="dnew" placeholder="New player name" maxlength="40" aria-label="New player name"><button type="button" class="btn" data-act="addnew">Add</button></div>';
   h += '<p class="small">' + plural(sel.length, 'player') + ' selected</p></fieldset>';
   if (sel.length) {
-    h += '<fieldset class="card"><legend>Teams</legend><button type="button" class="btn block" data-act="autosplit">Split teams automatically</button>' +
-      '<p class="small">Spreads keepers, bowlers and all-rounders evenly, then fills with batters. Tap A or B to move anyone, and tap C to make someone captain.</p>' +
-      '<div class="tcount"><span>' + esc(d.names[0] || 'Team 1') + ': <b>' + teamCount('A') + '</b>' + capLabel('A') + '</span><span>' + esc(d.names[1] || 'Team 2') + ': <b>' + teamCount('B') + '</b>' + capLabel('B') + '</span></div>' +
+    var str = function(t){ if (!d.rt) return ''; var x = 0; Object.keys(d.team).forEach(function(k){ if (d.team[k] === t && d.rt[k] != null) x += d.rt[k]; }); return ' · strength <b>' + Math.round(x) + '</b>'; };
+    h += '<fieldset class="card"><legend>Teams</legend><div class="row2b"><button type="button" class="btn block" data-act="autosplit">Split by roles</button><button type="button" class="btn primary block" data-act="fairsplit">⚖️ Fair split (by ratings)</button></div>' +
+      '<p class="small"><b>Split by roles</b> spreads keepers, bowlers and all-rounders evenly. <b>Fair split</b> also balances player strength, using each player’s average MVP points over their last 10 matches (new players get the club average). Tap A or B to move anyone, and tap C to make someone captain.</p>' +
+      '<div class="tcount"><span>' + esc(d.names[0] || 'Team 1') + ': <b>' + teamCount('A') + '</b>' + str('A') + capLabel('A') + '</span><span>' + esc(d.names[1] || 'Team 2') + ': <b>' + teamCount('B') + '</b>' + str('B') + capLabel('B') + '</span></div>' +
       '<div class="assign">' + sel.map(function(p){
-        return '<div class="arow"><span class="nm">' + esc(p.name) + ' <small>' + esc(p.role || '') + '</small></span><span class="ab">' +
+        return '<div class="arow"><span class="nm">' + esc(p.name) + ' <small>' + esc(p.role || '') + (d.rt && d.rt[p.id] != null ? ' · rating ' + Math.round(d.rt[p.id]) : '') + '</small></span><span class="ab">' +
           '<button type="button" class="' + (d.team[p.id] === 'A' ? 'on' : '') + '" data-act="assign" data-id="' + esc(p.id) + '" data-v="A">A</button>' +
           '<button type="button" class="' + (d.team[p.id] === 'B' ? 'on' : '') + '" data-act="assign" data-id="' + esc(p.id) + '" data-v="B">B</button></span>' +
           '<button type="button" class="capbtn' + (d.cap[d.team[p.id]] === p.id ? ' on' : '') + '" data-act="cap" data-id="' + esc(p.id) + '" aria-label="Make ' + esc(p.name) + ' captain">C</button></div>';
@@ -944,6 +1002,41 @@ function newForm(){
     '<div class="field"><label>Chose to</label><div class="seg"><input type="radio" name="del" id="del-bat" value="bat"' + (d.chose === 'bat' ? ' checked' : '') + '><label for="del-bat">Bat first</label><input type="radio" name="del" id="del-bowl" value="bowl"' + (d.chose === 'bowl' ? ' checked' : '') + '><label for="del-bowl">Bowl first</label></div></div></fieldset>';
   h += '<button class="btn primary block" type="submit">Start match</button></form>';
   return h;
+}
+/* player strength = average MVP points per match over the last 10 completed matches */
+function playerRatings(){
+  var by = {}, list = listMatches().filter(function(m){ return m.status === 'done'; }).sort(function(a, b){ return b.date - a.date; });
+  list.forEach(function(m){
+    var mp = CE.matchPoints(m), seen = {};
+    m.teams.forEach(function(t){ t.players.forEach(function(n){ var k = mp.key(n); if (seen[k]) return; seen[k] = 1; var a = by[k] || (by[k] = []); if (a.length < 10) a.push(mp.pts[k] || 0); }); });
+  });
+  var out = {};
+  Object.keys(by).forEach(function(k){ var a = by[k]; out[k] = {avg:a.reduce(function(x, y){ return x + y; }, 0) / a.length, n:a.length}; });
+  return out;
+}
+function fairSplit(){
+  var ids = Object.keys(draft.team).filter(function(k){ return draft.team[k]; }), R = playerRatings();
+  var known = ids.filter(function(id){ return R[id]; }).map(function(id){ return R[id].avg; }).sort(function(a, b){ return a - b; });
+  var median = known.length ? known[Math.floor(known.length / 2)] : 20;
+  var rt = {}; ids.forEach(function(id){ rt[id] = R[id] ? (R[id].avg * R[id].n + median * Math.max(0, 3 - R[id].n)) / Math.max(R[id].n, 3) : median; });
+  var isK = function(id){ return players[id] && players[id].role === 'Wicket-keeper'; };
+  var cap = Math.ceil(ids.length / 2), A = [], B = [], sum = function(l){ return l.reduce(function(x, id){ return x + rt[id]; }, 0); };
+  var order = ids.slice().sort(function(a, b){ return (isK(b) - isK(a)) || (rt[b] - rt[a]) || (Math.random() - .5); });
+  order.forEach(function(id){
+    var toA = sum(A) <= sum(B);
+    if (isK(id)) { var ka = A.filter(isK).length, kb = B.filter(isK).length; if (ka !== kb) toA = ka < kb; }
+    if (toA && A.length >= cap) toA = false; if (!toA && B.length >= cap) toA = true;
+    (toA ? A : B).push(id);
+  });
+  /* improve by swapping pairs (keepers only swap with keepers) */
+  for (var pass = 0; pass < 40; pass++) {
+    var d0 = Math.abs(sum(A) - sum(B)), best = null;
+    A.forEach(function(a, i){ B.forEach(function(b, j){ if (isK(a) !== isK(b)) return; var d = Math.abs(sum(A) - rt[a] + rt[b] - (sum(B) - rt[b] + rt[a])); if (d < d0 - 0.01 && (!best || d < best.d)) best = {i:i, j:j, d:d}; }); });
+    if (!best) break; var t = A[best.i]; A[best.i] = B[best.j]; B[best.j] = t;
+  }
+  A.forEach(function(id){ draft.team[id] = 'A'; }); B.forEach(function(id){ draft.team[id] = 'B'; });
+  draft.rt = rt; draft.fair = true;
+  return {a:Math.round(sum(A)), b:Math.round(sum(B))};
 }
 function autoSplit(){
   var ids = Object.keys(draft.team).filter(function(k){ return draft.team[k]; });
@@ -958,10 +1051,131 @@ function autoSplit(){
   });
 }
 
+/* ---------- innings timer: club rule 105 minutes for 25 overs (4.2 min per over), from the first ball ---------- */
+var MIN_PER_OVER = 105 / 25;
+function fmtMins(mins){ mins = Math.max(0, Math.round(mins)); var h = Math.floor(mins / 60), mm = mins % 60; return h ? h + 'h ' + (mm < 10 ? '0' : '') + mm + 'm' : mm + ' min'; }
+function innTiming(m, st){
+  if (!st.t0) return null;
+  var live = !st.done && m.status !== 'done', end = live ? Date.now() : (st.tLast || st.t0);
+  var mins = (end - st.t0) / 60000, ideal = m.overs * MIN_PER_OVER, ov = st.legal / 6, par = ov * MIN_PER_OVER;
+  var diff = mins - par; /* + behind, - ahead */
+  var proj = ov >= 1 ? mins / ov * m.overs : null;
+  return {mins:mins, ideal:ideal, ov:ov, diff:diff, proj:proj, live:live};
+}
+function timerHtml(m, st){
+  var t = innTiming(m, st); if (!t) return '';
+  if (!t.live) {
+    var over = t.mins - Math.min(t.ideal, t.ov * MIN_PER_OVER) ;
+    return '<div class="itimer ' + (over > 2 ? 'late' : 'ok') + '">⏱ Innings took <b>' + fmtMins(t.mins) + '</b> for ' + CE.ov(st.legal) + ' ov · allowed ' + fmtMins(t.ov * MIN_PER_OVER) + (over > 2 ? ' · <b>' + fmtMins(over) + ' over</b>' : ' · on time') + '</div>';
+  }
+  var cls = t.diff > 5 ? 'late' : t.diff > 1 ? 'warn' : 'ok';
+  return '<div class="itimer ' + cls + '" id="itimer" data-t0="' + st.t0 + '" data-legal="' + st.legal + '" data-overs="' + m.overs + '">' + timerText(t) + '</div>';
+}
+function timerText(t){
+  var s = '⏱ <b>' + fmtMins(t.mins) + '</b> of ' + fmtMins(t.ideal);
+  if (t.ov > 0 || t.mins > 3) s += t.diff > 1 ? ' · <b>' + fmtMins(t.diff) + ' behind</b> the rate' : t.diff < -1 ? ' · ' + fmtMins(-t.diff) + ' ahead' : ' · on schedule';
+  if (t.proj != null) s += ' · finish at this pace: ' + fmtMins(t.proj);
+  return s;
+}
+setInterval(function(){
+  var el = document.getElementById('itimer'); if (!el) return;
+  var t0 = +el.dataset.t0, legal = +el.dataset.legal, overs = +el.dataset.overs, mins = (Date.now() - t0) / 60000, ov = legal / 6;
+  var t = {mins:mins, ideal:overs * MIN_PER_OVER, ov:ov, diff:mins - ov * MIN_PER_OVER, proj:ov >= 1 ? mins / ov * overs : null, live:true};
+  el.innerHTML = timerText(t); el.className = 'itimer ' + (t.diff > 5 ? 'late' : t.diff > 1 ? 'warn' : 'ok');
+}, 15000);
+
+/* ---------- live commentary ---------- */
+function hashStr(s){ var h = 0; s = String(s); for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0; return Math.abs(h); }
+function pickW(list, seed){ return list[hashStr(seed) % list.length]; }
+function ballText(b, seed){
+  var who = b.bw + ' to ' + b.bt + ', ';
+  if (b.w) {
+    var how = {Bowled:pickW(['clean bowled!', 'bowled him!', 'the stumps are shattered!'], seed), Caught:'caught' + (b.w.f && b.w.f !== b.bw ? ' by ' + b.w.f : ' and bowled') + '!', LBW:pickW(['trapped in front, LBW!', 'given out LBW!'], seed), Stumped:'stumped' + (b.w.f ? ' by ' + b.w.f : '') + '!', 'Run out':'run out' + (b.w.f ? ' (' + b.w.f + ')' : '') + '!', 'Hit wicket':'hit wicket!'}[b.w.how] || 'out!';
+    return who + '<b>OUT</b>, ' + how + ' ' + b.w.out + ' goes for ' + b.w.r + ' (' + b.w.b + ').';
+  }
+  if (b.x === 'wd') return who + 'wide' + (b.xr ? ', ' + b.xr + ' more run' + (b.xr > 1 ? 's' : '') + ' taken' : '') + '.';
+  if (b.x === 'nb') return who + 'no ball' + (b.r === 4 ? ', and it races away for FOUR!' : b.r === 6 ? ', and it goes all the way for SIX!' : b.r ? ', ' + b.r + ' off the bat' : '') + '. Free hit coming.';
+  if (b.x === 'b' || b.x === 'lb') return who + b.xr + (b.x === 'b' ? ' bye' : ' leg bye') + (b.xr > 1 ? 's' : '') + '.';
+  if (b.r === 4) return who + '<b>FOUR!</b> ' + pickW(['Cracking shot, races to the boundary.', 'Pierces the field beautifully.', 'Timed to perfection.', 'No stopping that one.', 'Finds the gap and it is four.'], seed);
+  if (b.r === 6) return who + '<b>SIX!</b> ' + pickW(['Launched over the rope!', 'That is huge, out of the ground!', 'Clean strike, maximum!', 'Deposited into the stands!'], seed);
+  if (b.r === 0) return who + pickW(['no run.', 'dot ball, well bowled.', 'defended back to the bowler.', 'beaten! No run.', 'straight to the fielder, no run.'], seed);
+  if (b.r === 1) return who + pickW(['pushed for a single.', 'one run.', 'quick single taken.', 'worked away for one.'], seed);
+  if (b.r === 2) return who + pickW(['two runs.', 'good running, they come back for two.', 'placed into the gap for a couple.'], seed);
+  if (b.r === 3) return who + 'three runs, excellent running.';
+  return who + b.r + ' runs.';
+}
+function msText(e){
+  if (e.kind === 'team') return '🎉 ' + e.who + ' reach ' + e.v + ' in ' + CE.ov(e.balls) + ' overs';
+  if (e.kind === 'bat') return (e.v >= 100 ? '💯 HUNDRED! ' : '🏏 FIFTY! ') + e.who + ' reaches ' + e.v + ' off ' + e.b + ' balls (' + plural(e.f, 'four') + ', ' + plural(e.s, 'six') + ')';
+  return '🔥 ' + e.v + ' WICKETS for ' + e.who + ': ' + e.w + '/' + e.r + ' in ' + CE.ov(e.balls) + ' overs';
+}
+function commentaryHtml(m, full){
+  var blocks = [], so = CE.soOf(m);
+  var innsList = m.innings.map(function(inn, i){ return {mm:m, i:i, label:m.teams[inn.bat].name + (i ? ' · 2nd innings' : ' · 1st innings')}; });
+  if (so) so.innings.forEach(function(inn, i){ innsList.push({mm:so, i:i, label:'Super over · ' + m.teams[inn.bat].name}); });
+  innsList.slice().reverse().forEach(function(x){
+    var st = CE.replay(x.mm, x.i); if (!st.log.length) return;
+    var rows = st.log.slice().reverse().map(function(e, j){
+      var seed = m.id + x.i + ':' + e.ei;
+      if (e.k === 'ball') return '<div class="cm"><span class="cmn">' + e.n + '</span><span class="bc sm ' + e.lab.c + '">' + esc(e.lab.t) + '</span><span class="cmt">' + ballText({bw:esc(e.bw), bt:esc(e.bt), w:e.w ? {how:e.w.how, f:esc(e.w.f), out:esc(e.w.out), r:e.w.r, b:e.w.b} : null, x:e.x, xr:e.xr, r:e.r}, seed) + '</span></div>';
+      if (e.k === 'over') return '<div class="cmo"><b>End of over ' + e.n + '</b> · ' + plural(e.runs, 'run') + ' · ' + esc(m.teams[x.mm.innings[x.i].bat].name) + ' ' + e.tot + '/' + e.wk +
+        '<small>' + e.bats.map(function(b){ return esc(b.name) + ' ' + b.r + '* (' + b.b + ')'; }).join(' · ') + (e.bowler ? ' · ' + esc(e.bowler.name) + ' ' + CE.ov(e.bowler.balls) + '-' + e.bowler.m + '-' + e.bowler.r + '-' + e.bowler.w : '') + '</small></div>';
+      if (e.k === 'ms') return '<div class="cmm">' + esc(msText(e)) + '</div>';
+      if (e.k === 'in') return '<div class="cmi">' + esc(e.who) + ' comes to the crease.</div>';
+      if (e.k === 'ret') return '<div class="cmi">' + esc(e.who) + ' retires not out.</div>';
+      if (e.k === 'end') return '<div class="cmi">Innings closed.</div>';
+      return '';
+    });
+    blocks.push({label:x.label, rows:rows});
+  });
+  if (!blocks.length) return '';
+  var shown = 0, h = '<section class="card comm"><h2 class="cmh">Commentary</h2>';
+  for (var b = 0; b < blocks.length; b++) {
+    if (!full && shown >= 24) break;
+    var rows = full ? blocks[b].rows : blocks[b].rows.slice(0, 24 - shown); shown += rows.length;
+    h += '<div class="cmhd">' + esc(blocks[b].label) + '</div>' + rows.join('');
+  }
+  var total = blocks.reduce(function(a, x){ return a + x.rows.length; }, 0);
+  if (total > 24) h += '<button class="btn block" data-act="fullcomm">' + (full ? 'Show latest only' : 'Show full commentary') + '</button>';
+  return h + '</section>';
+}
+
+/* ---------- milestone pop-ups (team 50s, batter 50/100, bowler 3/5 wickets) ---------- */
+var msSeen = {}, msQueue = [];
+function matchMilestones(m){
+  var out = [], so = CE.soOf(m);
+  m.innings.forEach(function(_, i){ CE.replay(m, i).log.forEach(function(e){ if (e.k === 'ms') out.push({key:i + ':' + e.kind + ':' + e.who + ':' + e.v, e:e}); }); });
+  if (so) so.innings.forEach(function(_, i){ CE.replay(so, i).log.forEach(function(e){ if (e.k === 'ms' && e.kind !== 'team') out.push({key:'so' + i + ':' + e.kind + ':' + e.who + ':' + e.v, e:e}); }); });
+  return out;
+}
+function checkMilestones(){
+  var m = view === 'match' ? matches[curId] : null;
+  if (!m) return;
+  var list = matchMilestones(m), seen = msSeen[m.id];
+  if (!seen) { seen = msSeen[m.id] = {}; list.forEach(function(x){ seen[x.key] = 1; }); return; }
+  list.forEach(function(x){ if (!seen[x.key]) { seen[x.key] = 1; msQueue.push(x.e); } });
+  if (msQueue.length && $('#msbox').hidden) showMilestone();
+}
+function showMilestone(){
+  var e = msQueue.shift(); if (!e) return;
+  var big = e.kind === 'bat' ? (e.v >= 100 ? '💯' : '🏏') : e.kind === 'bowl' ? '🔥' : '🎉';
+  var title = e.kind === 'team' ? e.who + ' ' + e.v + ' up!' : e.kind === 'bat' ? (e.v >= 100 ? 'Hundred for ' : 'Fifty for ') + e.who + '!' : e.v + ' wickets for ' + e.who + '!';
+  var sub = e.kind === 'team' ? 'Reached ' + e.v + ' in ' + CE.ov(e.balls) + ' overs' : e.kind === 'bat' ? e.r + ' runs off ' + e.b + ' balls · ' + plural(e.f, 'four') + ' · ' + plural(e.s, 'six') : 'Figures ' + e.w + '/' + e.r + ' in ' + CE.ov(e.balls) + ' overs';
+  $('#msbig').textContent = big; $('#mstitle').textContent = title; $('#mssub').textContent = sub;
+  var bx = $('#msbox'); bx.hidden = false; bx.className = 'msbox ' + e.kind;
+  try { if (navigator.vibrate) navigator.vibrate([120, 60, 120]); } catch(err){}
+  clearTimeout(showMilestone.t); showMilestone.t = setTimeout(hideMilestone, 6000);
+}
+function hideMilestone(){ $('#msbox').hidden = true; if (msQueue.length) setTimeout(showMilestone, 300); }
+
+/* ---------- super over helpers ---------- */
+function scoringMatch(real){ return real && real.so ? CE.soOf(real) : real; }
+function realOf(m){ return m && m.__real ? m.__real : m; }
+
 /* ---------- live match ---------- */
 function scoreboard(m, idx, st){
   var inn = m.innings[idx], bt = m.teams[inn.bat];
-  var h = '<section class="board" aria-label="Scoreboard"><div class="bteam"><span>' + esc(bt.name) + '</span><small>' + (idx === 0 ? '1st' : '2nd') + ' innings</small></div>' +
+  var h = '<section class="board" aria-label="Scoreboard"><div class="bteam"><span>' + esc(bt.name) + '</span><small>' + (m.so ? 'Super over · ' : '') + (idx === 0 ? '1st' : '2nd') + ' innings</small></div>' +
     '<div class="bscore">' + st.total + '<span>/' + st.wkts + '</span></div>' +
     '<div class="bline"><span>Overs <b>' + CE.ov(st.legal) + '</b> / ' + m.overs + '</span><span>Run rate <b>' + rate(st.total, st.legal) + '</b></span><span>Extras <b>' + st.extTotal + '</b></span></div>';
   var R = CE.rules(m);
@@ -972,6 +1186,7 @@ function scoreboard(m, idx, st){
     var need = Math.max(0, st.target - st.total), bl = st.maxBalls - st.legal;
     h += '<div class="target">Target ' + st.target + ' · ' + (need > 0 ? 'Need ' + need + ' from ' + plural(bl, 'ball') + (bl > 0 ? ' · Req. ' + rate(need, bl) : '') : 'Target reached') + '</div>';
   }
+  if (!m.so) h += timerHtml(m, st);
   return h + '</section>';
 }
 function playersCard(st){
@@ -1008,11 +1223,12 @@ function controls(m, idx, st){
   var inn = m.innings[idx], batT = m.teams[inn.bat], bowlT = m.teams[1 - inn.bat];
   var mine = m.scorer && m.scorer.uid === me.uid;
   if (ui.editTeams && mine) return editTeamsPanel(m);
-  var undo = '<button class="btn" data-act="undo">Undo last</button>';
+  var undo = '<button class="btn" data-act="undo">Undo last</button>', RM = realOf(m);
   if (m.status === 'done') {
-    var pom = CE.playerOfMatch(m);
-    var top = '<div class="result">' + esc(m.result || 'Match complete') + '</div>' + momCard(m) +
-      '<div class="actions"><button class="btn primary" data-act="sharepdf">Share PDF</button><button class="btn" data-act="share">Share as text</button></div>';
+    var top = '<div class="result">' + esc(RM.result || 'Match complete') + '</div>' + momCard(RM) +
+      '<div class="actions"><button class="btn primary" data-act="sharepdf">Share PDF</button><button class="btn primary" data-act="shareimg">Share image</button><button class="btn" data-act="share">Share as text</button></div>';
+    if (!RM.so && !RM.locked && CE.winner(RM) === -1) top += '<div class="panel"><h2>🤝 It’s a tie! Super over?</h2><p>Each team bats one over with 2 wickets. The team that batted second bats first. Super over runs don’t count in player stats or MVP points.</p>' +
+      (mine ? '<button class="btn primary block" data-act="sostart">Start super over</button>' : '<button class="btn block" data-act="claim">Score the super over</button>') + '</div>';
     if (m.locked) return top + '<div class="lockbar"><span>🔒 <b>Match locked</b>' + (m.lockedBy ? ' by ' + esc(m.lockedBy) : '') + '. Scores can only be changed by the admin. Comments are still open.</span><button class="btn" data-act="unlock">Unlock (admin)</button></div>';
     return top + '<div class="actions">' + (mine ? undo + '<button class="btn" data-act="etopen">Edit teams</button>' : '<button class="btn" data-act="claim">Fix a mistake</button>') + '</div>' +
       '<div class="panel lockask"><h2>🔒 Lock this match</h2><p>Once the scores are checked, lock the match so nobody can change it. Only the admin can unlock it.</p><button class="btn primary block" data-act="lock">Lock match</button></div>';
@@ -1022,7 +1238,7 @@ function controls(m, idx, st){
       ? '<div class="panel"><h2>' + esc(m.scorer.name) + ' is scoring</h2><p>The score updates here live. If they have stopped, you can carry on from where they left off.</p><button class="btn" data-act="claim">Take over scoring</button></div>'
       : '<button class="btn primary block" data-act="claim">Score this match</button>';
   }
-  var stop = '<div class="quiet"><button class="link" data-act="etopen">Edit teams</button><button class="link" data-act="chov">Change overs</button><button class="link" data-act="release">Stop scoring on this phone</button></div>';
+  var stop = '<div class="quiet"><button class="link" data-act="etopen">Edit teams</button>' + (m.so ? '' : '<button class="link" data-act="chov">Change overs</button>') + '<button class="link" data-act="release">Stop scoring on this phone</button></div>';
   if (ui.chov) {
     var minOv = Math.max(1, Math.ceil(m.innings.reduce(function(a, _, i){ return Math.max(a, CE.replay(m, i).legal); }, 0) / 6));
     return '<div class="panel"><h2>Change overs per side</h2><p>Currently ' + m.overs + ' overs. Use this when the match is shortened or extended. It can’t be less than ' + minOv + ' (overs already bowled).</p>' +
@@ -1032,12 +1248,12 @@ function controls(m, idx, st){
   }
   if (ui.confirmEnd) return '<div class="panel alert"><h2>End this innings now?</h2><p>Use this for a declaration, rain or a shortened game. You can undo it.</p><div class="actions"><button class="btn danger" data-act="endok">End innings</button><button class="btn" data-act="cancel">Keep scoring</button></div></div>';
   if (st.done && idx === 0) {
-    return '<div class="panel"><h2>Innings complete</h2><p>' + esc(batT.name) + ' scored ' + st.total + '/' + st.wkts + ' in ' + CE.ov(st.legal) + ' overs. ' + esc(bowlT.name) + ' need ' + (st.total + 1) + ' to win.</p>' +
+    return '<div class="panel"><h2>' + (m.so ? 'Super over: first innings done' : 'Innings complete') + '</h2><p>' + esc(batT.name) + ' scored ' + st.total + '/' + st.wkts + ' in ' + CE.ov(st.legal) + ' overs. ' + esc(bowlT.name) + ' need ' + (st.total + 1) + ' to win.</p>' +
       '<div class="actions"><button class="btn primary" data-act="second">Start 2nd innings</button>' + undo + '</div></div>' + stop;
   }
   if (!st.opened) {
     var sel = function(id, list, pick){ return '<select id="' + id + '">' + list.map(function(p, i){ return '<option value="' + esc(p) + '"' + (i === pick ? ' selected' : '') + '>' + esc(p) + '</option>'; }).join('') + '</select>'; };
-    return '<div class="panel"><h2>Start ' + (idx === 0 ? '1st' : '2nd') + ' innings</h2><p>' + esc(batT.name) + ' bat, ' + esc(bowlT.name) + ' bowl.</p>' +
+    return '<div class="panel"><h2>' + (m.so ? 'Super over: ' : 'Start ') + (idx === 0 ? '1st' : '2nd') + ' innings</h2><p>' + esc(batT.name) + ' bat, ' + esc(bowlT.name) + ' bowl.' + (m.so ? ' One over, 2 wickets.' : '') + '</p>' +
       '<div class="field"><label for="op-s">Striker</label>' + sel('op-s', batT.players, 0) + '</div>' +
       '<div class="field"><label for="op-n">Non-striker</label>' + sel('op-n', batT.players, 1) + '</div>' +
       '<div class="field"><label for="op-b">Opening bowler</label>' + sel('op-b', bowlT.players, bowlT.players.length - 1) + '</div>' +
@@ -1118,6 +1334,16 @@ function mvpCard(m){
     rows.map(function(r, i){ return '<tr><td>' + (i + 1) + '</td><td><b>' + plink(mkey(m, r.name), r.name) + '</b>' + (r.pom ? ' 🏆' : '') + '<span class="dis"><i class="dot ' + teamCls(r.team) + '"></i> ' + esc(m.teams[r.team].name) + '</span></td><td>' + r.bat + '</td><td>' + r.bowl + '</td><td>' + r.field + '</td><td><b>' + r.pts + '</b></td></tr>'; }).join('') +
     '</tbody></table></div><p class="small">Points follow the club MVP rules (see Rules tab).</p></section>';
 }
+function superOverCard(m){
+  var so = CE.soOf(m); if (!so) return '';
+  var h = '<section class="card"><h2 class="cmh">Super over</h2><p class="small">Not counted in player stats or MVP points.</p>';
+  so.innings.forEach(function(inn, i){
+    var st = CE.replay(so, i); if (!st.opened) return;
+    h += '<div class="inhead"><h2>' + esc(m.teams[inn.bat].name) + '</h2><span>' + st.total + '/' + st.wkts + ' <small class="small">(' + CE.ov(st.legal) + ' ov)</small></span></div>' +
+      '<p class="small">' + st.batOrder.map(function(n){ var b = st.bat[n]; return esc(n) + ' ' + b.r + (b.out ? '' : '*') + ' (' + b.b + ')'; }).join(', ') + ' · bowled by ' + st.bowlOrder.map(function(n){ var w = st.bowl[n]; return esc(n) + ' ' + w.w + '/' + w.r; }).join(', ') + '</p>';
+  });
+  return h + '</section>';
+}
 function scorecard(m){
   var h = momCard(m);
   m.innings.forEach(function(inn, i){
@@ -1144,11 +1370,13 @@ function scorecard(m){
       st.fow.map(function(f){ return '<tr><td>' + plink(mkey(m, f.name), f.name) + '</td><td>' + f.score + '-' + f.n + '</td><td>' + f.over + '</td></tr>'; }).join('') + '</tbody></table></div>';
     var RR = CE.rules(m);
     if (RR.pp > 0 && st.ppRuns != null) h += '<div class="tw"><table class="fow"><thead><tr><th>Powerplay</th><th>Overs</th><th>Runs</th></tr></thead><tbody><tr><td>Mandatory</td><td>0.1 - ' + RR.pp + '</td><td><b>' + st.ppRuns + '</b></td></tr></tbody></table></div>';
+    h += timerHtml(m, st);
     h += '</section>';
   });
+  h += superOverCard(m);
   h += mvpCard(m);
   h += '<p class="small">' + esc(m.teams[m.toss.won].name) + ' won the toss and chose to ' + esc(m.toss.chose) + '. ' + fmtDate(m.date, true) + (m.venue ? ', ' + esc(m.venue) : '') + '.' + (m.result ? ' ' + esc(m.result) + '.' : '') + '</p>';
-  h += '<div class="actions"><button class="btn primary" data-act="sharepdf">Share scorecard PDF</button><button class="btn" data-act="share">Share as text</button></div>';
+  h += '<div class="actions"><button class="btn primary" data-act="sharepdf">Share scorecard PDF</button><button class="btn primary" data-act="shareimg">Share as image</button><button class="btn" data-act="share">Share as text</button></div>';
   h += ui.confirmDel
     ? '<div class="panel alert"><h2>Delete this match?</h2><p>It disappears from the list and from season stats for everyone. The admin can restore it from “Show deleted matches”, or delete it for good there.</p><div class="actions"><button class="btn danger" data-act="delok">Delete match</button><button class="btn" data-act="cancel">Keep it</button></div></div>'
     : '<div class="quiet"><button class="link" data-act="del">Delete this match (admin)</button></div>';
@@ -1257,7 +1485,7 @@ function matchReport(m){
   /* headline */
   if (done && sts.length === 2) {
     var a = sts[0], b = sts[1], t1 = innTeam(m, 0), t2 = innTeam(m, 1);
-    if (win === -1) rep.lead.push('A thriller with nothing between the sides: both teams finished on ' + a.total + ' and the match was tied.');
+    if (a.total === b.total) rep.lead.push('A thriller with nothing between the sides: both teams finished on ' + a.total + '. ' + (m.so ? (CE.soWinner(m) == null ? 'A super over was played.' : CE.soWinner(m) === -1 ? 'Even the super over could not separate them.' : m.teams[CE.soWinner(m)].name + ' held their nerve to win the super over.') : 'The match was tied.'));
     else if (b.total >= b.target) {
       var wl = b.maxW - b.wkts, bl = b.maxBalls - b.legal;
       var tone = bl <= 6 || wl <= 2 ? 'held their nerve in a tight finish' : wl >= 7 && bl >= 30 ? 'cruised home' : 'chased it down';
@@ -1285,14 +1513,14 @@ function matchReport(m){
     var bats = topBatters(st, 3), top = bats[0];
     pts.push(team + ' ' + (i ? 'made ' : 'posted ') + st.total + '/' + st.wkts + ' in ' + CE.ov(st.legal) + ' overs, a run rate of ' + rate(st.total, st.legal) + '.');
     if (top && top.r > 0) {
-      var t = top.name + ' led the way with ' + bat1(top) + (top.f || top.s ? ' (' + [top.f ? plural(top.f, 'four') : '', top.s ? plural(top.s, 'six').replace('sixs', 'sixes') : ''].filter(Boolean).join(', ') + ')' : '') + (top.b >= 5 ? ', strike rate ' + sr(top.r, top.b) : '') + '.';
+      var t = top.name + pickW([' led the way with ', ' top-scored with ', ' was the main man with the bat, making ', ' anchored the effort with '], m.id + i + 'lw') + bat1(top) + (top.f || top.s ? ' (' + [top.f ? plural(top.f, 'four') : '', top.s ? plural(top.s, 'six').replace('sixs', 'sixes') : ''].filter(Boolean).join(', ') + ')' : '') + (top.b >= 5 ? ', strike rate ' + sr(top.r, top.b) : '') + '.';
       if (top.r >= 100) t = top.name + ' starred with a superb hundred, ' + bat1(top) + '.'; else if (top.r >= 50) t = top.name + (top.b && top.r * 100 / top.b >= 150 ? ' lit up the innings with a rapid fifty, ' : ' anchored the innings with a fine fifty, ') + bat1(top) + ' (strike rate ' + sr(top.r, top.b) + ').';
       var sup = bats.slice(1).filter(function(b){ return b.r >= 15; });
       if (sup.length) t += ' Support came from ' + sup.map(function(b){ return b.name + ' (' + b.r + (b.out ? '' : '*') + ')'; }).join(' and ') + '.';
       pts.push(t);
     }
     var bp = null; st.parts.forEach(function(p){ if (!bp || p.r > bp.r) bp = p; });
-    if (bp && bp.r >= 25) pts.push('The best stand was ' + bp.r + ' off ' + bp.balls + ' balls between ' + bp.a + ' and ' + bp.b + '.');
+    if (bp && bp.r >= 25) pts.push(pickW(['The best stand was ', 'The key partnership was worth ', 'The innings was built around a stand of '], m.id + i + 'bs') + bp.r + ' off ' + bp.balls + ' balls between ' + bp.a + ' and ' + bp.b + '.');
     if (R.pp > 0 && st.legal > 0) {
       var pp = phase(st, 0, Math.min(R.pp, st.ol.length));
       pts.push('Powerplay (overs 1-' + R.pp + '): ' + pp.r + '/' + pp.w + ' at ' + oneDp(pp.rr) + ' an over' + (pp.rr >= 9 ? ', a flying start.' : pp.rr < 5 ? ', a slow start.' : '.'));
@@ -1303,19 +1531,21 @@ function matchReport(m){
       }
     }
     var cl = collapse(st);
-    if (cl) pts.push('Key moment: ' + team + ' lost ' + cl.n + ' wickets for ' + plural(cl.runs, 'run') + ', going from ' + cl.from + ' to ' + cl.to + '.');
+    if (cl) pts.push(pickW(['Key moment: ', 'Turning point: ', 'The wobble: '], m.id + i + 'km') + team + ' lost ' + cl.n + ' wickets for ' + plural(cl.runs, 'run') + ', going from ' + cl.from + ' to ' + cl.to + '.');
     var bo = bigOver(st);
-    if (bo && bo.runs >= 14) pts.push('Biggest over: ' + bo.runs + ' runs in over ' + bo.n + ', bowled by ' + bo.bowler + '.');
+    if (bo && bo.runs >= 14) pts.push(pickW(['Biggest over: ', 'Most expensive over: ', 'The over that hurt: '], m.id + i + 'bo') + bo.runs + ' runs in over ' + bo.n + ', bowled by ' + bo.bowler + '.');
+    var tm = innTiming(m, st);
+    if (tm && !tm.live) { var allow = tm.ov * MIN_PER_OVER, late = tm.mins - allow; pts.push('Innings time: ' + fmtMins(tm.mins) + ' for ' + CE.ov(st.legal) + ' overs' + (late > 2 ? ', ' + fmtMins(late) + ' over the club limit of ' + fmtMins(allow) + '.' : ', within the club limit of ' + fmtMins(allow) + '.')); }
     rep.sections.push({title: team + ' batting' + (sts.length > 1 ? (i ? ' (2nd innings)' : ' (1st innings)') : ''), items:pts});
     /* bowling of the other side */
     var bw = [], bows = topBowlers(st, 8), best = bows[0];
-    if (best && best.w > 0) bw.push(best.name + ' was the pick of the ' + opp + ' bowlers with ' + figs(best) + (best.w >= 5 ? ', a five-wicket haul.' : best.w >= 3 ? ', a three-wicket haul.' : '.'));
+    if (best && best.w > 0) bw.push(best.name + pickW([' was the pick of the ' + opp + ' bowlers with ', ' led the ' + opp + ' attack with ', ' did the damage for ' + opp + ', finishing with ', ' stood out for ' + opp + ' with '], m.id + i + 'pk') + figs(best) + (best.w >= 5 ? ', a five-wicket haul.' : best.w >= 3 ? ', a three-wicket haul.' : '.'));
     var eco = st.bowlOrder.map(function(n){ return st.bowl[n]; }).filter(function(b){ return b.balls >= 12; }).sort(function(a, b){ return a.r / a.balls - b.r / b.balls; });
     if (eco[0] && (!best || eco[0].name !== best.name) && eco[0].r / (eco[0].balls / 6) <= 6) bw.push(eco[0].name + ' was the most economical, ' + rate(eco[0].r, eco[0].balls) + ' an over (' + figs(eco[0]) + ').');
     var mds = st.bowlOrder.filter(function(n){ return st.bowl[n].m; });
     if (mds.length) bw.push('Maidens: ' + mds.map(function(n){ return n + ' (' + st.bowl[n].m + ')'; }).join(', ') + '.');
     var exp = eco.length ? eco[eco.length - 1] : null;
-    if (exp && exp.r / (exp.balls / 6) >= 10 && exp !== eco[0]) bw.push(exp.name + ' found it tough, going for ' + rate(exp.r, exp.balls) + ' an over.');
+    if (exp && exp.r / (exp.balls / 6) >= 10 && exp !== eco[0]) bw.push(exp.name + pickW([' found it tough, going for ', ' had a day to forget, conceding ', ' was taken for '], m.id + i + 'ex') + rate(exp.r, exp.balls) + ' an over.');
     var xs = st.ext.wd + st.ext.nb;
     if (st.extTotal >= 15 || (st.total && st.extTotal >= 6 && st.extTotal / st.total >= 0.1)) bw.push(opp + ' gave away ' + plural(st.extTotal, 'extra') + ' (' + st.ext.wd + ' wd, ' + st.ext.nb + ' nb, ' + (st.ext.b + st.ext.lb) + ' byes), ' + pct(st.extTotal, st.total) + '% of the total. Tighter lines will help.');
     else if (st.legal >= 30 && st.extTotal <= 3) bw.push('A disciplined effort: only ' + plural(st.extTotal, 'extra') + ' conceded.');
@@ -1348,12 +1578,22 @@ function matchReport(m){
 function playerHistory(pid){
   var out = [];
   listMatches().filter(function(m){ return m.pids && Object.keys(m.pids).some(function(n){ return m.pids[n] === pid; }); }).sort(function(a, b){ return a.date - b.date; }).forEach(function(m){
-    var name = Object.keys(m.pids).filter(function(n){ return m.pids[n] === pid; })[0], rec = {m:m, bat:null, bowl:null, f:{c:0, st:0, ro:0}, pts:0, won:null};
+    var name = Object.keys(m.pids).filter(function(n){ return m.pids[n] === pid; })[0], R = CE.rules(m), death = Math.max(R.pp, m.overs - Math.max(1, Math.round(m.overs / 5)));
+    var rec = {m:m, name:name, bat:null, pos:null, bowl:null, f:{c:0, st:0, ro:0, dh:0}, pts:0, won:null, cap:false,
+      ph:{pp:{r:0, b:0}, mid:{r:0, b:0}, end:{r:0, b:0}}, dotsF:0, bph:{pp:{r:0, b:0}, mid:{r:0, b:0}, end:{r:0, b:0}}, dotsB:0, bndB:0, wk:{}};
+    m.teams.forEach(function(t){ if (t.captain === name) rec.cap = true; });
     m.innings.forEach(function(_, i){
       var st = CE.replay(m, i);
-      if (st.bat[name]) rec.bat = st.bat[name];
+      if (st.bat[name]) { rec.bat = st.bat[name]; rec.pos = st.batOrder.indexOf(name) + 1; }
       if (st.bowl[name] && st.bowl[name].balls) rec.bowl = st.bowl[name];
-      var x = st.field[name]; if (x) { rec.f.c += x.c; rec.f.st += x.st; rec.f.ro += x.ro; }
+      var x = st.field[name]; if (x) { rec.f.c += x.c; rec.f.st += x.st; rec.f.ro += x.ro; rec.f.dh += x.dh || 0; }
+      st.log.forEach(function(e){
+        if (e.k !== 'ball') return;
+        var ov = +String(e.n).split('.')[0], zone = ov < R.pp ? 'pp' : ov >= death ? 'end' : 'mid', legal = e.x !== 'wd' && e.x !== 'nb';
+        if (e.bt === name && e.x !== 'wd') { var z = rec.ph[zone]; z.b++; if (e.x === '' || e.x === 'nb' || !e.x) z.r += e.r || 0; if (!e.r && !e.x && !e.w) rec.dotsF++; }
+        if (e.bw === name) { var q = rec.bph[zone]; q.r += e.x === 'b' || e.x === 'lb' ? 0 : e.runs; if (legal) q.b++; if (legal && !e.runs) rec.dotsB++; if ((e.x === '' || !e.x || e.x === 'nb') && (e.r === 4 || e.r === 6)) rec.bndB++;
+          if (e.w && e.w.how !== 'Run out') rec.wk[e.w.how] = (rec.wk[e.w.how] || 0) + 1; }
+      });
     });
     var mp = CE.matchPoints(m); rec.pts = mp.pts[pid] || 0;
     var w = CE.winner(m); if (w !== null && w !== -1) rec.won = m.teams[w].players.indexOf(name) >= 0;
@@ -1362,51 +1602,111 @@ function playerHistory(pid){
   return out;
 }
 function howOut(s){ s = s || ''; return /^run out/.test(s) ? 'run out' : /^lbw/.test(s) ? 'lbw' : /^st /.test(s) ? 'stumped' : /^hit wicket/.test(s) ? 'hit wicket' : /^b /.test(s) ? 'bowled' : /^c|^caught/.test(s) ? 'caught' : 'out'; }
+function clubAverages(){
+  var rows = statsFor('all').rows, a = {r:0, b:0, o:0, rc:0, balls:0, pts:0, m:0, c:0};
+  rows.forEach(function(x){ a.r += x.r; a.b += x.b; a.o += x.inn - x.no; a.rc += x.rc; a.balls += x.balls; a.pts += x.pts; a.m += x.m; a.c += x.c + x.st + x.ro; });
+  return {sr:a.b ? a.r * 100 / a.b : 0, avg:a.o ? a.r / a.o : 0, eco:a.balls ? a.rc / (a.balls / 6) : 0, mvp:a.m ? a.pts / a.m : 0, field:a.m ? a.c / a.m : 0, rows:rows};
+}
+function rankOf(rows, pid, val, min){
+  var l = rows.filter(function(r){ return val(r) > (min || 0); }).sort(function(a, b){ return val(b) - val(a); });
+  for (var i = 0; i < l.length; i++) if (l[i].key === pid) return {rank:i + 1, of:l.length};
+  return null;
+}
 function playerReport(pid){
   var p = players[pid], H = playerHistory(pid);
   if (!p || !H.length) return null;
-  var first = (p.name || '').split(' ')[0], rep = {title:'Performance analysis', lead:[], sections:[]};
+  var first = (p.name || '').split(' ')[0], rep = {title:'Performance analysis', lead:[], sections:[]}, P = function(list, tag){ return pickW(list, pid + ':' + tag); };
+  var C = clubAverages(), me = C.rows.filter(function(r){ return r.key === pid; })[0] || {};
   var inns = H.filter(function(h){ return h.bat && (h.bat.b || h.bat.out); }), bowls = H.filter(function(h){ return h.bowl; });
   var done = H.filter(function(h){ return h.won !== null; }), won = done.filter(function(h){ return h.won; }).length;
-  rep.lead.push(first + ' has played ' + plural(H.length, 'match') + (done.length ? ' and been on the winning side in ' + won + ' of ' + done.length + ' (' + pct(won, done.length) + '%)' : '') + ', averaging ' + oneDp(H.reduce(function(s, h){ return s + h.pts; }, 0) / H.length) + ' MVP points a match.');
+  var mvpAvg = H.reduce(function(s, h){ return s + h.pts; }, 0) / H.length;
+  var rR = rankOf(C.rows, pid, function(r){ return r.r; }), rW = rankOf(C.rows, pid, function(r){ return r.w; }), rP = rankOf(C.rows, pid, function(r){ return r.pts; });
+  var strengths = [], work = [];
+  /* ---- headline ---- */
+  var batWeight = me.r || 0, bowlWeight = (me.w || 0) * 20;
+  var kind = inns.length && bowls.length >= Math.max(2, H.length / 3) && batWeight > 0 && bowlWeight > 0 && Math.min(batWeight, bowlWeight) / Math.max(batWeight, bowlWeight) > 0.35 ? 'all-rounder' : bowlWeight > batWeight ? 'bowler' : 'batter';
+  var tier = rP && rP.rank <= Math.max(3, Math.ceil(rP.of * 0.15)) ? 'top' : rP && rP.rank <= Math.ceil(rP.of * 0.4) ? 'strong' : 'core';
+  var lead1 = {top:P(['One of the standout performers in the club', 'A match-winner for whichever side he plays on', 'Among the most influential players in the club'], 'l1t'),
+    strong:P(['A dependable contributor', 'A regular source of points for his team', 'A solid, consistent presence in the side'], 'l1s'),
+    core:P(['A valued member of the Friday squad', 'A team player still building his numbers', 'A regular contributor to the side'], 'l1c')}[tier];
+  rep.lead.push(lead1 + ', ' + first + ' plays mainly as ' + (kind === 'all-rounder' ? 'an all-rounder' : 'a ' + kind) + ' and averages ' + oneDp(mvpAvg) + ' MVP points a match' +
+    (C.mvp ? (mvpAvg >= C.mvp * 1.2 ? ', well above the club average of ' + oneDp(C.mvp) : mvpAvg <= C.mvp * 0.8 ? ' (club average ' + oneDp(C.mvp) + ')' : ', close to the club average of ' + oneDp(C.mvp)) : '') + '.');
+  var ranks = [];
+  if (rP && rP.rank <= 10) ranks.push(ordinal(rP.rank) + ' for MVP points');
+  if (rR && rR.rank <= 10) ranks.push(ordinal(rR.rank) + ' for runs');
+  if (rW && rW.rank <= 10) ranks.push(ordinal(rW.rank) + ' for wickets');
+  if (ranks.length) rep.lead.push(P(['In the club rankings he is ', 'Club standing: ', 'All-time, he sits '], 'rk') + ranks.join(', ') + ' (out of ' + C.rows.filter(function(r){ return r.m; }).length + ' players).');
+  if (done.length) rep.lead.push(P(['His team has won ', 'He has finished on the winning side in ', 'Results with him in the side: won '], 'win') + won + ' of ' + done.length + ' (' + pct(won, done.length) + '%)' + (won / done.length >= 0.6 ? P([', a lucky charm for any captain.', ', a habit of being on the right side.', '.'], 'w2') : '.'));
   var bestM = H.slice().sort(function(a, b){ return b.pts - a.pts; })[0];
-  if (bestM && bestM.pts > 0) rep.lead.push('Best match: ' + bestM.pts + ' points against ' + bestM.m.teams.map(function(t){ return t.name; }).join(' / ') + ' on ' + fmtDate(bestM.m.date) + '.');
-  /* batting */
+  if (bestM && bestM.pts > 0) { var bf = []; if (bestM.bat && bestM.bat.b) bf.push(bestM.bat.r + (bestM.bat.out ? '' : '*') + ' off ' + bestM.bat.b); if (bestM.bowl) bf.push(bestM.bowl.w + '/' + bestM.bowl.r); rep.lead.push(P(['Standout day: ', 'Best performance: ', 'Career highlight so far: '], 'best') + bestM.pts + ' points on ' + fmtDate(bestM.m.date) + (bf.length ? ' (' + bf.join(', ') + ')' : '') + '.'); }
+  /* ---- batting ---- */
   if (inns.length) {
-    var R = 0, B = 0, O = 0, F = 0, S = 0, outs = {}, twenty = 0;
-    inns.forEach(function(h){ var b = h.bat; R += b.r; B += b.b; F += b.f; S += b.s; if (b.out) { O++; var k = howOut(b.out); outs[k] = (outs[k] || 0) + 1; } if (b.r >= 20) twenty++; });
-    var avg = O ? R / O : R, srr = B ? R * 100 / B : 0, bt = [];
-    var style = srr >= 150 ? 'an attacking batter who scores quickly' : srr >= 115 ? 'a positive batter who keeps the score moving' : srr >= 90 ? 'a steady batter who builds an innings' : 'a careful batter who looks to bat time';
-    bt.push(first + ' is ' + style + ': ' + R + ' runs in ' + plural(inns.length, 'innings') + (O >= 2 ? ' at an average of ' + oneDp(avg) + ' and' : O === 1 ? ', out only once, with' : ' without being dismissed, with') + ' a strike rate of ' + oneDp(srr) + '.');
-    if (R) bt.push(pct(F * 4 + S * 6, R) + '% of runs come in boundaries (' + plural(F, 'four') + ', ' + plural(S, 'six').replace('sixs', 'sixes') + ').');
+    var R = 0, B = 0, O = 0, F = 0, S = 0, outs = {}, twenty = 0, thirty = 0, pos = 0, hs = null, dots = 0, ph = {pp:{r:0, b:0}, mid:{r:0, b:0}, end:{r:0, b:0}};
+    inns.forEach(function(h){ var b = h.bat; R += b.r; B += b.b; F += b.f; S += b.s; pos += h.pos || 0; dots += h.dotsF; ['pp', 'mid', 'end'].forEach(function(z){ ph[z].r += h.ph[z].r; ph[z].b += h.ph[z].b; });
+      if (b.out) { O++; var k = howOut(b.out); outs[k] = (outs[k] || 0) + 1; } if (b.r >= 20) twenty++; if (b.r >= 30) thirty++; if (!hs || b.r > hs.r) hs = b; });
+    var avg = O ? R / O : R, srr = B ? R * 100 / B : 0, bt = [], ap = pos / inns.length;
+    var slot = ap <= 2.4 ? P(['opens the batting', 'usually walks out first', 'is trusted at the top of the order'], 'slot1') : ap <= 4.5 ? P(['bats in the top order', 'fills a top-order role', 'usually comes in at three or four'], 'slot2') : ap <= 7 ? P(['holds the middle order together', 'bats in the middle order', 'is a middle-order regular'], 'slot3') : P(['bats lower down as a finisher', 'comes in late to finish things off', 'is used in the lower order'], 'slot4');
+    var tempo = srr >= 160 ? P(['an explosive hitter', 'a big-hitting batter', 'a batter who takes the game away quickly'], 'tp1') : srr >= 125 ? P(['an attacking batter', 'a batter who keeps the scoreboard ticking fast', 'a positive, front-foot batter'], 'tp2') : srr >= 95 ? P(['a steady accumulator', 'a batter who builds his innings', 'a reliable run-maker'], 'tp3') : P(['a patient, careful batter', 'a batter who likes to bat time', 'a defensive batter who values his wicket'], 'tp4');
+    bt.push(first + ' ' + slot + ' and is ' + tempo + ': ' + R + ' runs in ' + plural(inns.length, 'innings') + (O >= 2 ? ' at an average of ' + oneDp(avg) : O === 1 ? ', dismissed only once' : ' without being dismissed') + ', strike rate ' + oneDp(srr) + (C.sr ? ' (club ' + oneDp(C.sr) + ')' : '') + '.');
+    if (srr >= C.sr * 1.15 && B >= 30) strengths.push(P(['Scores faster than most in the club', 'Quick scoring rate', 'Puts pressure on bowlers with his tempo'], 'st1'));
+    if (srr <= C.sr * 0.8 && B >= 30) work.push(P(['Rotate the strike more to lift the scoring rate', 'Look for more singles to keep the score moving', 'Turn more dot balls into ones and twos'], 'wk1'));
+    if (R && !F && !S) bt.push(P(['Yet to hit a boundary: all his runs have come from running.', 'No fours or sixes yet; his runs come from ones and twos.'], 'nob'));
+    if (R && (F || S)) { var bpct = pct(F * 4 + S * 6, R), bpb = F + S ? B / (F + S) : 0;
+      bt.push(P(['Boundary hitting: ', 'Power game: ', 'Fours and sixes: '], 'bd') + F + ' fours and ' + S + ' sixes, ' + bpct + '% of his runs' + (bpb ? ', a boundary every ' + oneDp(bpb) + ' balls' : '') + '.');
+      if (S >= 5 && S / inns.length >= 1) strengths.push(P(['Clears the rope regularly', 'Six-hitting ability', 'Can change a game with big shots'], 'st2')); }
+    if (B >= 30) { var dp = pct(dots, B); if (dp >= 45) work.push(P(['Too many dot balls (' + dp + '% of balls faced)', 'Reduce dot balls: ' + dp + '% of deliveries are not scored off', 'Find gaps more often, ' + dp + '% are dot balls'], 'wk2')); }
+    var zs = ['pp', 'mid', 'end'].filter(function(z){ return ph[z].b >= 12; }).map(function(z){ return {z:z, sr:ph[z].r * 100 / ph[z].b}; });
+    if (zs.length >= 2) { zs.sort(function(a, b){ return b.sr - a.sr; }); var nm = {pp:'the powerplay', mid:'the middle overs', end:'the last overs'};
+      bt.push(P(['Scores fastest in ' + nm[zs[0].z] + ' (SR ' + oneDp(zs[0].sr) + ') and slowest in ' + nm[zs[zs.length - 1].z] + ' (SR ' + oneDp(zs[zs.length - 1].sr) + ').', 'Best phase: ' + nm[zs[0].z] + ' at a strike rate of ' + oneDp(zs[0].sr) + '; quietest in ' + nm[zs[zs.length - 1].z] + ' (' + oneDp(zs[zs.length - 1].sr) + ').'], 'ph'));
+      if (zs[0].z === 'end' && zs[0].sr >= 150) strengths.push('Dangerous finisher at the death'); }
     var last = inns.slice(-5), lr = last.reduce(function(s, h){ return s + h.bat.r; }, 0), lo = last.filter(function(h){ return h.bat.out; }).length, lavg = lo ? lr / lo : lr;
-    if (inns.length >= 4 && O >= 2) {
-      var form = lavg >= avg * 1.25 ? 'in good form, scoring above the usual average' : lavg <= avg * 0.7 ? 'going through a quieter spell than usual' : 'scoring at about the usual level';
-      bt.push('Recent form (last ' + last.length + ' innings: ' + last.map(function(h){ return h.bat.r + (h.bat.out ? '' : '*'); }).join(', ') + '): ' + form + '.');
-    } else bt.push('Recent scores: ' + last.map(function(h){ return h.bat.r + (h.bat.out ? '' : '*'); }).join(', ') + '.');
-    bt.push('Scores 20 or more in ' + pct(twenty, inns.length) + '% of innings.');
+    var lastTxt = last.map(function(h){ return h.bat.r + (h.bat.out ? '' : '*'); }).join(', ');
+    if (inns.length >= 5 && O >= 3) {
+      var form = lavg >= avg * 1.25 ? P(['in excellent touch right now', 'striking the ball well lately', 'on a hot streak'], 'fm1') : lavg <= avg * 0.7 ? P(['due a big score soon', 'in a quieter patch than usual', 'waiting for the runs to return'], 'fm2') : P(['scoring at his usual level', 'holding steady', 'consistent with his career numbers'], 'fm3');
+      bt.push(P(['Last five innings: ', 'Recent scores: ', 'Form guide: '], 'fg') + lastTxt + ', ' + form + '.');
+    } else bt.push(P(['Recent scores: ', 'So far: ', 'Scores to date: '], 'fg2') + lastTxt + '.');
+    if (twenty) bt.push(P(['Gets to 20 in ', 'Passes 20 in ', 'Reaches 20 or more in '], 'tw') + pct(twenty, inns.length) + '% of innings' + (thirty ? ', with ' + plural(thirty, 'score') + ' of 30+' : '') + (hs ? '; best ' + hs.r + (hs.out ? '' : '*') + '.' : '.'));
+    else bt.push(P(['Still looking for a first score of 20; best so far ', 'A 20+ score is the next target; highest so far '], 'tw0') + (hs ? hs.r + (hs.out ? '' : '*') : 0) + '.');
+    if (inns.length >= 4 && twenty / inns.length >= 0.5) strengths.push(P(['Consistent run-scorer', 'Rarely fails with the bat', 'Reliable starts'], 'st3'));
     var ok = Object.keys(outs).sort(function(a, b){ return outs[b] - outs[a]; });
-    if (O >= 3 && ok[0]) bt.push('Most often out ' + ok[0] + ' (' + outs[ok[0]] + ' of ' + O + ' dismissals)' + (ok[0] === 'caught' && outs[ok[0]] / O >= 0.6 ? '; keeping the ball on the ground early on could help.' : ok[0] === 'bowled' || ok[0] === 'lbw' ? '; tightening the defence to straight balls could help.' : ok[0] === 'run out' ? '; clearer calling between the wickets could help.' : '.'));
+    if (O >= 3 && ok[0]) { var share = outs[ok[0]] / O;
+      bt.push(P(['Most common dismissal: ', 'Usually gets out ', 'Dismissal pattern: mostly '], 'dm') + ok[0] + ' (' + outs[ok[0]] + ' of ' + O + ').');
+      if (share >= 0.5) work.push({caught:P(['Keep the ball along the ground early in the innings', 'Pick the right ball to go aerial; most dismissals are catches', 'Fewer lofted shots until set'], 'tipc'), bowled:P(['Tighten the defence against straight balls', 'Watch the straight one; bowled is the main way out', 'Play straighter in the first few overs'], 'tipb'), lbw:P(['Watch the pads: LBW is a frequent dismissal', 'Get the bat in front of the pad more'], 'tipl'), 'run out':P(['Clearer calling between the wickets', 'Judge the second run more carefully'], 'tipr')}[ok[0]] || ''); }
     rep.sections.push({title:'Batting', items:bt});
   }
-  /* bowling */
+  /* ---- bowling ---- */
   if (bowls.length) {
-    var bb = 0, br = 0, bw = 0, xw = 0, md = 0, bo = [];
-    bowls.forEach(function(h){ var b = h.bowl; bb += b.balls; br += b.r; bw += b.w; xw += b.wd + b.nb; md += b.m; });
-    var ec = bb ? br / (bb / 6) : 0;
-    var role = ec <= 5 ? 'a tight, economical bowler' : bw / bowls.length >= 1.5 ? 'a wicket-taker' : ec <= 7 ? 'a reliable bowler' : 'a bowler who can be expensive at times';
-    bo.push(first + ' is ' + role + ': ' + plural(bw, 'wicket') + ' in ' + plural(bowls.length, 'match') + ' at an economy of ' + oneDp(ec) + (bw ? ', taking a wicket every ' + oneDp(bb / bw) + ' balls.' : '.'));
+    var bb = 0, br = 0, bw = 0, xw = 0, md = 0, bo = [], db = 0, bn = 0, wk = {}, bph = {pp:{r:0, b:0}, mid:{r:0, b:0}, end:{r:0, b:0}};
+    bowls.forEach(function(h){ var b = h.bowl; bb += b.balls; br += b.r; bw += b.w; xw += b.wd + b.nb; md += b.m; db += h.dotsB; bn += h.bndB; Object.keys(h.wk).forEach(function(k){ wk[k] = (wk[k] || 0) + h.wk[k]; }); ['pp', 'mid', 'end'].forEach(function(z){ bph[z].r += h.bph[z].r; bph[z].b += h.bph[z].b; }); });
+    var ec = bb ? br / (bb / 6) : 0, ce = C.eco || 7, lowE = Math.min(5.5, ce * 0.8), okE = Math.max(7.5, ce * 1.05);
+    var role = ec <= lowE && bw / bowls.length >= 1.2 ? P(['a complete bowler: tight and penetrative', 'both economical and a wicket-taker', 'a captain’s dream: dries up runs and takes wickets'], 'r1') : ec <= lowE ? P(['a miserly, economical bowler', 'very hard to score off', 'a run-saver who builds pressure'], 'r2') : bw / bowls.length >= 1.5 ? P(['a strike bowler who picks up wickets', 'an attacking wicket-taker', 'a bowler captains turn to for a breakthrough'], 'r3') : ec <= okE ? P(['a reliable bowler', 'a steady option with the ball', 'a dependable pair of overs'], 'r4') : P(['a bowler who can leak runs on his off days', 'an attacking bowler who sometimes goes for runs', 'a bowler still finding his consistency'], 'r5');
+    bo.push(first + ' is ' + role + ': ' + plural(bw, 'wicket') + ' in ' + plural(bowls.length, 'match') + ', economy ' + oneDp(ec) + (C.eco ? ' (club ' + oneDp(C.eco) + ')' : '') + (bw ? ', a wicket every ' + oneDp(bb / bw) + ' balls' : '') + '.');
+    if (ec <= C.eco * 0.85 && bb >= 36) strengths.push(P(['Economical bowling', 'Keeps batters quiet', 'Builds pressure with tight overs'], 'st4'));
+    if (ec >= C.eco * 1.2 && bb >= 36) work.push(P(['Concedes more than the club average; work on a consistent length', 'Cut down the boundary balls', 'Tighter lines to bring the economy down'], 'wk4'));
+    if (bb >= 24) bo.push(P(['Dot balls: ', 'Pressure: ', 'Scoring denied on '], 'dbt') + pct(db, bb) + '% of deliveries' + (bn ? ', with a boundary conceded every ' + oneDp(bb / bn) + ' balls.' : ', and no boundaries conceded.'));
+    var wt = Object.keys(wk).sort(function(a, b){ return wk[b] - wk[a]; });
+    if (bw >= 4 && wt[0]) { var stumps = (wk.Bowled || 0) + (wk.LBW || 0);
+      bo.push(stumps / bw >= 0.4 ? P(['Attacks the stumps: ' + stumps + ' of his ' + bw + ' wickets are bowled or LBW.', 'Hits the stumps often (' + stumps + ' bowled/LBW out of ' + bw + ').'], 'wt1') : P(['Most of his wickets are ' + ({Caught:'catches', Stumped:'stumpings', 'Hit wicket':'hit wicket'}[wt[0]] || wt[0]) + ' (' + wk[wt[0]] + ' of ' + bw + ').', 'Main way he gets batters out: ' + ({Caught:'caught', Stumped:'stumped'}[wt[0]] || wt[0]) + ' (' + wk[wt[0]] + ' of ' + bw + ').'], 'wt2')); }
+    var bz = ['pp', 'mid', 'end'].filter(function(z){ return bph[z].b >= 18; }).map(function(z){ return {z:z, e:bph[z].r / (bph[z].b / 6)}; });
+    if (bz.length >= 2) { bz.sort(function(a, b){ return a.e - b.e; }); var nm2 = {pp:'the powerplay', mid:'the middle overs', end:'the last overs'};
+      bo.push(P(['Most effective in ' + nm2[bz[0].z] + ' (economy ' + oneDp(bz[0].e) + '); most expensive in ' + nm2[bz[bz.length - 1].z] + ' (' + oneDp(bz[bz.length - 1].e) + ').', 'Best phase to bowl him: ' + nm2[bz[0].z] + ', economy ' + oneDp(bz[0].e) + '.'], 'bz'));
+      if (bz[0].z === 'end' && bz[0].e <= 7) strengths.push('Reliable in the death overs'); }
     var lb = bowls.slice(-5);
-    if (bowls.length >= 3) bo.push('Last ' + lb.length + ' spells: ' + lb.map(function(h){ return h.bowl.w + '/' + h.bowl.r; }).join(', ') + '.');
+    if (bowls.length >= 3) bo.push(P(['Recent spells: ', 'Last ' + lb.length + ' outings: ', 'Latest figures: '], 'rs') + lb.map(function(h){ return h.bowl.w + '/' + h.bowl.r; }).join(', ') + '.');
     var xpo = bb ? xw / (bb / 6) : 0;
-    if (xpo >= 1) bo.push('Gives away ' + oneDp(xpo) + ' wides or no balls per over. Working on line and front foot will save runs.');
-    else if (bb >= 30 && xpo <= 0.3) bo.push('Very disciplined: hardly any wides or no balls.');
+    if (xpo >= 1) { bo.push('Bowls ' + oneDp(xpo) + ' wides or no balls per over.'); work.push(P(['Cut down the wides and no balls', 'Work on line and front foot to stop giving extras', 'Fewer extras: they add up over a spell'], 'wk5')); }
+    else if (bb >= 30 && xpo <= 0.3) strengths.push(P(['Disciplined: very few extras', 'Rarely bowls wides or no balls', 'Clean, disciplined bowling'], 'st5'));
     if (md) bo.push(plural(md, 'maiden') + ' bowled.');
     rep.sections.push({title:'Bowling', items:bo});
   }
-  /* fielding */
-  var c = 0, s2 = 0, ro = 0; H.forEach(function(h){ c += h.f.c; s2 += h.f.st; ro += h.f.ro; });
-  if (c + s2 + ro) rep.sections.push({title:'Fielding', items:[first + ' has taken ' + [c ? plural(c, 'catch').replace('catchs', 'catches') : '', s2 ? plural(s2, 'stumping') : '', ro ? plural(ro, 'run out') : ''].filter(Boolean).join(', ') + ' (' + oneDp((c + s2 + ro) / H.length) + ' a match).']});
+  /* ---- fielding & captaincy ---- */
+  var c = 0, s2 = 0, ro = 0, dh = 0; H.forEach(function(h){ c += h.f.c; s2 += h.f.st; ro += h.f.ro; dh += h.f.dh; });
+  if (c + s2 + ro) { var fpm = (c + s2 + ro) / H.length;
+    rep.sections.push({title:'Fielding', items:[first + ' has ' + P(['been involved in', 'completed', 'effected'], 'fd') + ' ' + [c ? plural(c, 'catch') : '', s2 ? plural(s2, 'stumping') : '', ro ? plural(ro, 'run out') : ''].filter(Boolean).join(', ') + (dh ? ' (' + plural(dh, 'direct hit') + ')' : '') + ', ' + oneDp(fpm) + ' a match' + (C.field ? (fpm >= C.field * 1.3 ? ', one of the safest pairs of hands in the club.' : '.') : '.')]});
+    if (C.field && fpm >= C.field * 1.3 && H.length >= 3) strengths.push(P(['Sharp in the field', 'Safe catcher', 'Brings energy in the field'], 'st6')); }
+  if (me.capM) rep.sections.push({title:'Captaincy', items:[P(['As captain: ', 'Leading the side: ', 'Captaincy record: '], 'cp') + me.capW + ' won, ' + me.capL + ' lost' + (me.capT ? ', ' + me.capT + ' tied' : '') + ' (' + Math.round(me.capW * 100 / me.capM) + '% wins)' + (me.capR || me.capWk ? '; scored ' + me.capR + ' runs and took ' + plural(me.capWk, 'wicket') + ' as captain.' : '.')]});
+  strengths = strengths.filter(Boolean).slice(0, 3); work = work.filter(Boolean).slice(0, 3);
+  if (strengths.length || work.length) rep.sections.push({title:'Strengths & focus areas', items:strengths.map(function(x){ return '✅ ' + x; }).concat(work.map(function(x){ return '🎯 ' + x; }))});
   return rep;
 }
 function reportHtml(rep, shareAct){
@@ -1432,7 +1732,7 @@ function pdfReport(doc, y, rep){
     y = needSpace(doc, y + 2, 14);
     ink(doc, PC.navy); doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.text(pdfSafe(s.title), M, y); y += 5;
     doc.setFont('helvetica', 'normal'); doc.setFontSize(9); ink(doc, PC.ink);
-    s.items.forEach(function(t){ var l = doc.splitTextToSize(pdfSafe(t), W - 2 * M - 5); y = needSpace(doc, y, l.length * 4.2); fill(doc, PC.gold); doc.circle(M + 1.2, y - 1.1, 0.8, 'F'); doc.text(l, M + 4, y); y += l.length * 4.2 + 1; });
+    s.items.forEach(function(t){ var l = doc.splitTextToSize(pdfSafe(String(t).replace(/^✅ /, 'Strength: ').replace(/^🎯 /, 'Focus: ')), W - 2 * M - 5); y = needSpace(doc, y, l.length * 4.2); fill(doc, PC.gold); doc.circle(M + 1.2, y - 1.1, 0.8, 'F'); doc.text(l, M + 4, y); y += l.length * 4.2 + 1; });
   });
   if (rep.table) y = tbl(doc, needSpace(doc, y + 2, 40), rep.table.head.map(pdfSafe), rep.table.rows.map(function(r){ return r.map(function(x){ return pdfSafe(x); }); }),
     {columnStyles:{0:{fontStyle:'bold', cellWidth:56}}, didParseCell:function(c){ if (c.column.index >= 1) c.cell.styles.halign = 'center'; }}) + 4;
@@ -1457,8 +1757,9 @@ function matchView(){
   if (tab === 'card') return h + scorecard(m);
   if (tab === 'chat') return h + commentsView();
   if (tab === 'an') return h + analysisView(m);
-  var idx = m.innings.length - 1, st = CE.replay(m, idx);
-  return h + scoreboard(m, idx, st) + playersCard(st) + controls(m, idx, st);
+  var sm = scoringMatch(m), idx = sm.innings.length - 1, st = CE.replay(sm, idx), pre = '';
+  if (m.so) pre = '<div class="tieban">🤝 Both teams scored ' + CE.replay(m, 0).total + ' in the match. ' + (m.status === 'done' ? esc(String(m.result || '').replace(/^Match tied · /, '')) + '.' : 'Super over in progress (1 over, 2 wickets).') + '</div>';
+  return h + pre + scoreboard(sm, idx, st) + playersCard(st) + controls(sm, idx, st) + commentaryHtml(m, ui.fullComm);
 }
 
 /* ---------- members ---------- */
@@ -1467,7 +1768,7 @@ function statsFor(season){
   var list = listMatches().filter(function(m){ return season === 'all' || String(new Date(m.date).getFullYear()) === String(season); });
   var rows = CE.stats(list), map = {};
   rows.forEach(function(r){ r.name = displayName(r.key, r.name); map[r.key] = r; });
-  return {rows:rows, map:map, count:list.length};
+  return {rows:rows, map:map, count:list.length, list:list};
 }
 function membersView(){
   var ps = listPlayers(), active = ps.filter(function(p){ return p.active !== false; }), gone = ps.filter(function(p){ return p.active === false; });
@@ -1575,7 +1876,8 @@ function rulesView(){
       row('Powerplay', 'Overs 1–' + R.pp),
       row('Fielders outside the 30-yard circle in the powerplay', 'Max ' + R.ppOut),
       row('Fielders outside the circle after the powerplay', 'Max ' + R.out),
-      row('Overs per bowler', 'Max ' + R.maxBowl)]) +
+      row('Overs per bowler', 'Max ' + R.maxBowl),
+      row('Time to complete an innings', '105 minutes (from the first ball)')]) +
     '<p class="small">For a shorter or longer match the app scales these: powerplay about a third of the overs, and each bowler at most a fifth of the overs (for example 20 overs: 6-over powerplay, 4 overs per bowler). The scorer can change them when starting a match.</p></section>' +
     '<section class="card"><h2 class="cmh">MVP points: batting</h2>' + tbl([
       row('Each run', sg(P.run)), row('Each four (bonus)', sg(P.four)), row('Each six (bonus)', sg(P.six)),
@@ -1604,14 +1906,14 @@ var STAT_DEFS = {
       ['Avg', 'avg', function(r){ var o = r.inn - r.no; return o ? (r.r / o).toFixed(1) : '–'; }], ['SR', 'sr', function(r){ return sr(r.r, r.b); }],
       ['4s', 'f', function(r){ return r.f; }], ['6s', 's', function(r){ return r.s; }], ['30s', 'thirty', function(r){ return r.thirty; }],
       ['50s', 'fifty', function(r){ return r.fifty; }], ['100s', 'hund', function(r){ return r.hund; }], ['Ducks', 'ducks', function(r){ return r.ducks; }]],
-    sorts:[['r', 'Most runs'], ['s', 'Most sixes'], ['f', 'Most fours'], ['hs', 'Highest score'], ['avg', 'Best average'], ['sr', 'Best strike rate (20+ balls)'],
-      ['fifty', 'Most 50s'], ['thirty', 'Most 30s'], ['hund', 'Most 100s'], ['ducks', 'Most ducks']]},
+    sorts:[['r', 'Most runs'], ['s', 'Most sixes'], ['f', 'Most fours'], ['hs', 'Highest scores (each innings)'], ['avg', 'Best average'], ['sr', 'Best strike rate (20+ balls)'],
+      ['fifty', 'Most 50s'], ['thirty', 'Most 30s (incl. 50s & 100s)'], ['hund', 'Most 100s'], ['ducks', 'Most ducks']]},
   bowl: {who:'Bowler', base:function(r){ return r.binn > 0; },
     cols:[['Wkts', 'w', function(r){ return r.w; }], ['O', 'balls', function(r){ return CE.ov(r.balls); }], ['R', 'rc', function(r){ return r.rc; }],
       ['Best', 'bbi', function(r){ return r.bw < 0 ? '–' : r.bw + '/' + r.br; }], ['Econ', 'eco', function(r){ return rate(r.rc, r.balls); }],
       ['Avg', 'bavg', function(r){ return r.w ? (r.rc / r.w).toFixed(1) : '–'; }], ['M', 'md', function(r){ return r.md; }],
       ['NB', 'nb', function(r){ return r.nb; }], ['WD', 'wd', function(r){ return r.wd; }]],
-    sorts:[['w', 'Most wickets'], ['eco', 'Best economy (2+ overs)'], ['bavg', 'Best average'], ['bbi', 'Best bowling'], ['md', 'Most maidens'], ['wd', 'Most wides'], ['nb', 'Most no balls']]},
+    sorts:[['w', 'Most wickets'], ['eco', 'Best economy (2+ overs)'], ['bavg', 'Best average'], ['bbi', 'Best bowling (each innings)'], ['md', 'Most maidens'], ['wd', 'Most wides'], ['nb', 'Most no balls']]},
   field: {who:'Fielder', base:function(r){ return r.c + r.st + r.ro > 0; },
     cols:[['Total', 'tot', function(r){ return r.c + r.st + r.ro; }], ['Ct', 'c', function(r){ return r.c; }], ['St', 'st', function(r){ return r.st; }],
       ['RO', 'ro', function(r){ return r.ro; }], ['Direct', 'dh', function(r){ return r.dh; }]],
@@ -1645,9 +1947,110 @@ function sortedRows(mode, rows, key){
   if (key === 'bavg') list = list.filter(function(r){ return r.w > 0; });
   return list.sort(function(a, b){ var x = sortVal(key, a), y = sortVal(key, b); return (asc ? x - y : y - x) || a.name.localeCompare(b.name); });
 }
+function inningsRecords(list){
+  var bat = [], bowl = [];
+  list.forEach(function(m){
+    for (var i = 0; i < m.innings.length; i++) {
+      var st = CE.replay(m, i), opp = m.teams[1 - m.innings[i].bat].name;
+      st.batOrder.forEach(function(n){ var b = st.bat[n]; if (b.b || b.r) bat.push({key:mkey(m, n) || 'n:' + n, name:n, r:b.r, b:b.b, f:b.f, s:b.s, no:!b.out, m:m, opp:opp}); });
+      st.bowlOrder.forEach(function(n){ var w = st.bowl[n]; if (w.balls) bowl.push({key:mkey(m, n) || 'n:' + n, name:n, w:w.w, r:w.r, balls:w.balls, md:w.m, m:m, opp:m.teams[m.innings[i].bat].name}); });
+    }
+  });
+  bat.sort(function(a, b){ return b.r - a.r || (b.no - a.no) || a.b - b.b; });
+  bowl.sort(function(a, b){ return b.w - a.w || a.r - b.r || a.balls - b.balls; });
+  return {bat:bat, bowl:bowl};
+}
+function inningsTable(kind, rows){
+  var t = '<section class="card"><div class="tw"><table class="stbl"><thead><tr><th>#</th><th>' + (kind === 'bat' ? 'Batter' : 'Bowler') + '</th>' +
+    (kind === 'bat' ? '<th class="sorted">Score</th><th>Balls</th><th>4s</th><th>6s</th><th>SR</th>' : '<th class="sorted">Figures</th><th>Overs</th><th>Econ</th><th>M</th>') + '<th>Date</th></tr></thead><tbody>';
+  t += rows.slice(0, 50).map(function(x, i){
+    return '<tr><td class="rk">' + (i + 1) + '</td><td><span class="sname">' + avatar(x.key, x.name, 'xs') + '<b>' + plink(x.key, x.name) + '</b></span><span class="dis">vs ' + esc(x.opp) + '</span></td>' +
+      (kind === 'bat' ? '<td class="sorted"><b>' + x.r + (x.no ? '*' : '') + '</b></td><td>' + x.b + '</td><td>' + x.f + '</td><td>' + x.s + '</td><td>' + sr(x.r, x.b) + '</td>'
+        : '<td class="sorted"><b>' + x.w + '/' + x.r + '</b></td><td>' + CE.ov(x.balls) + '</td><td>' + rate(x.r, x.balls) + '</td><td>' + x.md + '</td>') +
+      '<td><button class="link" data-act="open" data-id="' + esc(x.m.id) + '">' + fmtDate(x.m.date) + '</button></td></tr>';
+  }).join('');
+  if (!rows.length) t += '<tr><td colspan="8" class="small">Nothing recorded yet.</td></tr>';
+  return t + '</tbody></table></div></section>';
+}
+/* ---------- club records & season awards ---------- */
+function clubRecords(list){
+  var ir = inningsRecords(list), parts = [], teams = [], fast = [], sixes = [], overs = [], wins = [];
+  list.forEach(function(m){
+    m.innings.forEach(function(inn, i){
+      var st = CE.replay(m, i), tn = m.teams[inn.bat].name, opp = m.teams[1 - inn.bat].name;
+      st.parts.forEach(function(p, k){ parts.push({r:p.r, balls:p.balls, a:p.a, b:p.b, wkt:k + 1, m:m, team:tn}); });
+      if (st.opened && (st.done || m.status === 'done')) teams.push({r:st.total, w:st.wkts, legal:st.legal, team:tn, opp:opp, m:m, allOut:st.wkts >= st.maxW, full:st.legal >= st.maxBalls});
+      st.log.forEach(function(e){ if (e.k === 'ms' && e.kind === 'bat' && e.v === 50) fast.push({name:e.who, key:mkey(m, e.who) || 'n:' + e.who, b:e.b, m:m, opp:opp}); });
+      st.batOrder.forEach(function(n){ var b = st.bat[n]; if (b.s) sixes.push({name:n, key:mkey(m, n) || 'n:' + n, s:b.s, r:b.r, m:m}); });
+      st.ol.forEach(function(o){ if (o) overs.push({runs:o.runs, n:o.n, bowler:o.bowler, bats:o.bats, team:tn, m:m}); });
+    });
+    if (m.status === 'done' && m.innings.length === 2 && !m.so) {
+      var a = CE.replay(m, 0), b = CE.replay(m, 1);
+      if (b.total >= b.target) wins.push({kind:'w', v:b.maxW - b.wkts, balls:b.maxBalls - b.legal, team:m.teams[m.innings[1].bat].name, m:m});
+      else if (a.total > b.total) wins.push({kind:'r', v:a.total - b.total, team:m.teams[m.innings[0].bat].name, m:m});
+    }
+  });
+  parts.sort(function(a, b){ return b.r - a.r; }); fast.sort(function(a, b){ return a.b - b.b; });
+  sixes.sort(function(a, b){ return b.s - a.s || b.r - a.r; }); overs.sort(function(a, b){ return b.runs - a.runs; });
+  var hi = teams.slice().sort(function(a, b){ return b.r - a.r; }), lo = teams.filter(function(t){ return t.allOut || t.full; }).sort(function(a, b){ return a.r - b.r; });
+  return {bat:ir.bat, bowl:ir.bowl, parts:parts, hi:hi, lo:lo, fast:fast, sixes:sixes, overs:overs,
+    winsR:wins.filter(function(x){ return x.kind === 'r'; }).sort(function(a, b){ return b.v - a.v; }), winsW:wins.filter(function(x){ return x.kind === 'w'; }).sort(function(a, b){ return b.v - a.v || b.balls - a.balls; })};
+}
+function seasonAwards(rows){
+  var best = function(filter, val, fmt, asc){ var l = rows.filter(filter).sort(function(a, b){ return asc ? val(a) - val(b) : val(b) - val(a); }); return l[0] ? {r:l[0], txt:fmt(l[0]), runner:l[1] ? l[1] : null} : null; };
+  return [
+    ['🏏', 'Most runs', best(function(r){ return r.r > 0; }, function(r){ return r.r; }, function(r){ return r.r + ' runs · avg ' + (r.inn - r.no ? (r.r / (r.inn - r.no)).toFixed(1) : r.r) + ' · SR ' + sr(r.r, r.b); })],
+    ['🎯', 'Most wickets', best(function(r){ return r.w > 0; }, function(r){ return r.w * 1000 - r.rc; }, function(r){ return r.w + ' wickets · econ ' + rate(r.rc, r.balls); })],
+    ['⭐', 'MVP of the season', best(function(r){ return r.m > 0; }, function(r){ return r.pts; }, function(r){ return r.pts + ' MVP points in ' + plural(r.m, 'match'); })],
+    ['🧤', 'Best fielder', best(function(r){ return r.c + r.st + r.ro > 0; }, function(r){ return r.c + r.st + r.ro + r.dh * 0.1; }, function(r){ return (r.c + r.st + r.ro) + ' dismissals (' + r.c + ' ct, ' + r.st + ' st, ' + r.ro + ' ro)'; })],
+    ['💥', 'Most sixes', best(function(r){ return r.s > 0; }, function(r){ return r.s; }, function(r){ return r.s + ' sixes'; })],
+    ['⚡', 'Best strike rate', best(function(r){ return r.b >= 60; }, function(r){ return r.r / r.b; }, function(r){ return 'SR ' + sr(r.r, r.b) + ' (' + r.r + ' off ' + r.b + ')'; })],
+    ['🔒', 'Best economy', best(function(r){ return r.balls >= 60; }, function(r){ return r.rc / r.balls; }, function(r){ return rate(r.rc, r.balls) + ' an over (' + CE.ov(r.balls) + ' ov)'; }, true)],
+    ['🏆', 'Most Man of the Match', best(function(r){ return r.pom > 0; }, function(r){ return r.pom * 1000 + r.pts / 1000; }, function(r){ return plural(r.pom, 'award'); })],
+    ['👑', 'Best captain', best(function(r){ return r.capM >= 3; }, function(r){ return r.capW / r.capM + r.capW / 1000; }, function(r){ return r.capW + ' wins from ' + r.capM + ' (' + Math.round(r.capW * 100 / r.capM) + '%)'; })]
+  ];
+}
+function recordsView(){
+  var seasons = seasonList(), s = statsFor(ui.season), R = clubRecords(s.list);
+  var h = backBar('Club records & awards', 'tostats');
+  h += '<div class="chips">' + ['all'].concat(seasons).map(function(y){ return '<button class="ch' + (String(ui.season) === String(y) ? ' on' : '') + '" data-act="season" data-v="' + y + '">' + (y === 'all' ? 'All time' : y) + '</button>'; }).join('') + '</div>';
+  if (!s.count) return h + '<div class="empty"><b>No matches yet</b></div>';
+  h += '<h2 class="sec">' + (ui.season === 'all' ? 'All-time awards' : 'Season ' + esc(ui.season) + ' awards') + '</h2><div class="awards">' + seasonAwards(s.rows).map(function(a){
+    if (!a[2]) return '';
+    var r = a[2].r;
+    return '<button class="award" data-act="profile" data-id="' + esc(r.key) + '">' + avatar(r.key, r.name, 'big') + '<span class="aw-ic">' + a[0] + '</span><span class="aw-t">' + a[1] + '</span><b>' + esc(r.name) + '</b><small>' + esc(a[2].txt) + '</small></button>';
+  }).join('') + '</div><p class="small">Best strike rate needs 60+ balls faced, best economy 10+ overs bowled, best captain 3+ matches.</p>';
+  var sec = function(title, rows, fmt){ if (!rows.length) return ''; return '<section class="card"><h2 class="cmh">' + title + '</h2>' + rows.slice(0, 5).map(function(x, i){ var f = fmt(x); return '<div class="recrow"><span class="rk">' + (i + 1) + '</span><span class="rn">' + f[0] + '<small>' + f[2] + '</small></span><b>' + f[1] + '</b></div>'; }).join('') + '</section>'; };
+  var when = function(m){ return '<button class="link" data-act="open" data-id="' + esc(m.id) + '">' + fmtDate(m.date) + '</button>'; };
+  var who = function(key, name){ return plink(key, name); };
+  h += '<h2 class="sec">Club records</h2>';
+  h += sec('Highest individual scores', R.bat, function(x){ return [who(x.key, x.name), x.r + (x.no ? '*' : '') + ' <small>(' + x.b + ')</small>', 'vs ' + esc(x.opp) + ' · ' + when(x.m)]; });
+  h += sec('Best bowling figures', R.bowl, function(x){ return [who(x.key, x.name), x.w + '/' + x.r + ' <small>(' + CE.ov(x.balls) + ')</small>', 'vs ' + esc(x.opp) + ' · ' + when(x.m)]; });
+  h += sec('Fastest fifties', R.fast, function(x){ return [who(x.key, x.name), x.b + ' balls', 'vs ' + esc(x.opp) + ' · ' + when(x.m)]; });
+  h += sec('Highest partnerships', R.parts, function(x){ return [esc(x.a) + ' & ' + esc(x.b), x.r + ' <small>(' + x.balls + ')</small>', ordinal(x.wkt) + ' wicket · ' + esc(x.team) + ' · ' + when(x.m)]; });
+  h += sec('Highest team totals', R.hi, function(x){ return [esc(x.team), x.r + '/' + x.w, CE.ov(x.legal) + ' ov vs ' + esc(x.opp) + ' · ' + when(x.m)]; });
+  h += sec('Lowest team totals', R.lo, function(x){ return [esc(x.team), x.r + '/' + x.w, CE.ov(x.legal) + ' ov vs ' + esc(x.opp) + ' · ' + when(x.m)]; });
+  h += sec('Most sixes in an innings', R.sixes, function(x){ return [who(x.key, x.name), x.s + ' sixes', x.r + ' runs · ' + when(x.m)]; });
+  h += sec('Most expensive overs', R.overs, function(x){ return [esc(x.bowler || ''), x.runs + ' runs', 'over ' + x.n + ' to ' + esc(x.bats.join(' & ')) + ' · ' + when(x.m)]; });
+  h += sec('Biggest wins by runs', R.winsR, function(x){ return [esc(x.team), plural(x.v, 'run'), when(x.m)]; });
+  h += sec('Biggest wins by wickets', R.winsW, function(x){ return [esc(x.team), plural(x.v, 'wicket'), plural(x.balls, 'ball') + ' to spare · ' + when(x.m)]; });
+  h += '<div class="actions"><button class="btn" data-act="sharerecords">Share as text</button></div>';
+  return h;
+}
+function recordsText(){
+  var s = statsFor(ui.season), R = clubRecords(s.list), L = ['🏆 BCC Cricket – ' + (ui.season === 'all' ? 'All-time' : 'Season ' + ui.season) + ' awards & records', ''];
+  seasonAwards(s.rows).forEach(function(a){ if (a[2]) L.push(a[0] + ' ' + a[1] + ': *' + a[2].r.name + '* (' + a[2].txt + ')'); });
+  L.push('', '*Highest scores*'); R.bat.slice(0, 5).forEach(function(x, i){ L.push((i + 1) + '. ' + x.name + ' ' + x.r + (x.no ? '*' : '') + ' (' + x.b + ')'); });
+  L.push('', '*Best bowling*'); R.bowl.slice(0, 5).forEach(function(x, i){ L.push((i + 1) + '. ' + x.name + ' ' + x.w + '/' + x.r); });
+  if (R.parts[0]) L.push('', 'Highest partnership: ' + R.parts[0].r + ' (' + R.parts[0].a + ' & ' + R.parts[0].b + ')');
+  if (R.hi[0]) L.push('Highest team total: ' + R.hi[0].r + '/' + R.hi[0].w + ' (' + R.hi[0].team + ')');
+  if (R.fast[0]) L.push('Fastest fifty: ' + R.fast[0].name + ', ' + R.fast[0].b + ' balls');
+  return L.join('\n');
+}
 function statsView(){
   var seasons = seasonList(), s = statsFor(ui.season);
   var h = header('Season stats');
+  h += '<button class="recbtn" data-act="nav" data-v="records"><span>🏆</span><div><b>Club records & awards</b><small>Season awards, highest scores, best bowling, fastest fifties…</small></div><i>›</i></button>';
   h += '<div class="chips">' + ['all'].concat(seasons).map(function(y){ return '<button class="ch' + (String(ui.season) === String(y) ? ' on' : '') + '" data-act="season" data-v="' + y + '">' + (y === 'all' ? 'All time' : y) + '</button>'; }).join('') + '</div>';
   var modes = [['mvp', 'MVP'], ['bat', 'Batting'], ['bowl', 'Bowling'], ['field', 'Fielding'], ['cap', 'Captains']];
   h += '<div class="seg2">' + modes.map(function(md){ return '<button class="' + (ui.statsMode === md[0] ? 'on' : '') + '" data-act="smode" data-v="' + md[0] + '">' + md[1] + '</button>'; }).join('') + '</div>';
@@ -1656,6 +2059,10 @@ function statsView(){
   ui.sort = ui.sort || {};
   var key = ui.sort[mode] || D.sorts[0][0];
   h += '<div class="sortrow"><label for="sortsel" class="flabel">Sort by</label><select id="sortsel">' + D.sorts.map(function(o){ return '<option value="' + o[0] + '"' + (o[0] === key ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('') + '</select></div>';
+  if ((mode === 'bat' && key === 'hs') || (mode === 'bowl' && key === 'bbi')) {
+    var ir = inningsRecords(s.list || []);
+    return h + inningsTable(mode, mode === 'bat' ? ir.bat : ir.bowl) + '<p class="small">Every innings is listed separately, so the same player can appear more than once. * = not out. Top 50 shown.</p>';
+  }
   var rows = sortedRows(mode, s.rows, key), hl = function(k){ return k === key ? ' class="sorted"' : ''; };
   var cols = D.cols.slice(), ci = cols.findIndex(function(c){ return c[1] === key; });
   if (ci > 0) cols.unshift(cols.splice(ci, 1)[0]);
@@ -1685,6 +2092,8 @@ function scorecardText(m){
     if (bw.length) lines.push('Bowling: ' + bw.join(', '));
     lines.push('');
   });
+  var so = CE.soOf(m);
+  if (so) { lines.push('*Super over*'); so.innings.forEach(function(inn, i){ var s2 = CE.replay(so, i); lines.push(m.teams[inn.bat].name + ' ' + s2.total + '/' + s2.wkts + ' (' + CE.ov(s2.legal) + ' ov)'); }); lines.push(''); }
   lines.push('*' + (m.result || liveStatus(m)) + '*');
   var pom = CE.playerOfMatch(m); if (pom) lines.push('Man of the Match: ' + displayName(pom.key, pom.name) + ' (' + pom.pts + ' pts)');
   return lines.join('\n');
@@ -1890,7 +2299,17 @@ function pdfMatch(doc, m, first){
       {columnStyles:{0:{cellWidth:56}, 1:{halign:'center'}, 2:{halign:'center'}}, didParseCell:function(c){ if (c.section === 'head' && c.column.index >= 1) c.cell.styles.halign = 'center'; }}) + 3;
     if (R.pp > 0 && st.ppRuns != null) y = tbl(doc, y + 1, ['Powerplay', 'Overs', 'Runs'], [['Mandatory', '0.1 - ' + R.pp, st.ppRuns]],
       {columnStyles:{0:{cellWidth:56}, 1:{halign:'center'}, 2:{halign:'center', fontStyle:'bold'}}, didParseCell:function(c){ if (c.section === 'head' && c.column.index >= 1) c.cell.styles.halign = 'center'; }}) + 4;
+    var tm = innTiming(m, st);
+    if (tm && !tm.live) { var allow = tm.ov * MIN_PER_OVER, late = tm.mins - allow; doc.setFont('helvetica', late > 2 ? 'bold' : 'normal'); doc.setFontSize(9); ink(doc, late > 2 ? PC.red : PC.muted);
+      doc.text(pdfSafe('Innings time: ' + fmtMins(tm.mins) + ' for ' + CE.ov(st.legal) + ' overs (allowed ' + fmtMins(allow) + ')' + (late > 2 ? ' - ' + fmtMins(late) + ' over time' : ' - on time')), M, y + 1); y += 6; }
   });
+  /* super over */
+  var so = CE.soOf(m);
+  if (so) {
+    y = secTitle(doc, needSpace(doc, y + 2, 30), 'Super over');
+    y = tbl(doc, y, ['Team', 'Score', 'Batters', 'Bowler'], so.innings.map(function(inn, i){ var s2 = CE.replay(so, i); return [pdfSafe(m.teams[inn.bat].name), s2.total + '/' + s2.wkts + ' (' + CE.ov(s2.legal) + ')', pdfSafe(s2.batOrder.map(function(n){ var b = s2.bat[n]; return n + ' ' + b.r + (b.out ? '' : '*') + ' (' + b.b + ')'; }).join(', ')), pdfSafe(s2.bowlOrder.map(function(n){ var w = s2.bowl[n]; return n + ' ' + w.w + '/' + w.r; }).join(', '))]; }),
+      {columnStyles:{0:{fontStyle:'bold', cellWidth:40}, 1:{cellWidth:24}}}) + 4;
+  }
   /* MVP points */
   var mr = mvpRows(m);
   if (mr.length && m.innings.some(function(_, i){ return CE.replay(m, i).opened; })) {
@@ -1932,6 +2351,7 @@ function pdfFooters(doc){
 function fileSafe(s){ return String(s).replace(/[^A-Za-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 60) || 'scorecard'; }
 var pendingPdf = null;
 function sharePdfFile(file){
+  if (!/\.png$/i.test(file.name)) { var tx = $('#pdfbartx'); if (tx) tx.textContent = 'Your PDF is ready'; }
   navigator.share({files:[file], title:file.name}).then(function(){ hidePdfBar(); }, function(e){
     if (e && e.name === 'AbortError') { hidePdfBar(); return; }
     pendingPdf = file; showPdfBar();
@@ -2037,6 +2457,82 @@ function memberPdf(id){
     deliverPdf(doc, fileSafe(p.name) + '-stats.pdf');
   } catch(e){ toast('Could not make the PDF.'); }
 }
+/* ---------- scorecard image for WhatsApp (1080 px wide PNG) ---------- */
+function loadImg(src){ return new Promise(function(res){ if (!src) { res(null); return; } var i = new Image(); i.onload = function(){ res(i); }; i.onerror = function(){ res(null); }; i.src = src; }); }
+function rr(c, x, y, w, h, r){ c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+function fitC(c, t, w){ t = String(t); if (c.measureText(t).width <= w) return t; while (t.length > 1 && c.measureText(t + '…').width > w) t = t.slice(0, -1); return t + '…'; }
+function drawScorecard(m){
+  var F = '"Barlow Condensed", "Arial Narrow", sans-serif', B = 'Figtree, system-ui, sans-serif';
+  var pom = CE.playerOfMatch(m), pp = pom ? ((players[pom.key] && okPhoto(players[pom.key].photo)) || null) : null;
+  var fontsReady = (document.fonts && document.fonts.load) ? Promise.all(['700 60px "Barlow Condensed"', '600 30px "Barlow Condensed"', '500 30px Figtree', '700 30px Figtree'].map(function(f){ return document.fonts.load(f).catch(function(){}); })) : Promise.resolve();
+  return Promise.all([fontsReady, loadImg(LOGO), loadImg(pp)]).then(function(r){
+    var logo = r[1], photo = r[2], W = 1080, inns = m.innings.map(function(_, i){ return CE.replay(m, i); }).filter(function(s){ return s.opened; });
+    var so = CE.soOf(m), H = 330 + inns.length * 430 + (so ? 90 : 0) + (pom ? 190 : 0) + 90;
+    var cv = document.createElement('canvas'); cv.width = W; cv.height = H; var c = cv.getContext('2d');
+    var NAVY = '#0e2a52', GOLD = '#e8b530', INK = '#0f1b2e', MUTED = '#606e83', LIGHT = '#eef3fa', T1 = '#d8433a', T2 = '#0f9d8a';
+    c.fillStyle = '#f4f7fc'; c.fillRect(0, 0, W, H);
+    /* header */
+    var g = c.createLinearGradient(0, 0, W, 230); g.addColorStop(0, '#0b2246'); g.addColorStop(1, '#1d4a8c'); c.fillStyle = g; c.fillRect(0, 0, W, 230);
+    c.fillStyle = GOLD; c.fillRect(0, 230, W, 8);
+    if (logo) c.drawImage(logo, W - 60 - 150, 40, 150, 150);
+    c.fillStyle = GOLD; c.font = '700 26px ' + B; c.fillText(CLUB_NAME.toUpperCase(), 60, 72);
+    c.fillStyle = '#fff'; c.font = '700 64px ' + F; c.fillText(fitC(c, m.teams[0].name + ' vs ' + m.teams[1].name, W - 300), 60, 145);
+    c.font = '500 28px ' + B; c.fillStyle = '#cfdcf0'; c.fillText(fitC(c, fmtDate(m.date, true) + (m.venue ? '  ·  ' + m.venue : '') + '  ·  ' + m.overs + ' overs', W - 300), 60, 192);
+    /* result */
+    var y = 268; rr(c, 50, y, W - 100, 76, 18); c.fillStyle = GOLD; c.fill();
+    c.fillStyle = NAVY; c.font = '700 40px ' + F; c.textAlign = 'center'; c.fillText(fitC(c, m.status === 'done' ? (m.result || 'Match complete') : 'LIVE · ' + liveStatus(m), W - 140), W / 2, y + 51); c.textAlign = 'left';
+    y += 110;
+    inns.forEach(function(st, i){
+      var t = m.teams[m.innings[i].bat], col = i ? T2 : T1, bt = topBatters(st, 4), bw = topBowlers(st, 3);
+      rr(c, 50, y, W - 100, 400, 22); c.fillStyle = '#fff'; c.fill(); c.strokeStyle = '#dbe3ef'; c.lineWidth = 2; c.stroke();
+      c.fillStyle = col; rr(c, 50, y, 14, 400, 7); c.fill();
+      c.fillStyle = INK; c.font = '700 44px ' + F; c.fillText(fitC(c, t.name, 600), 90, y + 60);
+      c.textAlign = 'right'; c.font = '700 58px ' + F; c.fillText(st.total + '/' + st.wkts, W - 90, y + 64);
+      c.font = '500 26px ' + B; c.fillStyle = MUTED; c.fillText('(' + CE.ov(st.legal) + ' ov · RR ' + rate(st.total, st.legal) + ')', W - 90, y + 98); c.textAlign = 'left';
+      c.strokeStyle = '#e6ecf5'; c.beginPath(); c.moveTo(90, y + 118); c.lineTo(W - 90, y + 118); c.stroke();
+      c.font = '700 20px ' + B; c.fillStyle = MUTED; c.fillText('BATTING', 90, y + 152); c.fillText('BOWLING', 590, y + 152);
+      bt.forEach(function(b, k){ var yy = y + 200 + k * 54; c.fillStyle = INK; c.font = '600 30px ' + B; c.fillText(fitC(c, b.name + (t.captain === b.name ? ' (c)' : ''), 330), 90, yy);
+        c.font = '700 36px ' + F; c.textAlign = 'right'; c.fillText(b.r + (b.out ? '' : '*'), 490, yy); c.textAlign = 'left'; c.font = '500 24px ' + B; c.fillStyle = MUTED; c.fillText('(' + b.b + ')', 498, yy); });
+      bw.forEach(function(w, k){ var yy = y + 200 + k * 54; c.fillStyle = INK; c.font = '600 30px ' + B; c.fillText(fitC(c, w.name, 280), 590, yy);
+        c.font = '700 36px ' + F; c.textAlign = 'right'; c.fillText(w.w + '/' + w.r, W - 170, yy); c.textAlign = 'left'; c.font = '500 24px ' + B; c.fillStyle = MUTED; c.fillText('(' + CE.ov(w.balls) + ')', W - 160, yy); });
+      y += 430;
+    });
+    if (so) {
+      rr(c, 50, y, W - 100, 70, 18); c.fillStyle = LIGHT; c.fill();
+      c.fillStyle = NAVY; c.font = '700 30px ' + F; c.fillText(fitC(c, 'SUPER OVER  ·  ' + so.innings.map(function(inn, i){ var s2 = CE.replay(so, i); return m.teams[inn.bat].name + ' ' + s2.total + '/' + s2.wkts; }).join('   vs   '), W - 160), 80, y + 46);
+      y += 90;
+    }
+    if (pom) {
+      rr(c, 50, y, W - 100, 160, 22); var g2 = c.createLinearGradient(50, y, W - 50, y + 160); g2.addColorStop(0, NAVY); g2.addColorStop(1, '#1d4a8c'); c.fillStyle = g2; c.fill();
+      c.save(); c.beginPath(); c.arc(140, y + 80, 56, 0, Math.PI * 2); c.closePath(); c.fillStyle = '#2a5a9c'; c.fill(); c.clip();
+      if (photo) c.drawImage(photo, 84, y + 24, 112, 112); else { c.fillStyle = '#fff'; c.font = '700 44px ' + F; c.textAlign = 'center'; c.fillText(pom.name.split(/\s+/).map(function(x){ return x[0]; }).join('').slice(0, 2).toUpperCase(), 140, y + 96); c.textAlign = 'left'; }
+      c.restore(); c.strokeStyle = GOLD; c.lineWidth = 4; c.beginPath(); c.arc(140, y + 80, 58, 0, Math.PI * 2); c.stroke();
+      c.fillStyle = GOLD; c.font = '700 22px ' + B; c.fillText('🏆 MAN OF THE MATCH', 222, y + 52);
+      c.fillStyle = '#fff'; c.font = '700 50px ' + F; c.fillText(fitC(c, displayName(pom.key, pom.name), 560), 222, y + 106);
+      var figs = []; inns.forEach(function(st){ if (st.bat[pom.name] && st.bat[pom.name].b) figs.push(st.bat[pom.name].r + (st.bat[pom.name].out ? '' : '*') + ' (' + st.bat[pom.name].b + ')'); if (st.bowl[pom.name] && st.bowl[pom.name].balls) figs.push(st.bowl[pom.name].w + '/' + st.bowl[pom.name].r); });
+      c.font = '500 26px ' + B; c.fillStyle = '#cfdcf0'; c.fillText(fitC(c, figs.join('  ·  ') + (figs.length ? '  ·  ' : '') + pom.pts + ' MVP pts', 560), 222, y + 142);
+      y += 190;
+    }
+    c.fillStyle = NAVY; c.fillRect(0, H - 70, W, 70); c.fillStyle = GOLD; c.fillRect(0, H - 70, W, 4);
+    c.fillStyle = '#fff'; c.font = '500 24px ' + B; c.fillText('BCC Cricket · live scores & stats', 60, H - 26); c.textAlign = 'right'; c.fillText(fmtDate(Date.now()), W - 60, H - 26); c.textAlign = 'left';
+    return cv;
+  });
+}
+function shareImage(m){
+  if (!m) return;
+  var name = fileSafe(m.teams[0].name + ' vs ' + m.teams[1].name) + '.png';
+  if (NATIVE && !NATIVE.shareFile) { toast('Install the latest app version to share images.'); return; }
+  toast('Making image…');
+  drawScorecard(m).then(function(cv){
+    var url = cv.toDataURL('image/png');
+    if (NATIVE) { NATIVE.shareFile(name, url.slice(url.indexOf(',') + 1), 'image/png'); return; }
+    cv.toBlob(function(blob){
+      var file = null; try { file = new File([blob], name, {type:'image/png'}); } catch(e){}
+      if (file && navigator.canShare && navigator.canShare({files:[file]})) { var tx = $('#pdfbartx'); if (tx) tx.textContent = 'Your image is ready'; sharePdfFile(file); }
+      else { var a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
+    }, 'image/png');
+  }, function(){ toast('Could not make the image.'); });
+}
 window.onPdfError = function(){ toast('Could not share the PDF.'); };
 
 /* ---------- render ---------- */
@@ -2055,23 +2551,25 @@ function render(){
     case 'stats': html = statsView(); break;
     case 'update': html = updateView(); break;
     case 'rules': html = rulesView(); break;
+    case 'records': html = recordsView(); break;
     default: view = 'home'; html = home();
   }
   app.innerHTML = html;
   if (keepFocus) { var ta = $('#cmt'); if (ta) { ta.focus(); var L = ta.value.length; try { ta.setSelectionRange(L, L); } catch(e){} } }
   app.className = view === 'match' ? 'inmatch' : '';
-  var tabs = $('#tabs'), tabbed = ['home', 'members', 'stats', 'rules', 'profile'].indexOf(view) >= 0;
+  var tabs = $('#tabs'), tabbed = ['home', 'members', 'stats', 'rules', 'profile', 'records'].indexOf(view) >= 0;
   tabs.hidden = !tabbed;
-  ['home', 'members', 'stats', 'rules'].forEach(function(v){ $('#t-' + v).className = (view === v || (v === 'members' && view === 'profile')) ? 'on' : ''; });
+  ['home', 'members', 'stats', 'rules'].forEach(function(v){ $('#t-' + v).className = (view === v || (v === 'members' && view === 'profile') || (v === 'stats' && view === 'records')) ? 'on' : ''; });
   var m = matches[curId];
   keepAwake(view === 'match' && m && m.status !== 'done' && m.scorer && m.scorer.uid === me.uid);
   watchComments();
   checkPowerplay();
+  checkMilestones();
 }
 var lastLegal = {};
 function checkPowerplay(){
   var m = view === 'match' ? matches[curId] : null;
-  if (!m || m.status === 'done') return;
+  if (!m || m.status === 'done' || m.so) return;
   var idx = m.innings.length - 1, st = CE.replay(m, idx), R = CE.rules(m), key = m.id + ':' + idx, prev = lastLegal[key];
   lastLegal[key] = st.legal;
   if (prev == null || R.pp <= 0 || R.pp >= m.overs || st.done) return;
@@ -2086,12 +2584,18 @@ function go(v){ view = v; ui = {statsMode:ui.statsMode, season:ui.season, sort:u
 
 /* ---------- actions ---------- */
 function afterChange(m){
-  var idx = m.innings.length - 1, st = CE.replay(m, idx);
-  if (idx === 1 && st.done) { m.status = 'done'; m.result = CE.result(m); } else { m.status = 'live'; m.result = null; }
+  m = realOf(m);
+  if (m.so) {
+    var so = CE.soOf(m), si = so.innings.length - 1, sst = CE.replay(so, si);
+    if (si === 1 && sst.done) { m.status = 'done'; m.result = CE.result(m); } else { m.status = 'live'; m.result = null; }
+  } else {
+    var idx = m.innings.length - 1, st = CE.replay(m, idx);
+    if (idx === 1 && st.done) { m.status = 'done'; m.result = CE.result(m); } else { m.status = 'live'; m.result = null; }
+  }
   ui.mode = null; ui.wk = null; ui.confirmEnd = false;
   saveMatch(m); render();
 }
-function addEvent(e){ var m = matches[curId]; m.innings[m.innings.length - 1].events.push(e); afterChange(m); }
+function addEvent(e){ var m = scoringMatch(matches[curId]); e.at = Date.now(); m.innings[m.innings.length - 1].events.push(e); afterChange(m); }
 /* ---------- edit teams during a match ---------- */
 function teamUsage(m){
   var u = {}, idx = m.innings.length - 1, cur = CE.replay(m, idx);
@@ -2225,8 +2729,10 @@ app.addEventListener('submit', function(e){
 app.addEventListener('click', function(e){ var b = e.target.closest('[data-act]'); if (b) { e.preventDefault(); act(b.dataset.act, b.dataset); } });
 $('#tabs').addEventListener('click', function(e){ var b = e.target.closest('[data-act]'); if (b) act(b.dataset.act, b.dataset); });
 
+var SO_ACTS = {retire:1, retwho:1, retok:1, run:1, mode:1, ext:1, swap:1, undo:1, wk:1, wkhow:1, wkout:1, wkruns:1, wkx:1, wkf:1, wkdh:1, wkok:1, endinn:1, endok:1, second:1, openinn:1, bat:1, bowl:1, addp:1};
 function act(a, d){
   var m = matches[curId], st, idx;
+  if (m && m.so && SO_ACTS[a]) m = CE.soOf(m);
   if (m) { idx = m.innings.length - 1; st = CE.replay(m, idx); }
   switch (a) {
     case 'nav': go(d.v); return;
@@ -2254,7 +2760,7 @@ function act(a, d){
     case 'pback':
       var pf = profileFrom; profileFrom = null;
       if (pf && pf.view === 'match' && matches[pf.curId]) { curId = pf.curId; tab = pf.tab; go('match'); }
-      else if (pf && pf.view === 'stats') go('stats');
+      else if (pf && (pf.view === 'stats' || pf.view === 'records')) go(pf.view);
       else go('members');
       return;
     case 'shareday': shareText('Cricket results', dayText(d.v)); return;
@@ -2263,6 +2769,8 @@ function act(a, d){
     case 'sharereport': var mr = matchReport(m); if (mr) shareText(m.teams[0].name + ' vs ' + m.teams[1].name, reportText(mr, m.teams[0].name + ' vs ' + m.teams[1].name + ' (' + fmtDate(m.date) + ')' + (m.result ? '\n' + m.result : ''))); return;
     case 'sharepreport': var pr2 = playerReport(profileId); if (pr2) shareText(players[profileId].name, reportText(pr2, players[profileId].name)); return;
     case 'shareseason': shareText('Cricket leaderboard', seasonText()); return;
+    case 'tostats': go('stats'); return;
+    case 'sharerecords': shareText('Club records', recordsText()); return;
     case 'share': shareText(m.teams[0].name + ' vs ' + m.teams[1].name, scorecardText(m)); return;
     /* new match */
     case 'pick': if (draft.team[d.id]) { delete draft.team[d.id]; fixCaps(); } else draft.team[d.id] = teamCount('A') <= teamCount('B') ? 'A' : 'B'; render(); return;
@@ -2279,7 +2787,8 @@ function act(a, d){
       if (!nov || nov < +d.min || nov > 50) { toast('Enter overs between ' + d.min + ' and 50'); return; }
       var oldR = CE.rules(m); m.overs = nov; m.maxBowl = Math.ceil(nov / 5); m.pp = Math.min(oldR.pp, nov);
       ui.chov = false; afterChange(m); toast('Now ' + nov + ' overs per side · max ' + m.maxBowl + ' overs per bowler'); return;
-    case 'autosplit': autoSplit(); fixCaps(); render(); toast('Teams split. Adjust with A / B if needed.'); return;
+    case 'autosplit': autoSplit(); draft.rt = null; fixCaps(); render(); toast('Teams split. Adjust with A / B if needed.'); return;
+    case 'fairsplit': var fs = fairSplit(); fixCaps(); render(); toast('Fair split: strength ' + fs.a + ' vs ' + fs.b + '. Adjust with A / B if needed.'); return;
     case 'addnew':
       var inp = $('#dnew'), nn = inp ? inp.value.trim().replace(/\s+/g, ' ') : '';
       if (!nn) { toast('Type a name first'); return; }
@@ -2289,7 +2798,7 @@ function act(a, d){
     /* members */
     case 'addmember': editId = null; go('editMember'); return;
     case 'editmember': editId = profileId; go('editMember'); return;
-    case 'profile': if (!players[d.id]) return; profileFrom = (view === 'match' || view === 'stats') ? {view:view, tab:tab, curId:curId} : profileFrom && view === 'profile' ? profileFrom : null; profileId = d.id; go('profile'); return;
+    case 'profile': if (!players[d.id]) return; profileFrom = (view === 'match' || view === 'stats' || view === 'records') ? {view:view, tab:tab, curId:curId} : profileFrom && view === 'profile' ? profileFrom : null; profileId = d.id; go('profile'); return;
     case 'copyphone': shareText('Phone', players[profileId].phone); return;
     case 'rename': ui.renaming = true; render(); return;
     case 'renameok': var mn = $('#myname').value.trim(); if (mn) { me.name = mn; lsSet('name', mn); } ui.renaming = false; render(); return;
@@ -2307,8 +2816,16 @@ function act(a, d){
     case 'swap': addEvent({t:'swap'}); return;
     case 'undo':
       var inn = m.innings[idx];
-      if (inn.events.length) inn.events.pop(); else if (m.innings.length > 1) m.innings.pop(); else { toast('Nothing to undo'); return; }
+      if (inn.events.length) inn.events.pop(); else if (m.innings.length > 1) m.innings.pop();
+      else if (m.so) { var rm0 = realOf(m); delete rm0.so; afterChange(rm0); toast('Super over cancelled'); return; }
+      else { toast('Nothing to undo'); return; }
       afterChange(m); toast('Last entry undone'); return;
+    case 'sostart':
+      if (m.so) return;
+      m.so = {innings:[{bat:m.innings[1].bat, events:[]}], started:Date.now()};
+      m.status = 'live'; m.result = null; saveMatch(m); render(); window.scrollTo(0, 0); toast('Super over: ' + m.teams[m.innings[1].bat].name + ' bat first'); return;
+    case 'fullcomm': ui.fullComm = !ui.fullComm; render(); return;
+    case 'shareimg': shareImage(realOf(m)); return;
     case 'wk': ui.wk = {how:'Bowled', out:st.striker, f:'', runs:0, x:''}; render(); return;
     case 'wkhow': ui.wk.how = d.v; if (d.v !== 'Run out') { ui.wk.out = st.striker; ui.wk.runs = 0; } if (d.v !== 'Run out' && d.v !== 'Stumped') ui.wk.x = ''; if (d.v === 'Stumped' && ui.wk.x === 'nb') ui.wk.x = ''; render(); return;
     case 'wkout': ui.wk.out = d.v; render(); return;
@@ -2389,11 +2906,13 @@ window.handleBack = function(){
   if (view === 'match' && tab === 'card') { tab = 'score'; render(); return true; }
   if (view === 'editMember') { go(editId ? 'profile' : 'members'); return true; }
   if (view === 'profile') { act('pback', {}); return true; }
+  if (view === 'records') { go('stats'); return true; }
   if (view === 'new' || view === 'match' || view === 'members' || view === 'stats' || view === 'rules') { go('home'); return true; }
   return false;
 };
 
 $('#ppok').addEventListener('click', function(){ $('#ppmodal').hidden = true; });
+$('#msok').addEventListener('click', function(){ clearTimeout(showMilestone.t); hideMilestone(); });
 $('#admform').addEventListener('submit', function(e){ e.preventDefault(); adminSubmit(); });
 $('#admX').addEventListener('click', function(){ $('#admmodal').hidden = true; adminPending = null; });
 document.body.addEventListener('click', function(e){ var b = e.target.closest('#admmodal, #ppmodal'); if (b === e.target) { b.hidden = true; adminPending = null; } });
