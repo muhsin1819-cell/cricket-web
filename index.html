@@ -353,6 +353,7 @@ table.fow td:first-child{min-width:120px}
 .recrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--line)}.recrow:last-child{border-bottom:0}
 .recrow .rk{width:20px;color:var(--muted);font-weight:700}.recrow .rn{flex:1;min-width:0}.recrow .rn small{display:block;color:var(--muted);font-size:12px}
 .recrow>b{font:700 20px var(--f-score);white-space:nowrap}.recrow>b small{font-size:13px;color:var(--muted)}
+.imgbox{max-height:calc(100vh - 40px);overflow:auto}.imgbox img{display:block;width:100%;border-radius:10px;border:1px solid var(--line);margin-bottom:8px}
 .lockbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:var(--chip);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px}
 .lockbar span{flex:1;min-width:200px}
 .lockask{border-color:var(--pitch)}
@@ -385,6 +386,7 @@ td.sorted,th.sorted{background:color-mix(in srgb, var(--pitch) 9%, transparent)}
 <div class="field"><label for="admUser">Username</label><input id="admUser" autocapitalize="off" autocorrect="off" spellcheck="false"></div>
 <div class="field"><label for="admPass">Password</label><input id="admPass" type="password" inputmode="numeric" autocomplete="off"></div>
 <p class="err" id="admErr" hidden></p><div class="actions"><button class="btn primary" type="submit" id="admGo">Continue</button><button class="btn" type="button" id="admX">Cancel</button></div></form></div>
+<div class="modal" id="imgmodal" hidden role="dialog" aria-modal="true" aria-label="Scorecard image"><div class="mbox imgbox"><img id="imgprev" alt="Scorecard image"><p class="small" id="imgnote"></p><div class="actions"><button class="btn primary" id="imggo">Share</button><button class="btn" id="imgx">Close</button></div></div></div>
 <div class="msbox" id="msbox" hidden role="status" aria-live="polite"><span class="msbig" id="msbig"></span><div><b id="mstitle"></b><span id="mssub"></span></div><button id="msok" aria-label="Close">✕</button></div>
 <div class="modal" id="ppmodal" hidden role="dialog" aria-modal="true" aria-labelledby="pptitle"><div class="mbox"><div class="lbl">⚡ Powerplay</div><h2 id="pptitle">Powerplay completed</h2><p id="pptext"></p><button class="btn primary block" id="ppok">OK</button></div></div>
 <div class="pdfbar" id="pdfbar" hidden><span id="pdfbartx">Your PDF is ready</span><button class="btn primary" id="pdfgo">Share</button><button class="btn" id="pdfx" aria-label="Close">✕</button></div>
@@ -637,7 +639,7 @@ var CE = (function(){
 (function(){
 'use strict';
 var app = document.getElementById('app');
-var APP_BUILD = 8; /* raise by 1 for every new release */
+var APP_BUILD = 9; /* raise by 1 for every new release */
 var cfg = {minVersion:0};
 var adminPending = null, profileFrom = null;
 var LOGO = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAANwAAADcCAMAAAAshD+zAAABgFBMVEXdqynjro/anGrYZlLw4t7frzFDXYK6xNJgZliulELmyqi2kST/zy4nKh9OMyt/fwB+kayKODC1P0SgnZGercIA/wANKVIAAAAUOGzrty8YQXvy2aTXQzoUMVnTqDP9/P36wi8YRIJSVkltaEYmOU42RE0aKiO2lTcFLGWNez3/qlX//wDImFOmizr4uzrotS/WOC+ZgzxDTEkqRm8AHFT946d6cUXotS/otS/CnTbpti/otS/ptS+DdUIaKBz/fwCYhkbjQzYMPIE6U2/y6eqqtse/vz9PaIjoZl3nyI9gXkX/AADTqGfbtXfWSUJ1iabbWE7w05z319X//1XlaWGtqJXDy9fleHHlrSxSRG0yVIJcc5TVw53qmJNoeo+HmLCtQ0mjjUOqqgDU2uN4g42Yp7uqqlXHuZeSlpLsqKTaqy7lW1LnioTvtbL//39DWnbc4ej0yMVrRGOJiYkiPmVWZ3jYx6DK0tzlh3MXMDwiSYN6Q11kbGGMQ1a1OjC8spgVgpnMAAAAgHRSTlMX/////////////wcH//8C//////8B/wD//v////////7///////////8DAf//CDD/////////zUn/rmyQ//8C////////BP////8B/////////wP/////Fv///////////wP///8D////Ef///wL//////////////////////zD4IB0AAB6uSURBVHja1Z0HY9vG2YDhkdW9PpCgjCOIYRCkQQkkRYqSWFrDliM1XnFc23Esb7tOEyd1RtO0yV/vTeAAHIA7kkrzXYYkznvw7rvDnVY7ydbtdnq93uxI8NQMPtHpdk/067UT+tyjWafXif/qveqtwrYBG/rZ692Jn4IvE8L/XOG6zxlXb3Vja3tzczw2Mm083tzc3tpY7THC593/B3BH3cvPsdZBrE3EZFmWIWzkifEmRJyhdzy/3D36OcN1O5eJvDBXEVWWERMSGX7Y6f484bqdDpbY1qYsV5oQAs6WzLcsuO6HSGQb22MBGAC+H0ZBMHJQG02DKPQBEACOtzeQAD/s/pzgupePGFmayg8cu++auqCZbt92Aj/NyPiOLnd/JnBdpI6r20aKDISO7QmpMoye7YQgw7eKHGj3ZwCHOtHbSskMRI6n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';
@@ -1891,7 +1893,7 @@ function rulesView(){
     '<section class="card"><h2 class="cmh">MVP points: fielding</h2>' + tbl([
       row('Each catch', sg(P.catch)), row('Each stumping', sg(P.stump)), row('Each direct-hit run out', sg(P.direct))]) + '</section>' +
     '<section class="card"><h2 class="cmh">Man of the Match</h2><p class="small">The player with the most MVP points in the match. If two players are level, the one from the winning team gets it.</p></section>' +
-    '<section class="card"><h2 class="cmh">Club admin</h2><p class="small">App version on this phone: <b>' + APP_BUILD + '</b>. Version the club requires: <b>' + (cfg.minVersion || 'any') + '</b>.</p>' +
+    '<section class="card"><h2 class="cmh">Club admin</h2><p class="small">App version on this phone: <b>' + APP_BUILD + '</b>' + (NATIVE ? ' · Android image sharing: <b>' + (canNativeShareImage() ? 'yes' : 'no (old APK)') + '</b>' : '') + '. Version the club requires: <b>' + (cfg.minVersion || 'any') + '</b>.</p>' +
     (ui.adminOpen ? '<p class="small">After sharing a new app version with everyone, make it required. Phones with an older version then see an “Update needed” screen and cannot change any scores.</p>' +
       '<div class="actions"><button class="btn primary" data-act="reqver">Require version ' + APP_BUILD + '</button><button class="btn" data-act="relver">Allow any version</button></div>'
       : '<button class="btn block" data-act="admtools">Admin tools</button>') + '</section>';
@@ -1974,14 +1976,14 @@ function inningsTable(kind, rows){
 }
 /* ---------- club records & season awards ---------- */
 function clubRecords(list){
-  var ir = inningsRecords(list), parts = [], teams = [], fast = [], sixes = [], overs = [], wins = [];
+  var ir = inningsRecords(list), parts = [], teams = [], fast = [], sixes = [], fours = [], overs = [], wins = [];
   list.forEach(function(m){
     m.innings.forEach(function(inn, i){
       var st = CE.replay(m, i), tn = m.teams[inn.bat].name, opp = m.teams[1 - inn.bat].name;
       st.parts.forEach(function(p, k){ parts.push({r:p.r, balls:p.balls, a:p.a, b:p.b, wkt:k + 1, m:m, team:tn}); });
       if (st.opened && (st.done || m.status === 'done')) teams.push({r:st.total, w:st.wkts, legal:st.legal, team:tn, opp:opp, m:m, allOut:st.wkts >= st.maxW, full:st.legal >= st.maxBalls});
       st.log.forEach(function(e){ if (e.k === 'ms' && e.kind === 'bat' && e.v === 50) fast.push({name:e.who, key:mkey(m, e.who) || 'n:' + e.who, b:e.b, m:m, opp:opp}); });
-      st.batOrder.forEach(function(n){ var b = st.bat[n]; if (b.s) sixes.push({name:n, key:mkey(m, n) || 'n:' + n, s:b.s, r:b.r, m:m}); });
+      st.batOrder.forEach(function(n){ var b = st.bat[n]; if (b.s) sixes.push({name:n, key:mkey(m, n) || 'n:' + n, s:b.s, r:b.r, m:m}); if (b.f) fours.push({name:n, key:mkey(m, n) || 'n:' + n, f:b.f, r:b.r, m:m}); });
       st.ol.forEach(function(o){ if (o) overs.push({runs:o.runs, n:o.n, bowler:o.bowler, bats:o.bats, team:tn, m:m}); });
     });
     if (m.status === 'done' && m.innings.length === 2 && !m.so) {
@@ -1991,19 +1993,21 @@ function clubRecords(list){
     }
   });
   parts.sort(function(a, b){ return b.r - a.r; }); fast.sort(function(a, b){ return a.b - b.b; });
-  sixes.sort(function(a, b){ return b.s - a.s || b.r - a.r; }); overs.sort(function(a, b){ return b.runs - a.runs; });
+  sixes.sort(function(a, b){ return b.s - a.s || b.r - a.r; }); fours.sort(function(a, b){ return b.f - a.f || b.r - a.r; }); overs.sort(function(a, b){ return b.runs - a.runs; });
   var hi = teams.slice().sort(function(a, b){ return b.r - a.r; }), lo = teams.filter(function(t){ return t.allOut || t.full; }).sort(function(a, b){ return a.r - b.r; });
-  return {bat:ir.bat, bowl:ir.bowl, parts:parts, hi:hi, lo:lo, fast:fast, sixes:sixes, overs:overs,
+  return {bat:ir.bat, bowl:ir.bowl, parts:parts, hi:hi, lo:lo, fast:fast, sixes:sixes, fours:fours, overs:overs,
     winsR:wins.filter(function(x){ return x.kind === 'r'; }).sort(function(a, b){ return b.v - a.v; }), winsW:wins.filter(function(x){ return x.kind === 'w'; }).sort(function(a, b){ return b.v - a.v || b.balls - a.balls; })};
 }
 function seasonAwards(rows){
   var best = function(filter, val, fmt, asc){ var l = rows.filter(filter).sort(function(a, b){ return asc ? val(a) - val(b) : val(b) - val(a); }); return l[0] ? {r:l[0], txt:fmt(l[0]), runner:l[1] ? l[1] : null} : null; };
   return [
     ['🏏', 'Most runs', best(function(r){ return r.r > 0; }, function(r){ return r.r; }, function(r){ return r.r + ' runs · avg ' + (r.inn - r.no ? (r.r / (r.inn - r.no)).toFixed(1) : r.r) + ' · SR ' + sr(r.r, r.b); })],
-    ['🎯', 'Most wickets', best(function(r){ return r.w > 0; }, function(r){ return r.w * 1000 - r.rc; }, function(r){ return r.w + ' wickets · econ ' + rate(r.rc, r.balls); })],
+    ['🎳', 'Most wickets', best(function(r){ return r.w > 0; }, function(r){ return r.w * 1000 - r.rc; }, function(r){ return r.w + ' wickets · econ ' + rate(r.rc, r.balls); })],
     ['⭐', 'MVP of the season', best(function(r){ return r.m > 0; }, function(r){ return r.pts; }, function(r){ return r.pts + ' MVP points in ' + plural(r.m, 'match'); })],
     ['🧤', 'Best fielder', best(function(r){ return r.c + r.st + r.ro > 0; }, function(r){ return r.c + r.st + r.ro + r.dh * 0.1; }, function(r){ return (r.c + r.st + r.ro) + ' dismissals (' + r.c + ' ct, ' + r.st + ' st, ' + r.ro + ' ro)'; })],
-    ['💥', 'Most sixes', best(function(r){ return r.s > 0; }, function(r){ return r.s; }, function(r){ return r.s + ' sixes'; })],
+    ['🏅', 'Most fifties', best(function(r){ return r.fifty + r.hund > 0; }, function(r){ return (r.fifty + r.hund) * 1000 + r.r / 1000; }, function(r){ return plural(r.fifty + r.hund, 'fifty').replace('fiftys', 'fifties') + (r.hund ? ' (incl. ' + plural(r.hund, 'hundred') + ')' : ''); })],
+    ['💥', 'Most sixes', best(function(r){ return r.s > 0; }, function(r){ return r.s; }, function(r){ return plural(r.s, 'six'); })],
+    ['🎯', 'Most fours', best(function(r){ return r.f > 0; }, function(r){ return r.f; }, function(r){ return plural(r.f, 'four'); })],
     ['⚡', 'Best strike rate', best(function(r){ return r.b >= 60; }, function(r){ return r.r / r.b; }, function(r){ return 'SR ' + sr(r.r, r.b) + ' (' + r.r + ' off ' + r.b + ')'; })],
     ['🔒', 'Best economy', best(function(r){ return r.balls >= 60; }, function(r){ return r.rc / r.balls; }, function(r){ return rate(r.rc, r.balls) + ' an over (' + CE.ov(r.balls) + ' ov)'; }, true)],
     ['🏆', 'Most Man of the Match', best(function(r){ return r.pom > 0; }, function(r){ return r.pom * 1000 + r.pts / 1000; }, function(r){ return plural(r.pom, 'award'); })],
@@ -2030,12 +2034,39 @@ function recordsView(){
   h += sec('Highest partnerships', R.parts, function(x){ return [esc(x.a) + ' & ' + esc(x.b), x.r + ' <small>(' + x.balls + ')</small>', ordinal(x.wkt) + ' wicket · ' + esc(x.team) + ' · ' + when(x.m)]; });
   h += sec('Highest team totals', R.hi, function(x){ return [esc(x.team), x.r + '/' + x.w, CE.ov(x.legal) + ' ov vs ' + esc(x.opp) + ' · ' + when(x.m)]; });
   h += sec('Lowest team totals', R.lo, function(x){ return [esc(x.team), x.r + '/' + x.w, CE.ov(x.legal) + ' ov vs ' + esc(x.opp) + ' · ' + when(x.m)]; });
-  h += sec('Most sixes in an innings', R.sixes, function(x){ return [who(x.key, x.name), x.s + ' sixes', x.r + ' runs · ' + when(x.m)]; });
+  h += sec('Most sixes in an innings', R.sixes, function(x){ return [who(x.key, x.name), plural(x.s, 'six'), x.r + ' runs · ' + when(x.m)]; });
+  h += sec('Most fours in an innings', R.fours, function(x){ return [who(x.key, x.name), plural(x.f, 'four'), x.r + ' runs · ' + when(x.m)]; });
   h += sec('Most expensive overs', R.overs, function(x){ return [esc(x.bowler || ''), x.runs + ' runs', 'over ' + x.n + ' to ' + esc(x.bats.join(' & ')) + ' · ' + when(x.m)]; });
   h += sec('Biggest wins by runs', R.winsR, function(x){ return [esc(x.team), plural(x.v, 'run'), when(x.m)]; });
   h += sec('Biggest wins by wickets', R.winsW, function(x){ return [esc(x.team), plural(x.v, 'wicket'), plural(x.balls, 'ball') + ' to spare · ' + when(x.m)]; });
-  h += '<div class="actions"><button class="btn" data-act="sharerecords">Share as text</button></div>';
+  h += '<div class="actions"><button class="btn primary" data-act="recordspdf">Export PDF</button><button class="btn" data-act="sharerecords">Share as text</button></div>';
   return h;
+}
+function recordsPdf(){
+  if (!pdfReady()) { toast('PDF maker did not load. Restart the app and try again.'); return; }
+  var s = statsFor(ui.season), R = clubRecords(s.list), label = ui.season === 'all' ? 'All time' : 'Season ' + ui.season;
+  var D = function(m){ return fmtDate(m.date); };
+  try {
+    var doc = new window.jspdf.jsPDF({unit:'mm', format:'a4'});
+    var y = pdfTop(doc, 'Club records & awards', label + ' | ' + plural(s.count, 'match') + ' | made ' + fmtDate(Date.now(), true));
+    y = pdfSection(doc, y, (ui.season === 'all' ? 'All-time' : 'Season ' + ui.season) + ' awards', ['', 'Award', 'Player', 'Record'],
+      seasonAwards(s.rows).filter(function(a){ return a[2]; }).map(function(a, i){ return [i + 1, pdfSafe(a[1]), pdfSafe(a[2].r.name), pdfSafe(a[2].txt)]; }),
+      {columnStyles:{0:{cellWidth:8}, 1:{cellWidth:46, fontStyle:'bold'}, 2:{cellWidth:50}}, didParseCell:function(){}});
+    var sec = function(title, head, rows){ if (rows.length) y = pdfSection(doc, y, title, ['#'].concat(head), rows.slice(0, 5).map(function(r, i){ return [i + 1].concat(r.map(pdfSafe)); }), {columnStyles:{0:{cellWidth:8}, 1:{fontStyle:'bold'}}, didParseCell:function(){}}); };
+    sec('Highest individual scores', ['Player', 'Score', 'Balls', 'Against', 'Date'], R.bat.map(function(x){ return [x.name, x.r + (x.no ? '*' : ''), String(x.b), x.opp, D(x.m)]; }));
+    sec('Best bowling figures', ['Player', 'Figures', 'Overs', 'Against', 'Date'], R.bowl.map(function(x){ return [x.name, x.w + '/' + x.r, CE.ov(x.balls), x.opp, D(x.m)]; }));
+    sec('Fastest fifties', ['Player', 'Balls', 'Against', 'Date'], R.fast.map(function(x){ return [x.name, String(x.b), x.opp, D(x.m)]; }));
+    sec('Most sixes in an innings', ['Player', 'Sixes', 'Runs', 'Date'], R.sixes.map(function(x){ return [x.name, String(x.s), String(x.r), D(x.m)]; }));
+    sec('Most fours in an innings', ['Player', 'Fours', 'Runs', 'Date'], R.fours.map(function(x){ return [x.name, String(x.f), String(x.r), D(x.m)]; }));
+    sec('Highest partnerships', ['Pair', 'Runs (balls)', 'Wicket', 'Team', 'Date'], R.parts.map(function(x){ return [x.a + ' & ' + x.b, x.r + ' (' + x.balls + ')', ordinal(x.wkt), x.team, D(x.m)]; }));
+    sec('Highest team totals', ['Team', 'Score', 'Overs', 'Against', 'Date'], R.hi.map(function(x){ return [x.team, x.r + '/' + x.w, CE.ov(x.legal), x.opp, D(x.m)]; }));
+    sec('Lowest team totals', ['Team', 'Score', 'Overs', 'Against', 'Date'], R.lo.map(function(x){ return [x.team, x.r + '/' + x.w, CE.ov(x.legal), x.opp, D(x.m)]; }));
+    sec('Most expensive overs', ['Bowler', 'Runs', 'Over', 'Batters', 'Date'], R.overs.map(function(x){ return [x.bowler || '', String(x.runs), String(x.n), x.bats.join(' & '), D(x.m)]; }));
+    sec('Biggest wins by runs', ['Team', 'Margin', 'Date'], R.winsR.map(function(x){ return [x.team, plural(x.v, 'run'), D(x.m)]; }));
+    sec('Biggest wins by wickets', ['Team', 'Margin', 'Balls left', 'Date'], R.winsW.map(function(x){ return [x.team, plural(x.v, 'wicket'), String(x.balls), D(x.m)]; }));
+    pdfFooters(doc);
+    deliverPdf(doc, 'Club-records-' + fileSafe(label) + '.pdf');
+  } catch(e){ toast('Could not make the PDF.'); }
 }
 function recordsText(){
   var s = statsFor(ui.season), R = clubRecords(s.list), L = ['🏆 BCC Cricket – ' + (ui.season === 'all' ? 'All-time' : 'Season ' + ui.season) + ' awards & records', ''];
@@ -2045,6 +2076,8 @@ function recordsText(){
   if (R.parts[0]) L.push('', 'Highest partnership: ' + R.parts[0].r + ' (' + R.parts[0].a + ' & ' + R.parts[0].b + ')');
   if (R.hi[0]) L.push('Highest team total: ' + R.hi[0].r + '/' + R.hi[0].w + ' (' + R.hi[0].team + ')');
   if (R.fast[0]) L.push('Fastest fifty: ' + R.fast[0].name + ', ' + R.fast[0].b + ' balls');
+  if (R.sixes[0]) L.push('Most sixes in an innings: ' + R.sixes[0].name + ', ' + R.sixes[0].s);
+  if (R.fours[0]) L.push('Most fours in an innings: ' + R.fours[0].name + ', ' + R.fours[0].f);
   return L.join('\n');
 }
 function statsView(){
@@ -2518,22 +2551,38 @@ function drawScorecard(m){
     return cv;
   });
 }
+var imgReady = null;
+function canNativeShareImage(){ return !!(NATIVE && typeof NATIVE.shareFile === 'function'); }
 function shareImage(m){
   if (!m) return;
   var name = fileSafe(m.teams[0].name + ' vs ' + m.teams[1].name) + '.png';
-  if (NATIVE && !NATIVE.shareFile) { toast('Install the latest app version to share images.'); return; }
   toast('Making image…');
+  var done = false, guard = setTimeout(function(){ if (!done) toast('The image is taking long. Try again.'); }, 12000);
   drawScorecard(m).then(function(cv){
+    done = true; clearTimeout(guard);
     var url = cv.toDataURL('image/png');
-    if (NATIVE) { NATIVE.shareFile(name, url.slice(url.indexOf(',') + 1), 'image/png'); return; }
-    cv.toBlob(function(blob){
-      var file = null; try { file = new File([blob], name, {type:'image/png'}); } catch(e){}
-      if (file && navigator.canShare && navigator.canShare({files:[file]})) { var tx = $('#pdfbartx'); if (tx) tx.textContent = 'Your image is ready'; sharePdfFile(file); }
-      else { var a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); a.remove(); }
-    }, 'image/png');
-  }, function(){ toast('Could not make the image.'); });
+    imgReady = {name:name, url:url, cv:cv};
+    $('#imgprev').src = url;
+    var note = $('#imgnote');
+    note.textContent = NATIVE && !canNativeShareImage() ? 'This phone has an older version of the app, so it can’t send the image directly. Take a screenshot of the picture above, or install the newest APK (it needs the MainActivity.java file).' : 'Tap Share and choose WhatsApp.';
+    $('#imggo').hidden = !!(NATIVE && !canNativeShareImage());
+    $('#imgmodal').hidden = false;
+  }).catch(function(e){ done = true; clearTimeout(guard); toast('Could not make the image' + (e && e.message ? ': ' + e.message : '.')); });
 }
-window.onPdfError = function(){ toast('Could not share the PDF.'); };
+function sendImage(){
+  var r = imgReady; if (!r) return;
+  if (canNativeShareImage()) {
+    try { NATIVE.shareFile(r.name, r.url.slice(r.url.indexOf(',') + 1), 'image/png'); $('#imgmodal').hidden = true; }
+    catch(e){ toast('Could not open sharing: ' + (e && e.message ? e.message : 'unknown error')); }
+    return;
+  }
+  var bin = atob(r.url.slice(r.url.indexOf(',') + 1)), arr = new Uint8Array(bin.length); for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  var file = null; try { file = new File([arr], r.name, {type:'image/png'}); } catch(e){}
+  if (file && navigator.canShare && navigator.canShare({files:[file]})) {
+    navigator.share({files:[file], title:r.name}).then(function(){ $('#imgmodal').hidden = true; }, function(e){ if (!e || e.name !== 'AbortError') toast('Could not share. Press and hold the picture to save it.'); });
+  } else { var a = document.createElement('a'); a.href = r.url; a.download = r.name; document.body.appendChild(a); a.click(); a.remove(); toast('Image saved'); }
+}
+window.onPdfError = function(){ toast('Could not share the file.'); };
 
 /* ---------- render ---------- */
 function render(){
@@ -2770,6 +2819,7 @@ function act(a, d){
     case 'sharepreport': var pr2 = playerReport(profileId); if (pr2) shareText(players[profileId].name, reportText(pr2, players[profileId].name)); return;
     case 'shareseason': shareText('Cricket leaderboard', seasonText()); return;
     case 'tostats': go('stats'); return;
+    case 'recordspdf': recordsPdf(); return;
     case 'sharerecords': shareText('Club records', recordsText()); return;
     case 'share': shareText(m.teams[0].name + ' vs ' + m.teams[1].name, scorecardText(m)); return;
     /* new match */
@@ -2902,6 +2952,7 @@ function act(a, d){
 window.handleBack = function(){
   if (!$('#admmodal').hidden) { $('#admmodal').hidden = true; adminPending = null; return true; }
   if (!$('#ppmodal').hidden) { $('#ppmodal').hidden = true; return true; }
+  if (!$('#imgmodal').hidden) { $('#imgmodal').hidden = true; return true; }
   if (ui.wk || ui.mode || ui.confirmEnd || ui.confirmDel || ui.renaming || ui.retire || ui.chov || ui.editTeams) { act('cancel', {}); return true; }
   if (view === 'match' && tab === 'card') { tab = 'score'; render(); return true; }
   if (view === 'editMember') { go(editId ? 'profile' : 'members'); return true; }
@@ -2912,6 +2963,8 @@ window.handleBack = function(){
 };
 
 $('#ppok').addEventListener('click', function(){ $('#ppmodal').hidden = true; });
+$('#imggo').addEventListener('click', sendImage);
+$('#imgx').addEventListener('click', function(){ $('#imgmodal').hidden = true; });
 $('#msok').addEventListener('click', function(){ clearTimeout(showMilestone.t); hideMilestone(); });
 $('#admform').addEventListener('submit', function(e){ e.preventDefault(); adminSubmit(); });
 $('#admX').addEventListener('click', function(){ $('#admmodal').hidden = true; adminPending = null; });
